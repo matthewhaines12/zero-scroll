@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Colors */
+  --color-primary-dark: #0d1117;
+  --color-surface-1: #1c2128;
+  --color-surface-2: #2f3845;
+
+  --color-neon-focus: #00f0ff;
+  --color-neon-break: #34d399;
+  --color-accent-purple: #a78bfa;
+
+  --color-text-base: #e5e7eb;
+  --color-text-muted: #9ca3af;
+
+  /* Fonts *
+
+  /* Shadows */
+  --shadow-neon-glow-focus: 0 0 12px rgba(0, 240, 255, 0.7),
+    0 0 25px rgba(0, 240, 255, 0.2);
+}
+
+/* Global Reset */
+body {
+  @apply bg-primary-dark text-text-base pl-20 font-sans min-h-screen antialiased;
+}

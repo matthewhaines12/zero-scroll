@@ -1,20 +1,22 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import Home from './pages/Home';
-import Navbar from './components/Navbar';
-import Tasks from './pages/Tasks';
-import Signup from './pages/Signup';
+import FocusHub from './pages/FocusHub';
+import Analytics from './pages/Analytics';
+import Leaderboard from './pages/Leaderboard';
+import Settings from './pages/Settings';
 import Login from './pages/Login';
+import Sidebar from './components/layout/Sidebar';
 
 function App() {
   return (
     <>
       <div>
         <Router>
-          <Navbar />
+          <Sidebar />
           <Routes>
-            {/* <Route path="/" element={<Home />} /> */}
-            <Route path="/Tasks" element={<Tasks />} />
-            <Route path="/Signup" element={<Signup />} />
+            <Route path="/" element={<FocusHub />} />
+            <Route path="/Analytics" element={<Analytics />} />
+            <Route path="/Leaderboard" element={<Leaderboard />} />
+            <Route path="/Settings" element={<Settings />} />
             <Route path="/Login" element={<Login />} />
           </Routes>
         </Router>
