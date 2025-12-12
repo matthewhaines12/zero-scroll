@@ -14,10 +14,10 @@ function App() {
           <Sidebar />
           <Routes>
             <Route path="/" element={<FocusHub />} />
-            <Route path="/Analytics" element={<Analytics />} />
-            <Route path="/Leaderboard" element={<Leaderboard />} />
-            <Route path="/Settings" element={<Settings />} />
-            <Route path="/Login" element={<Login />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </Router>
       </div>

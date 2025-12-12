@@ -8,16 +8,31 @@
 
   --color-neon-focus: #00f0ff;
   --color-neon-break: #34d399;
+
   --color-accent-purple: #a78bfa;
 
   --color-text-base: #e5e7eb;
   --color-text-muted: #9ca3af;
 
-  /* Fonts *
+  --color-priority-high: #ff3366;
+  --color-priority-medium: #ff9f1c;
+  --color-priority-low: #3dff8c;
+
+  /* Fonts */
+  --font-timer: 'Space Mono', 'Roboto Mono', monospace;
 
   /* Shadows */
   --shadow-neon-glow-focus: 0 0 12px rgba(0, 240, 255, 0.7),
     0 0 25px rgba(0, 240, 255, 0.2);
+
+  --shadow-neon-glow-high: 0 0 6px rgba(255, 51, 102, 0.25),
+    0 0 12px rgba(255, 51, 102, 0.1);
+
+  --shadow-neon-glow-medium: 0 0 6px rgba(255, 159, 28, 0.25),
+    0 0 12px rgba(255, 159, 28, 0.1);
+
+  --shadow-neon-glow-low: 0 0 6px rgba(61, 255, 140, 0.25),
+    0 0 12px rgba(61, 255, 140, 0.1);
 }
 
 /* Global Reset */

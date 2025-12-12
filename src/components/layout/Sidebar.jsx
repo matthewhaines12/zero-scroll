@@ -29,7 +29,7 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      {/* Bottom User Widget */}
+      {/* Bottom User Icon */}
       <UserIcon />
     </aside>
   );
