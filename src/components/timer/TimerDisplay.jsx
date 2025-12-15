@@ -1,8 +1,8 @@
-const TimerDisplay = () => {
+const TimerDisplay = ({ time }) => {
   return (
-    <section className="flex flex-col border-surface-2 border-r ">
-      <h2 className="">Timer Display</h2>
-    </section>
+    <div className="flex justify-center items-center font-timer text-8xl border-7 border-neon-focus rounded-full h-100 w-100">
+      {time}
+    </div>
   );
 };
 

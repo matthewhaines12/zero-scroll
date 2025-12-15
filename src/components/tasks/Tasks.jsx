@@ -73,7 +73,7 @@ const Tasks = () => {
   };
 
   return (
-    <section className="w-full flex flex-col bg-surface-1/50 rounded-2xl p-6 border border-surface-2 overflow-hidden">
+    <article className="w-full flex flex-col bg-surface-1/50 rounded-2xl p-6 border border-surface-2 overflow-hidden">
       <header className="mb-6">
         <h2 className="font-timer text-neon-focus text-xl uppercase drop-shadow-[0_0_5px_rgba(0,240,255,0.5)]">
           Mission Log
@@ -117,7 +117,7 @@ const Tasks = () => {
           ))
         )}
       </div>
-    </section>
+    </article>
   );
 };
 
