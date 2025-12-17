@@ -1,36 +1,47 @@
 @import 'tailwindcss';
 
 @theme {
-  /* Colors */
+  /* Base Colors */
   --color-primary-dark: #0d1117;
   --color-surface-1: #1c2128;
   --color-surface-2: #2f3845;
 
+  /* Mode Colors */
   --color-neon-focus: #00f0ff;
   --color-neon-break: #34d399;
 
+  /* Accent Colors */
   --color-accent-purple: #a78bfa;
 
+  /* Text Colors */
   --color-text-base: #e5e7eb;
   --color-text-muted: #9ca3af;
 
+  /* Priority Colors */
   --color-priority-high: #ff3366;
   --color-priority-medium: #ff9f1c;
   --color-priority-low: #3dff8c;
 
-  /* Fonts */
+  /* Typography */
   --font-timer: 'Space Mono', 'Roboto Mono', monospace;
 
-  /* Shadows */
+  /* Mode-specific Shadows - Focus */
   --shadow-neon-glow-focus: 0 0 12px rgba(0, 240, 255, 0.7),
     0 0 25px rgba(0, 240, 255, 0.2);
+  --shadow-neon-glow-focus-small: 0 0 6px rgba(0, 240, 255, 0.7),
+    0 0 12px rgba(0, 240, 255, 0.2);
 
+  /* Mode-specific Shadows - Break */
+  --shadow-neon-glow-break: 0 0 12px rgba(52, 211, 153, 0.7),
+    0 0 25px rgba(52, 211, 153, 0.2);
+  --shadow-neon-glow-break-small: 0 0 6px rgba(52, 211, 153, 0.7),
+    0 0 12px rgba(52, 211, 153, 0.2);
+
+  /* Priority Shadows */
   --shadow-neon-glow-high: 0 0 6px rgba(255, 51, 102, 0.25),
     0 0 12px rgba(255, 51, 102, 0.1);
-
   --shadow-neon-glow-medium: 0 0 6px rgba(255, 159, 28, 0.25),
     0 0 12px rgba(255, 159, 28, 0.1);
-
   --shadow-neon-glow-low: 0 0 6px rgba(61, 255, 140, 0.25),
     0 0 12px rgba(61, 255, 140, 0.1);
 }

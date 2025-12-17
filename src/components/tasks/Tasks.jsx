@@ -1,44 +1,12 @@
 import { useState } from 'react';
 import TaskItem from './TaskItem';
 import { Plus } from 'lucide-react';
+import { useTaskContext } from '../../context/TaskContext';
 
 const Tasks = () => {
+  const { tasks, setTasks, activeTask, setActiveTask } = useTaskContext();
+
   const [newTask, setNewTask] = useState('');
-
-  // Mock data
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: 'Refactor Auth Middleware',
-      completed: false,
-      priority: 'HIGH',
-    },
-    {
-      id: 2,
-      title: 'Design Database Schema',
-      completed: true,
-      priority: 'MED',
-    },
-    {
-      id: 3,
-      title: 'Update API Documentation',
-      completed: false,
-      priority: 'LOW',
-    },
-
-    {
-      id: 4,
-      title: 'Update API Documentation',
-      completed: false,
-      priority: 'LOW',
-    },
-    {
-      id: 5,
-      title: 'Update API Documentation',
-      completed: false,
-      priority: 'MED',
-    },
-  ]);
 
   const handleAddTask = (e) => {
     e.preventDefault();
@@ -70,6 +38,17 @@ const Tasks = () => {
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
+    setActiveTask(null);
+  };
+
+  const handleSelectTask = (task) => {
+    if (task.completed) return;
+
+    if (task.id === activeTask?.id) {
+      setActiveTask(null);
+    } else {
+      setActiveTask(task);
+    }
   };
 
   return (
@@ -78,7 +57,9 @@ const Tasks = () => {
         <h2 className="font-timer text-neon-focus text-xl uppercase drop-shadow-[0_0_5px_rgba(0,240,255,0.5)]">
           Mission Log
         </h2>
-        <p className="text-text-muted text-xs mt-1">ACTIVE OBJECTIVES</p>
+        <p className="text-text-muted text-xs mt-1">
+          SELECT AN OBJECTIVE TO FOCUS ON
+        </p>
       </header>
 
       <form onSubmit={handleAddTask} className="flex gap-3 w-full">
@@ -95,15 +76,15 @@ const Tasks = () => {
           type="submit"
           className="flex justify-center items-center w-12 h-12 rounded-xl
               bg-neon-focus/10 text-neon-focus border border-neon-focus/50
-              hover:bg-neon-focus hover:text-primary-dark hover:shadow-neon-glow-focus
-              transition-all duration-300"
+              hover:bg-neon-focus hover:text-primary-dark hover:shadow-neon-glow-focus-small
+              transition-all duration-300 cursor-pointer"
         >
-          <Plus size={28} strokeWidth={2.5} />
+          <Plus size={28} strokeWidth={2} />
         </button>
       </form>
 
       {/* Task list */}
-      <div className="mt-6 flex flex-col gap-6 overflow-y-auto flex-1">
+      <div className="mt-6 flex flex-col gap-6 overflow-y-auto flex-1 p-2">
         {tasks.length === 0 ? (
           <p>No tasks</p>
         ) : (
@@ -111,6 +92,8 @@ const Tasks = () => {
             <TaskItem
               key={task.id}
               task={task}
+              isActive={task.id === activeTask?.id}
+              onSelect={handleSelectTask}
               onPriorityChange={handlePriorityChange}
               onToggleComplete={handleToggleComplete}
             />

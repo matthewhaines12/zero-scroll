@@ -1,20 +1,32 @@
-const PRIORITY_COLORS = {
-  LOW: 'text-priority-low shadow-neon-glow-low',
-  MED: 'text-priority-medium shadow-neon-glow-medium',
-  HIGH: 'text-priority-high shadow-neon-glow-high',
-};
+import { PRIORITY_COLORS } from '../../services/utils/constants';
 
-const TaskItem = ({ task, onPriorityChange, onToggleComplete }) => {
+const TaskItem = ({
+  task,
+  isActive,
+  onSelect,
+  onPriorityChange,
+  onToggleComplete,
+}) => {
   return (
     <div
-      className="flex justify-between p-3 rounded-xl border border-surface-2 hover:bg-surface-2
-     transition"
+      onClick={() => onSelect(task)}
+      className={`flex justify-between p-3 rounded-xl border-2 transition-all duration-300 cursor-pointer
+        ${
+          isActive
+            ? 'border-neon-focus shadow-neon-glow-focus-small'
+            : 'border-surface-2 hover:bg-surface-2'
+        }
+        ${task.completed ? 'opacity-60 cursor-not-allowed' : ''}
+      `}
     >
       <div className="flex items-center gap-4">
         <input
           type="checkbox"
           checked={task.completed}
-          onChange={() => onToggleComplete(task.id)}
+          onChange={(e) => {
+            e.stopPropagation();
+            onToggleComplete(task.id);
+          }}
           className="w-5 h-5 accent-neon-focus"
         />
         <span className={`${task.completed ? 'line-through opacity-60' : ''}`}>
@@ -24,7 +36,10 @@ const TaskItem = ({ task, onPriorityChange, onToggleComplete }) => {
 
       <select
         value={task.priority}
-        onChange={(e) => onPriorityChange(task.id, e.target.value)}
+        onChange={(e) => {
+          e.stopPropagation();
+          onPriorityChange(task.id, e.target.value);
+        }}
         className={`text-sm px-2 py-1 rounded-lg bg-surface-1 font-timer ${
           PRIORITY_COLORS[task.priority]
         }`}

@@ -1,8 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 
 export const useTimer = () => {
   const workerRef = useRef(null);
-  const [remaining, setRemaining] = useState(0); // UI displays
+  const [remaining, setRemaining] = useState(1500); // UI displays, add default value later can be customized or changed
   const [isRunning, setIsRunning] = useState(false); // Disable the start button, etc
 
   // Run once when the component using the hook mounts and create the worker
@@ -11,7 +11,7 @@ export const useTimer = () => {
       new URL('../workers/timer.worker.js', import.meta.url)
     );
 
-    // handle messages from worker
+    // Handle messages from worker
     workerRef.current.onmessage = (event) => {
       if (event.data.remainingSec !== undefined) {
         setRemaining(event.data.remainingSec);
@@ -28,15 +28,16 @@ export const useTimer = () => {
     };
   }, []);
 
-  const start = (duration) => {
+  // Avoid creating a new function every render
+  const start = useCallback((duration) => {
     setIsRunning(true);
     workerRef.current?.postMessage({ type: 'START', duration });
-  };
+  }, []);
 
-  const stop = () => {
+  const stop = useCallback(() => {
     setIsRunning(false);
     workerRef.current?.postMessage({ type: 'STOP' });
-  };
+  }, []);
 
   return {
     remaining,
