@@ -1,9 +1,11 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { TIMER_LENGTH } from '../services/utils/constants';
 
 export const useTimer = () => {
   const workerRef = useRef(null);
-  const [remaining, setRemaining] = useState(1500); // UI displays, add default value later can be customized or changed
-  const [isRunning, setIsRunning] = useState(false); // Disable the start button, etc
+  const [remaining, setRemaining] = useState(TIMER_LENGTH);
+  const [isRunning, setIsRunning] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   // Run once when the component using the hook mounts and create the worker
   useEffect(() => {
@@ -18,8 +20,9 @@ export const useTimer = () => {
       }
 
       if (event.data.done) {
-        setRemaining(0);
+        setRemaining(TIMER_LENGTH);
         setIsRunning(false);
+        setHasStarted(false);
       }
     };
 
@@ -31,18 +34,34 @@ export const useTimer = () => {
   // Avoid creating a new function every render
   const start = useCallback((duration) => {
     setIsRunning(true);
-    workerRef.current?.postMessage({ type: 'START', duration });
+
+    if (duration !== undefined) {
+      setHasStarted(true);
+    }
+
+    workerRef.current?.postMessage(
+      duration !== undefined ? { type: 'START', duration } : { type: 'START' }
+    );
   }, []);
 
-  const stop = useCallback(() => {
+  const pause = useCallback(() => {
     setIsRunning(false);
-    workerRef.current?.postMessage({ type: 'STOP' });
+    workerRef.current?.postMessage({ type: 'PAUSE' });
+  }, []);
+
+  const reset = useCallback(() => {
+    setIsRunning(false);
+    setHasStarted(false);
+    setRemaining(TIMER_LENGTH);
+    workerRef.current?.postMessage({ type: 'RESET' });
   }, []);
 
   return {
     remaining,
     isRunning,
+    hasStarted,
     start,
-    stop,
+    pause,
+    reset,
   };
 };

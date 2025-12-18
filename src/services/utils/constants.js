@@ -9,3 +9,5 @@ export const TIMER_MODES = {
   SHORT_BREAK: 'short-break',
   LONG_BREAK: 'long-break',
 };
+
+export const TIMER_LENGTH = 1500;

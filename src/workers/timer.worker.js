@@ -1,34 +1,55 @@
-// Web Worker for timer logic - run's in a separate threat, avoiding re-renders and timer drifts
+// Web Worker for timer logic - runs in a separate threat, avoiding re-renders and timer drifts
 // Web Worker --> sends time --> React UI
 let intervalID = null;
 let endTime = 0;
+let remainingSec = 0;
+
+const tick = () => {
+  const remainingMS = endTime - Date.now();
+  remainingSec = Math.max(0, Math.ceil(remainingMS / 1000));
+
+  self.postMessage({ remainingSec });
+
+  if (remainingSec <= 0) {
+    clearInterval(intervalID);
+    intervalID = null;
+    self.postMessage({ done: true });
+  }
+};
 
 // Worker listens for messages from react
 self.onmessage = (event) => {
   const { type, duration } = event.data;
 
-  if (type === 'START') {
-    endTime = Date.now() + duration * 1000;
+  switch (type) {
+    case 'START': {
+      // If fresh start, initialize remaining time
+      if (duration !== undefined) {
+        remainingSec = duration;
+      }
 
-    // Run every second
-    intervalID = setInterval(() => {
-      const remainingMS = endTime - Date.now();
-      const remainingSec = Math.max(0, Math.ceil(remainingMS / 1000));
+      endTime = Date.now() + remainingSec * 1000;
 
-      self.postMessage({ remainingSec });
+      if (!intervalID) {
+        tick();
+        intervalID = setInterval(tick, 1000);
+      }
+      break;
+    }
 
-      if (remainingSec <= 0) {
+    case 'PAUSE': {
+      if (intervalID) {
         clearInterval(intervalID);
         intervalID = null;
-        self.postMessage({ done: true });
       }
-    }, 1000);
-  }
+      break;
+    }
 
-  if (type === 'STOP') {
-    if (intervalID) {
+    case 'RESET': {
       clearInterval(intervalID);
       intervalID = null;
+      remainingSec = 0;
+      break;
     }
   }
 };

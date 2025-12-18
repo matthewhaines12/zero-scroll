@@ -6,12 +6,12 @@ const TimerControlContext = createContext(null);
 const TimerStateContext = createContext(null);
 
 export const TimerProvider = ({ children }) => {
-  const { remaining, isRunning, start, stop } = useTimer();
+  const { remaining, isRunning, hasStarted, start, pause, reset } = useTimer();
 
   // Control context only updates when isRunning or functions change
   const controlValue = useMemo(
-    () => ({ isRunning, start, stop }),
-    [isRunning, start, stop]
+    () => ({ isRunning, hasStarted, start, pause, reset }),
+    [isRunning, hasStarted, start, pause, reset]
   );
 
   // State context only contains remaining time
@@ -24,7 +24,7 @@ export const TimerProvider = ({ children }) => {
   );
 };
 
-// Hook for components that need control (start, stop, isRunning)
+// Hook for components that need control (start, pause, reset, isRunning)
 export const useTimerControl = () => {
   const context = use(TimerControlContext);
 

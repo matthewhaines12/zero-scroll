@@ -3,7 +3,7 @@ import { createContext, use, useState } from 'react';
 const ModeContext = createContext(null);
 
 export const ModeProvider = ({ children }) => {
-  const [mode, setMode] = useState('focus');
+  const [mode, setMode] = useState('FOCUS');
 
   return <ModeContext value={{ mode, setMode }}>{children}</ModeContext>;
 };

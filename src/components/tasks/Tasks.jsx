@@ -44,11 +44,7 @@ const Tasks = () => {
   const handleSelectTask = (task) => {
     if (task.completed) return;
 
-    if (task.id === activeTask?.id) {
-      setActiveTask(null);
-    } else {
-      setActiveTask(task);
-    }
+    task.id === activeTask?.id ? setActiveTask(null) : setActiveTask(task);
   };
 
   return (
