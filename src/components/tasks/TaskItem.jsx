@@ -13,7 +13,7 @@ const TaskItem = ({
       className={`flex justify-between p-3 rounded-xl border-2 transition-all duration-300 cursor-pointer
         ${
           isActive
-            ? 'border-neon-focus shadow-neon-glow-focus-small'
+            ? 'border-neon-focus shadow-neon-glow-focus-small break:border-neon-break break:shadow-neon-glow-break-small'
             : 'border-surface-2 hover:bg-surface-2'
         }
         ${task.completed ? 'opacity-60 cursor-not-allowed' : ''}
@@ -27,7 +27,7 @@ const TaskItem = ({
             e.stopPropagation();
             onToggleComplete(task.id);
           }}
-          className="w-5 h-5 accent-neon-focus"
+          className="w-5 h-5 accent-neon-focus break:accent-neon-break"
         />
         <span className={`${task.completed ? 'line-through opacity-60' : ''}`}>
           {task.title}

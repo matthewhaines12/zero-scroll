@@ -2,9 +2,12 @@ import { useState } from 'react';
 import TaskItem from './TaskItem';
 import { Plus } from 'lucide-react';
 import { useTaskContext } from '../../context/TaskContext';
+import { useModeContext } from '../../context/ModeContext';
+import { MODES } from '../../services/utils/constants';
 
 const Tasks = () => {
   const { tasks, setTasks, activeTask, setActiveTask } = useTaskContext();
+  const { mode } = useModeContext();
 
   const [newTask, setNewTask] = useState('');
 
@@ -48,9 +51,11 @@ const Tasks = () => {
   };
 
   return (
-    <article className="w-full flex flex-col bg-surface-1/50 rounded-2xl p-6 border border-surface-2 overflow-hidden">
+    <article
+      className={`${MODES[mode]} w-full flex flex-col bg-surface-1/50 rounded-2xl p-6 border border-surface-2 overflow-hidden`}
+    >
       <header className="mb-6">
-        <h2 className="font-timer text-neon-focus text-xl uppercase drop-shadow-[0_0_5px_rgba(0,240,255,0.5)]">
+        <h2 className="font-timer text-neon-focus text-xl uppercase drop-shadow-neon-focus break:text-neon-break break:drop-shadow-neon-break">
           Mission Log
         </h2>
         <p className="text-text-muted text-xs mt-1">
@@ -65,7 +70,7 @@ const Tasks = () => {
           onChange={(e) => setNewTask(e.target.value)}
           className="grow bg-surface-2 rounded-xl py-3 px-4 outline-none
               border border-transparent focus:border-neon-focus/50 focus:shadow-[0_0_15px_rgba(0,240,255,0.1)]
-              placeholder:text-text-muted transition-all font-sans"
+              placeholder:text-text-muted transition-all font-sans break:focus:border-neon-break/50"
           placeholder="Enter New Objective"
         />
         <button
@@ -73,7 +78,7 @@ const Tasks = () => {
           className="flex justify-center items-center w-12 h-12 rounded-xl
               bg-neon-focus/10 text-neon-focus border border-neon-focus/50
               hover:bg-neon-focus hover:text-primary-dark hover:shadow-neon-glow-focus-small
-              transition-all duration-300 cursor-pointer"
+              transition-all duration-300 cursor-pointer break:bg-neon-break/10 break:text-neon-break break:border-neon-break/50 break:hover:bg-neon-break break:hover:shadow-neon-glow-break-small"
         >
           <Plus size={28} strokeWidth={2} />
         </button>

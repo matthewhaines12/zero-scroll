@@ -52,7 +52,7 @@ const TimerDisplay = () => {
           fill="none"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
-          className="text-neon-focus"
+          className="text-neon-focus break:text-neon-break"
         />
       </svg>
 

@@ -11,3 +11,8 @@ export const TIMER_MODES = {
 };
 
 export const TIMER_LENGTH = 1500;
+
+export const MODES = {
+  FOCUS: 'focus',
+  BREAK: 'break',
+};

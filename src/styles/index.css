@@ -44,7 +44,18 @@
     0 0 12px rgba(255, 159, 28, 0.1);
   --shadow-neon-glow-low: 0 0 6px rgba(61, 255, 140, 0.25),
     0 0 12px rgba(61, 255, 140, 0.1);
+
+  /* Drop Shadows - Focus */
+  --drop-shadow-neon-focus: 0 0 8px rgb(0 240 255 / 0.5);
+  --drop-shadow-neon-focus-strong: 0 0 12px rgb(0 240 255 / 0.7);
+
+  /* Drop Shadows - Break */
+  --drop-shadow-neon-break: 0 0 8px rgb(52 211 153 / 0.5);
+  --drop-shadow-neon-break-strong: 0 0 12px rgb(52 211 153 / 0.7);
 }
+
+/* Focus or Break Modes */
+@custom-variant break (&:where(.break, .break *));
 
 /* Global Reset */
 body {
