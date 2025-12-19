@@ -10,7 +10,14 @@ export const TIMER_MODES = {
   LONG_BREAK: 'long-break',
 };
 
-export const TIMER_LENGTH = 1500;
+export const TIMER_LENGTH = 15;
+
+export const DEFAULT_TIMER_SETTINGS = {
+  FOCUS: { value: '25', unit: 'mins' },
+  BREAK: { value: '5', unit: 'mins' },
+  REPEAT: { value: '4', unit: 'times' },
+  RECOVER: { value: '30', unit: 'mins' },
+};
 
 export const MODES = {
   FOCUS: 'focus',

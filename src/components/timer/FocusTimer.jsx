@@ -1,5 +1,8 @@
 import TimerDisplay from './TimerDisplay';
-import { Play, Pause, CircleSmall } from 'lucide-react';
+import SessionDisplay from './SessionDisplay';
+import TimerSettings from './TimerSettings';
+import Modal from '../ui/Modal';
+import { Play, Pause, CircleSmall, Timer } from 'lucide-react';
 import { useTaskContext } from '../../context/TaskContext';
 import { useTimerControl } from '../../context/TimerContext';
 import { useModeContext } from '../../context/ModeContext';
@@ -8,16 +11,13 @@ import {
   TIMER_LENGTH,
   MODES,
 } from '../../services/utils/constants';
-import { useRef } from 'react';
+import { useState } from 'react';
 
 const FocusTimer = () => {
-  const renderCount = useRef(0);
-  renderCount.current += 1;
-  console.log(`render updated: ${renderCount.current} times`);
-
   const { isRunning, hasStarted, start, pause, reset } = useTimerControl();
   const { activeTask } = useTaskContext();
   const { mode, setMode } = useModeContext();
+  const [showSettings, setShowSettings] = useState(false);
 
   const handleToggle = () => {
     if (isRunning) {
@@ -31,9 +31,20 @@ const FocusTimer = () => {
 
   return (
     <article
-      className={`${MODES[mode]} flex flex-col gap-8 items-center w-full p-6 overflow-hidden`}
+      className={`${MODES[mode]} relative flex flex-col gap-6 items-center w-full p-6 overflow-hidden`}
     >
-      <header className="flex flex-col items-center mb-8 min-h-18">
+      <button
+        onClick={() => setShowSettings(true)}
+        className="absolute left-6 top-6 hover:opacity-85 cursor-pointer text-text-base bg-surface-1/50 p-2 rounded-full"
+      >
+        <Timer size={32} />
+      </button>
+
+      <Modal isOpen={showSettings} onClose={() => setShowSettings(false)}>
+        <TimerSettings onClose={() => setShowSettings(false)}></TimerSettings>
+      </Modal>
+
+      <header className="flex flex-col items-center mb-6 min-h-18">
         <h2 className="font-timer text-neon-focus text-3xl uppercase drop-shadow-neon-focus break:text-neon-break break:drop-shadow-neon-break">
           Current Target
         </h2>
@@ -52,7 +63,6 @@ const FocusTimer = () => {
           )}
         </p>
       </header>
-
       <div className="relative flex items-center justify-center w-[420px] h-[420px] ">
         <div className="absolute inset-0 flex flex-col gap-4 items-center justify-center ">
           <p className="font-timer tracking-wider text-text-muted text-xs">
@@ -77,12 +87,12 @@ const FocusTimer = () => {
             <button
               onClick={() => setMode('BREAK')}
               className={`px-4 py-2 text-xs font-bold rounded-full cursor-pointer
-              ${
-                mode === 'BREAK'
-                  ? 'bg-white/10 text-neon-break'
-                  : 'text-gray-500 hover:text-text-base'
-              }
-              `}
+                ${
+                  mode === 'BREAK'
+                    ? 'bg-white/10 text-neon-break'
+                    : 'text-gray-500 hover:text-text-base'
+                }
+                `}
             >
               BREAK
             </button>
@@ -90,7 +100,8 @@ const FocusTimer = () => {
         </div>
       </div>
 
-      <div className="mt-4 flex flex-col gap-8">
+      <SessionDisplay isRunning={isRunning} mode={mode} />
+      <div className="mt-2 flex flex-col gap-8">
         <button
           type="button"
           onClick={handleToggle}

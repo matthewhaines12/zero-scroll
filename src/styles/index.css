@@ -2,13 +2,13 @@
 
 @theme {
   /* Base Colors */
-  --color-primary-dark: #0d1117;
+  --color-primary-dark: #121212;
   --color-surface-1: #1c2128;
   --color-surface-2: #2f3845;
 
   /* Mode Colors */
   --color-neon-focus: #00f0ff;
-  --color-neon-break: #34d399;
+  --color-neon-break: #10ff88;
 
   /* Accent Colors */
   --color-accent-purple: #a78bfa;
@@ -32,10 +32,10 @@
     0 0 12px rgba(0, 240, 255, 0.2);
 
   /* Mode-specific Shadows - Break */
-  --shadow-neon-glow-break: 0 0 12px rgba(52, 211, 153, 0.7),
-    0 0 25px rgba(52, 211, 153, 0.2);
-  --shadow-neon-glow-break-small: 0 0 6px rgba(52, 211, 153, 0.7),
-    0 0 12px rgba(52, 211, 153, 0.2);
+  --shadow-neon-glow-break: 0 0 12px rgba(16, 255, 136, 0.7),
+    0 0 25px rgba(16, 255, 136, 0.2);
+  --shadow-neon-glow-break-small: 0 0 6px rgba(16, 255, 136, 0.7),
+    0 0 12px rgba(16, 255, 136, 0.2);
 
   /* Priority Shadows */
   --shadow-neon-glow-high: 0 0 6px rgba(255, 51, 102, 0.25),
@@ -50,8 +50,8 @@
   --drop-shadow-neon-focus-strong: 0 0 12px rgb(0 240 255 / 0.7);
 
   /* Drop Shadows - Break */
-  --drop-shadow-neon-break: 0 0 8px rgb(52 211 153 / 0.5);
-  --drop-shadow-neon-break-strong: 0 0 12px rgb(52 211 153 / 0.7);
+  --drop-shadow-neon-break: 0 0 8px rgb(16 255 136 / 0.7);
+  --drop-shadow-neon-break-strong: 0 0 12px rgb(16 255 136 / 0.9);
 }
 
 /* Focus or Break Modes */

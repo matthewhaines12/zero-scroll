@@ -69,8 +69,8 @@ const Tasks = () => {
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
           className="grow bg-surface-2 rounded-xl py-3 px-4 outline-none
-              border border-transparent focus:border-neon-focus/50 focus:shadow-[0_0_15px_rgba(0,240,255,0.1)]
-              placeholder:text-text-muted transition-all font-sans break:focus:border-neon-break/50"
+              border border-transparent focus:border-neon-focus/50 focus:shadow-neon-glow-focus-small
+              placeholder:text-text-muted transition-all break:focus:border-neon-break/50 focus:break:shadow-neon-glow-break-small"
           placeholder="Enter New Objective"
         />
         <button
