@@ -5,7 +5,7 @@ const TimerDisplay = () => {
   const { remaining } = useTimerState();
 
   const totalTime = TIMER_LENGTH;
-  const size = 420;
+  const size = 380;
   const strokeWidth = 10;
   const radius = (size - strokeWidth) / 2;
   const center = size / 2;
@@ -56,7 +56,9 @@ const TimerDisplay = () => {
         />
       </svg>
 
-      <h2 className="font-timer text-8xl">{formatTime(remaining)}</h2>
+      <h2 className="font-timer text-8xl select-none">
+        {formatTime(remaining)}
+      </h2>
     </div>
   );
 };

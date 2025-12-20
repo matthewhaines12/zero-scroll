@@ -6,6 +6,7 @@ import { Play, Pause, CircleSmall, Timer } from 'lucide-react';
 import { useTaskContext } from '../../context/TaskContext';
 import { useTimerControl } from '../../context/TimerContext';
 import { useModeContext } from '../../context/ModeContext';
+import { useSettingsContext } from '../../context/SettingsContext';
 import {
   PRIORITY_COLORS,
   TIMER_LENGTH,
@@ -17,13 +18,14 @@ const FocusTimer = () => {
   const { isRunning, hasStarted, start, pause, reset } = useTimerControl();
   const { activeTask } = useTaskContext();
   const { mode, setMode } = useModeContext();
+  const { timerSettings } = useSettingsContext();
   const [showSettings, setShowSettings] = useState(false);
 
   const handleToggle = () => {
     if (isRunning) {
       pause();
     } else if (!hasStarted) {
-      start(TIMER_LENGTH);
+      start(timerSettings[mode].value);
     } else {
       start();
     }
@@ -35,7 +37,7 @@ const FocusTimer = () => {
     >
       <button
         onClick={() => setShowSettings(true)}
-        className="absolute left-6 top-6 hover:opacity-85 cursor-pointer text-text-base bg-surface-1/50 p-2 rounded-full"
+        className="absolute left-0 hover:opacity-85 cursor-pointer text-text-base bg-surface-1/50 p-2 rounded-full"
       >
         <Timer size={32} />
       </button>
@@ -63,9 +65,9 @@ const FocusTimer = () => {
           )}
         </p>
       </header>
-      <div className="relative flex items-center justify-center w-[420px] h-[420px] ">
+      <div className="relative flex items-center justify-center w-[380px] h-[380px] ">
         <div className="absolute inset-0 flex flex-col gap-4 items-center justify-center ">
-          <p className="font-timer tracking-wider text-text-muted text-xs">
+          <p className="font-timer tracking-wider text-text-muted text-xs select-none">
             {isRunning ? 'FLOW STATE' : 'READY'}
           </p>
 
@@ -105,7 +107,7 @@ const FocusTimer = () => {
         <button
           type="button"
           onClick={handleToggle}
-          className={`inline-flex items-center justify-center gap-2 px-10 py-4 rounded-2xl text-xl font-timer uppercase font-bold hover:opacity-85 cursor-pointer ${
+          className={`inline-flex items-center justify-center gap-2 px-10 py-3 rounded-2xl text-xl font-timer uppercase font-bold hover:opacity-85 cursor-pointer ${
             isRunning
               ? 'bg-surface-1 border border-neon-focus text-neon-focus break:border-neon-break break:text-neon-break'
               : 'bg-text-base text-primary-dark'
@@ -118,7 +120,7 @@ const FocusTimer = () => {
         {!isRunning && hasStarted && (
           <button
             onClick={() => reset()}
-            className="bg-surface-1 border border-text-base  py-4 rounded-2xl font-bold cursor-pointer hover:opacity-85"
+            className="bg-surface-1 border border-text-base py-3 rounded-2xl font-bold cursor-pointer hover:opacity-85"
           >
             RESET
           </button>

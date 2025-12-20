@@ -36,6 +36,7 @@ export const useTimer = () => {
     setIsRunning(true);
 
     if (duration !== undefined) {
+      duration *= 60;
       setHasStarted(true);
     }
 
