@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { TIMER_LENGTH } from '../services/utils/constants';
 
-export const useTimer = () => {
+export const useTimer = (initialDuration, onComplete) => {
   const workerRef = useRef(null);
-  const [remaining, setRemaining] = useState(TIMER_LENGTH);
+  const [remaining, setRemaining] = useState(initialDuration);
+  const [totalDuration, setTotalDuration] = useState(initialDuration);
   const [isRunning, setIsRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
 
@@ -20,29 +20,36 @@ export const useTimer = () => {
       }
 
       if (event.data.done) {
-        setRemaining(TIMER_LENGTH);
         setIsRunning(false);
         setHasStarted(false);
+        onComplete?.(); // call the completion callback
       }
     };
 
     return () => {
       workerRef.current?.terminate(); // If current worker exists, clear on unmount
     };
-  }, []);
+  }, [onComplete]);
+
+  // Update timer when duration changes (mode)
 
   // Avoid creating a new function every render
   const start = useCallback((duration) => {
     setIsRunning(true);
 
     if (duration !== undefined) {
-      duration *= 60;
+      const durationInSeconds = parseInt(duration) * 60;
+      setTotalDuration(durationInSeconds);
       setHasStarted(true);
+      workerRef.current?.postMessage({
+        type: 'START',
+        duration: durationInSeconds,
+      });
+    } else {
+      workerRef.current?.postMessage({
+        type: 'START',
+      });
     }
-
-    workerRef.current?.postMessage(
-      duration !== undefined ? { type: 'START', duration } : { type: 'START' }
-    );
   }, []);
 
   const pause = useCallback(() => {
@@ -53,12 +60,14 @@ export const useTimer = () => {
   const reset = useCallback(() => {
     setIsRunning(false);
     setHasStarted(false);
-    setRemaining(TIMER_LENGTH);
+    setRemaining(totalDuration);
+    setTotalDuration(totalDuration);
     workerRef.current?.postMessage({ type: 'RESET' });
-  }, []);
+  }, [totalDuration]);
 
   return {
     remaining,
+    totalDuration,
     isRunning,
     hasStarted,
     start,

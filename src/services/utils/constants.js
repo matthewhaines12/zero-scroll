@@ -4,22 +4,17 @@ export const PRIORITY_COLORS = {
   HIGH: 'text-priority-high shadow-neon-glow-high',
 };
 
-export const TIMER_MODES = {
-  FOCUS: 'focus',
-  SHORT_BREAK: 'short-break',
-  LONG_BREAK: 'long-break',
-};
-
 export const TIMER_LENGTH = 15;
 
 export const DEFAULT_TIMER_SETTINGS = {
   FOCUS: { value: '25', unit: 'mins' },
   BREAK: { value: '5', unit: 'mins' },
-  REPEAT: { value: '4', unit: 'times' },
+  REPEAT: { value: '3', unit: 'times' },
   RECOVER: { value: '30', unit: 'mins' },
 };
 
 export const MODES = {
   FOCUS: 'focus',
   BREAK: 'break',
+  RECOVER: 'break',
 };

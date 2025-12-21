@@ -1,10 +1,9 @@
 import { useTimerState } from '../../context/TimerContext';
-import { TIMER_LENGTH } from '../../services/utils/constants';
 
 const TimerDisplay = () => {
-  const { remaining } = useTimerState();
+  const { remaining, totalDuration } = useTimerState();
 
-  const totalTime = TIMER_LENGTH;
+  const totalTime = totalDuration;
   const size = 380;
   const strokeWidth = 10;
   const radius = (size - strokeWidth) / 2;

@@ -6,9 +6,6 @@ const TimerSettings = ({ onClose }) => {
 
   const handleApplySettings = (e) => {
     e.preventDefault();
-
-    console.log('submit clicked');
-    console.log(timerSettings);
     onClose();
   };
 
@@ -66,7 +63,7 @@ const TimerSettings = ({ onClose }) => {
         <div className="flex justify-between mt-6">
           <button
             onClick={() => onClose()}
-            className="bg-primary-dark uppercase text-sm font-bold self-center px-4 py-2 rounded-2xl hover:opacity-85 cursor-pointer"
+            className="bg-surface-1 uppercase text-sm font-bold self-center px-4 py-2 rounded-2xl hover:opacity-85 cursor-pointer"
           >
             Cancel
           </button>

@@ -9,25 +9,28 @@ import { TimerProvider } from './context/TimerContext';
 import { TaskProvider } from './context/TaskContext';
 import { ModeProvider } from './context/ModeContext';
 import { SettingsProvider } from './context/SettingsContext';
+import { SessionProvider } from './context/SessionContext';
 
 function App() {
   return (
     <ModeProvider>
       <TaskProvider>
-        <TimerProvider>
-          <SettingsProvider>
-            <Router>
-              <Sidebar />
-              <Routes>
-                <Route path="/" element={<FocusHub />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/leaderboard" element={<Leaderboard />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/login" element={<Login />} />
-              </Routes>
-            </Router>
-          </SettingsProvider>
-        </TimerProvider>
+        <SettingsProvider>
+          <SessionProvider>
+            <TimerProvider>
+              <Router>
+                <Sidebar />
+                <Routes>
+                  <Route path="/" element={<FocusHub />} />
+                  <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/leaderboard" element={<Leaderboard />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/login" element={<Login />} />
+                </Routes>
+              </Router>
+            </TimerProvider>
+          </SessionProvider>
+        </SettingsProvider>
       </TaskProvider>
     </ModeProvider>
   );
