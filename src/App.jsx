@@ -10,28 +10,31 @@ import { TaskProvider } from './context/TaskContext';
 import { ModeProvider } from './context/ModeContext';
 import { SettingsProvider } from './context/SettingsContext';
 import { SessionProvider } from './context/SessionContext';
+import { AudioProvider } from './context/AudioContext';
 
 function App() {
   return (
     <ModeProvider>
-      <TaskProvider>
-        <SettingsProvider>
-          <SessionProvider>
-            <TimerProvider>
-              <Router>
-                <Sidebar />
-                <Routes>
-                  <Route path="/" element={<FocusHub />} />
-                  <Route path="/analytics" element={<Analytics />} />
-                  <Route path="/leaderboard" element={<Leaderboard />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/login" element={<Login />} />
-                </Routes>
-              </Router>
-            </TimerProvider>
-          </SessionProvider>
-        </SettingsProvider>
-      </TaskProvider>
+      <AudioProvider>
+        <TaskProvider>
+          <SettingsProvider>
+            <SessionProvider>
+              <TimerProvider>
+                <Router>
+                  <Sidebar />
+                  <Routes>
+                    <Route path="/" element={<FocusHub />} />
+                    <Route path="/analytics" element={<Analytics />} />
+                    <Route path="/leaderboard" element={<Leaderboard />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/login" element={<Login />} />
+                  </Routes>
+                </Router>
+              </TimerProvider>
+            </SessionProvider>
+          </SettingsProvider>
+        </TaskProvider>
+      </AudioProvider>
     </ModeProvider>
   );
 }

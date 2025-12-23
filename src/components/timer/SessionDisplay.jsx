@@ -27,7 +27,7 @@ const SessionDisplay = ({ isRunning, mode, repeatCount }) => {
             <div key={i} className="relative">
               <CheckCircle2
                 size={24}
-                className="text-neon-focus drop-shadow-[0_0_8px_rgba(0,240,255,0.6)]"
+                className="text-neon-focus drop-shadow-neon-focus/40"
                 strokeWidth={2.5}
               />
             </div>
@@ -38,7 +38,7 @@ const SessionDisplay = ({ isRunning, mode, repeatCount }) => {
         if (isBreakCompleted) {
           return (
             <div key={i} className="relative">
-              <div className="w-3 h-3 rounded-full bg-neon-break shadow-[0_0_8px_rgba(16,255,136,0.6)]" />
+              <div className="w-3 h-3 rounded-full bg-neon-break drop-shadow-neon-break/40" />
             </div>
           );
         }
@@ -58,7 +58,7 @@ const SessionDisplay = ({ isRunning, mode, repeatCount }) => {
           );
         }
 
-        // Active break session - show pulsing green ring
+        // Active break session - show pulsing green ring - not working * fix later *
         if (isActiveBreak) {
           return (
             <div key={i} className="relative">
