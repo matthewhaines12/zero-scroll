@@ -33,7 +33,7 @@ const AudioSlider = () => {
         <p className="text-text-muted text-xs mt-1">ADJUST AUDIO SLIDER</p>
       </header>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 overflow-y-auto pr-3 custom-scrollbar">
         {SOUND_LIBRARY.map((sound) => {
           const Icon = sound.icon;
           return (

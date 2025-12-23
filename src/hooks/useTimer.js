@@ -65,6 +65,13 @@ export const useTimer = (initialDuration, onComplete) => {
     workerRef.current?.postMessage({ type: 'RESET' });
   }, [totalDuration]);
 
+  const endMode = useCallback(() => {
+    setIsRunning(false);
+    setRemaining(totalDuration);
+    setTotalDuration(totalDuration);
+    workerRef.current?.postMessage({ type: 'RESET' });
+  }, [totalDuration]);
+
   return {
     remaining,
     totalDuration,
@@ -73,5 +80,6 @@ export const useTimer = (initialDuration, onComplete) => {
     start,
     pause,
     reset,
+    endMode,
   };
 };

@@ -13,7 +13,7 @@ const TaskItem = ({
       className={`flex justify-between p-3 rounded-xl border-2 transition-all duration-300 cursor-pointer
         ${
           isActive
-            ? 'border-neon-focus shadow-neon-glow-focus-small break:border-neon-break break:shadow-neon-glow-break-small'
+            ? 'border-neon-focus break:border-neon-break'
             : 'border-surface-2 hover:bg-surface-2'
         }
         ${task.completed ? 'opacity-60 cursor-not-allowed' : ''}

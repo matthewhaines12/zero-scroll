@@ -1,4 +1,10 @@
-import { CloudRain, Coffee, AudioLines, Flame } from 'lucide-react'; // Sound icons
+import {
+  CloudRain,
+  Coffee,
+  AudioLines,
+  Flame,
+  CloudLightning,
+} from 'lucide-react'; // Sound icons
 
 export const PRIORITY_COLORS = {
   LOW: 'text-priority-low shadow-neon-glow-low',
@@ -45,5 +51,11 @@ export const SOUND_LIBRARY = [
     label: 'FIREPLACE',
     icon: Flame,
     src: '/sounds/fireplace.mp3',
+  },
+  {
+    id: 'thunder',
+    label: 'THUNDERSTORM',
+    icon: CloudLightning,
+    src: '/sounds/thunderstorm.mp3',
   },
 ];

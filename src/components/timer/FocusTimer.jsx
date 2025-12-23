@@ -40,7 +40,7 @@ const FocusTimer = () => {
 
   return (
     <article
-      className={`${MODES[mode]} relative flex flex-col items-center w-full p-8 overflow-hidden`}
+      className={`${MODES[mode]} relative flex flex-col items-center w-full p-8`}
     >
       {/* Settings Button */}
       <button

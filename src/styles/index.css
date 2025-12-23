@@ -81,6 +81,23 @@
   .slider::-moz-range-track {
     @apply h-2 rounded-lg bg-white/15;
   }
+
+  /* Custom Scrollbar - Webkit (Chrome, Safari, Edge) */
+  .custom-scrollbar::-webkit-scrollbar {
+    @apply w-2;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-surface-2 rounded-lg border border-text-muted/20;
+  }
+
+  /* Custom Scrollbar - Firefox */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(35, 40, 50, 1) transparent;
+  }
 }
 
 /* Global Reset */

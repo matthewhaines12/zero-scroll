@@ -52,7 +52,7 @@ const Tasks = () => {
 
   return (
     <article
-      className={`${MODES[mode]} w-full flex flex-col bg-surface-1/50 rounded-2xl p-6 border border-surface-2 overflow-hidden`}
+      className={`${MODES[mode]} lg:h-full min-h-[500px] lg:min-h-0 w-full flex flex-col bg-surface-1/50 rounded-2xl p-6 border border-surface-2`}
     >
       <header className="mb-6">
         <h2 className="font-timer text-neon-focus text-xl uppercase drop-shadow-neon-focus break:text-neon-break break:drop-shadow-neon-break">
@@ -85,9 +85,9 @@ const Tasks = () => {
       </form>
 
       {/* Task list */}
-      <div className="mt-6 flex flex-col gap-6 overflow-y-auto flex-1 p-2">
+      <div className="mt-6 flex flex-col gap-6 overflow-y-auto min-h-0 flex-1 pr-2 custom-scrollbar">
         {tasks.length === 0 ? (
-          <p>No tasks</p>
+          <p className="">No Tasks</p>
         ) : (
           tasks.map((task) => (
             <TaskItem
