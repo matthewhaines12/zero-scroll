@@ -1,4 +1,4 @@
-import { CloudRain, Coffee, AudioLines } from 'lucide-react'; // Sound icons
+import { CloudRain, Coffee, AudioLines, Flame } from 'lucide-react'; // Sound icons
 
 export const PRIORITY_COLORS = {
   LOW: 'text-priority-low shadow-neon-glow-low',
@@ -22,18 +22,28 @@ export const MODES = {
 };
 
 export const SOUND_LIBRARY = [
-  { id: 'rain', label: 'RAIN FALL', icon: CloudRain, URL: 'www.example.com' },
+  {
+    id: 'rain',
+    label: 'RAIN FALL',
+    icon: CloudRain,
+    src: '/sounds/rain.mp3',
+  },
   {
     id: 'white-noise',
     label: 'WHITE NOISE',
     icon: AudioLines,
-    URL: 'www.example.com',
+    src: '/sounds/white-noise.mp3',
   },
-
   {
     id: 'coffee',
     label: 'COFFEE SHOP AMBIANCE',
     icon: Coffee,
-    URL: 'www.example.com',
+    src: '/sounds/coffee-ambiance.mp3',
+  },
+  {
+    id: 'fireplace',
+    label: 'FIREPLACE',
+    icon: Flame,
+    src: '/sounds/fireplace.mp3',
   },
 ];

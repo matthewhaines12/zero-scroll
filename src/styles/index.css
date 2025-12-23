@@ -26,16 +26,16 @@
   --font-timer: 'Space Mono', 'Roboto Mono', monospace;
 
   /* Mode-specific Shadows - Focus */
-  --shadow-neon-glow-focus: 0 0 16px rgba(0, 230, 255, 0.8),
-    0 0 32px rgba(0, 230, 255, 0.25);
-  --shadow-neon-glow-focus-small: 0 0 8px rgba(0, 230, 255, 0.7),
-    0 0 16px rgba(0, 230, 255, 0.2);
+  --shadow-neon-glow-focus: 0 0 12px rgba(0, 230, 255, 0.5),
+    0 0 24px rgba(0, 230, 255, 0.15);
+  --shadow-neon-glow-focus-small: 0 0 6px rgba(0, 230, 255, 0.4),
+    0 0 12px rgba(0, 230, 255, 0.12);
 
   /* Mode-specific Shadows - Break */
-  --shadow-neon-glow-break: 0 0 16px rgba(26, 255, 153, 0.7),
-    0 0 32px rgba(26, 255, 153, 0.2);
-  --shadow-neon-glow-break-small: 0 0 8px rgba(26, 255, 153, 0.7),
-    0 0 16px rgba(26, 255, 153, 0.2);
+  --shadow-neon-glow-break: 0 0 12px rgba(26, 255, 153, 0.5),
+    0 0 24px rgba(26, 255, 153, 0.15);
+  --shadow-neon-glow-break-small: 0 0 6px rgba(26, 255, 153, 0.4),
+    0 0 12px rgba(26, 255, 153, 0.12);
 
   /* Priority Shadows */
   --shadow-neon-glow-high: 0 0 8px rgba(255, 51, 102, 0.3),
