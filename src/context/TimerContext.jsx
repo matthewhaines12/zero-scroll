@@ -73,10 +73,10 @@ export const TimerProvider = ({ children }) => {
     if (!userStartedRef.current) return;
 
     let timerId;
-    if (!isRunning && mode) {
+    if (!hasStarted && !isRunning && mode) {
       timerId = setTimeout(() => {
         start(parseInt(timerSettings[mode].value));
-      }, 1000); // 1 second delay when transitioning
+      }, 100); // 1 second delay when transitioning
     }
     // Return a cleanup function
     return () => {
@@ -92,7 +92,6 @@ export const TimerProvider = ({ children }) => {
     start,
     pause,
     reset,
-    endMode,
   } = useTimer(duration, handleTimerComplete);
 
   const handleTimerReset = useCallback(() => {
@@ -103,7 +102,7 @@ export const TimerProvider = ({ children }) => {
   }, [resetCycle, reset]);
 
   const handleEndMode = useCallback(() => {
-    endMode();
+    reset();
     handleTimerComplete();
   }, [reset, handleTimerComplete]);
 

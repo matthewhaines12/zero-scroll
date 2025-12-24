@@ -31,8 +31,6 @@ export const useTimer = (initialDuration, onComplete) => {
     };
   }, [onComplete]);
 
-  // Update timer when duration changes (mode)
-
   // Avoid creating a new function every render
   const start = useCallback((duration) => {
     setIsRunning(true);
@@ -65,13 +63,6 @@ export const useTimer = (initialDuration, onComplete) => {
     workerRef.current?.postMessage({ type: 'RESET' });
   }, [totalDuration]);
 
-  const endMode = useCallback(() => {
-    setIsRunning(false);
-    setRemaining(totalDuration);
-    setTotalDuration(totalDuration);
-    workerRef.current?.postMessage({ type: 'RESET' });
-  }, [totalDuration]);
-
   return {
     remaining,
     totalDuration,
@@ -80,6 +71,5 @@ export const useTimer = (initialDuration, onComplete) => {
     start,
     pause,
     reset,
-    endMode,
   };
 };

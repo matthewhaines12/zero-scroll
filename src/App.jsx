@@ -4,6 +4,7 @@ import Analytics from './pages/Analytics';
 import Leaderboard from './pages/Leaderboard';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import Sidebar from './components/layout/Sidebar';
 import { TimerProvider } from './context/TimerContext';
 import { TaskProvider } from './context/TaskContext';
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/leaderboard" element={<Leaderboard />} />
                     <Route path="/settings" element={<Settings />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="signup" element={<Signup />} />
                   </Routes>
                 </Router>
               </TimerProvider>

@@ -3,6 +3,7 @@ import UserIcon from './UserIcon';
 import { Target, BarChart2, Trophy, Settings, Hexagon } from 'lucide-react';
 import { useModeContext } from '../../context/ModeContext';
 import { MODES } from '../../services/utils/constants';
+import { NavLink } from 'react-router-dom';
 
 const NAV_ITEMS = [
   { id: 'focus', icon: Target, label: 'Focus Hub', to: '/' },
@@ -36,7 +37,15 @@ const Sidebar = () => {
       </nav>
 
       {/* Bottom User Icon */}
-      <UserIcon />
+
+      <NavLink
+        to={'/login'}
+        className="mt-auto bg-white text-black font-bold px-1 py-2 rounded-xl text-xl cursor-pointer hover:opacity-85"
+      >
+        Login
+      </NavLink>
+
+      {/* <UserIcon /> */}
     </aside>
   );
 };
