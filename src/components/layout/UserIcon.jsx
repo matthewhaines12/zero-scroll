@@ -1,5 +1,5 @@
 const UserIcon = () => (
-  <div className="mt-auto mb-6 flex flex-col items-center gap-2 cursor-pointer">
+  <div className="flex flex-col items-center gap-2 cursor-pointer">
     <div
       className="relative w-10 h-10 rounded-full bg-surface-2 flex items-center justify-center
       border-2 border-accent-purple shadow-[0_0_10px_rgba(167,139,250,0.3)]

@@ -87,7 +87,7 @@ const Tasks = () => {
       {/* Task list */}
       <div className="mt-6 flex flex-col gap-6 overflow-y-auto min-h-0 flex-1 pr-2 custom-scrollbar">
         {tasks.length === 0 ? (
-          <p className="">No Tasks</p>
+          <p className="text-text-muted">No Tasks</p>
         ) : (
           tasks.map((task) => (
             <TaskItem

@@ -1,10 +1,21 @@
 import {
+  Target,
+  BarChart2,
+  Trophy,
+  Settings,
   CloudRain,
   Coffee,
   AudioLines,
   Flame,
   CloudLightning,
-} from 'lucide-react'; // Sound icons
+} from 'lucide-react';
+
+export const NAV_ITEMS = [
+  { id: 'focus', icon: Target, label: 'Focus Hub', to: '/' },
+  { id: 'analytics', icon: BarChart2, label: 'Analytics', to: '/analytics' },
+  { id: 'leaderboard', icon: Trophy, label: 'Leaderboard', to: '/leaderboard' },
+  { id: 'settings', icon: Settings, label: 'Settings', to: '/settings' },
+];
 
 export const PRIORITY_COLORS = {
   LOW: 'text-priority-low shadow-neon-glow-low',

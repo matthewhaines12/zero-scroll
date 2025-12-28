@@ -98,6 +98,24 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(35, 40, 50, 1) transparent;
   }
+
+  /* Autofill Styling */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #232832 inset !important;
+    -webkit-text-fill-color: #f3f4f6 !important;
+    border-color: #f3f4f6 !important;
+    caret-color: #f3f4f6 !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  input:-moz-autofill {
+    background-color: #232832 !important;
+    color: #f3f4f6 !important;
+    border-color: #f3f4f6 !important;
+    caret-color: #f3f4f6 !important;
+  }
 }
 
 /* Global Reset */

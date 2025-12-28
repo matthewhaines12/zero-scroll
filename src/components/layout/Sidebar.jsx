@@ -1,23 +1,19 @@
 import SidebarIcon from './SidebarIcon';
 import UserIcon from './UserIcon';
-import { Target, BarChart2, Trophy, Settings, Hexagon } from 'lucide-react';
+import { Hexagon, LogIn } from 'lucide-react';
 import { useModeContext } from '../../context/ModeContext';
 import { MODES } from '../../services/utils/constants';
+import { NAV_ITEMS } from '../../services/utils/constants';
 import { NavLink } from 'react-router-dom';
-
-const NAV_ITEMS = [
-  { id: 'focus', icon: Target, label: 'Focus Hub', to: '/' },
-  { id: 'analytics', icon: BarChart2, label: 'Analytics', to: '/analytics' },
-  { id: 'leaderboard', icon: Trophy, label: 'Leaderboard', to: '/leaderboard' },
-  { id: 'settings', icon: Settings, label: 'Settings', to: '/settings' },
-];
+import { useAuthContext } from '../../context/AuthContext';
 
 const Sidebar = () => {
   const { mode } = useModeContext();
+  const { user } = useAuthContext();
 
   return (
     <aside
-      className={`${MODES[mode]} fixed h-screen w-20 left-0 flex flex-col items-center py-6 bg-surface-1 border-r border-surface-2 z-50`}
+      className={`${MODES[mode]} fixed h-screen w-20 left-0 flex flex-col items-center py-8 bg-surface-1 border-r border-surface-2 z-50`}
     >
       {/* Logo */}
       <div className="mb-10 text-neon-focus animate-pulse break:text-neon-break">
@@ -37,13 +33,25 @@ const Sidebar = () => {
       </nav>
 
       {/* Bottom User Icon */}
-
-      <NavLink
-        to={'/login'}
-        className="mt-auto bg-white text-black font-bold px-1 py-2 rounded-xl text-xl cursor-pointer hover:opacity-85"
-      >
-        Login
-      </NavLink>
+      <div className="mt-auto mb-2 w-full px-3">
+        {!user ? (
+          <NavLink
+            to={'/login'}
+            className="group relative flex items-center justify-center h-12 rounded-xl text-neon-focus hover:bg-surface-2 transition-colors cursor-pointer break:text-neon-break"
+          >
+            <LogIn size={24} strokeWidth={2} />
+            <span
+              className="absolute left-full ml-4 px-2 py-1 bg-surface-2 text-text-base text-xs rounded 
+            opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap 
+            border border-surface-2 pointer-events-none z-50"
+            >
+              Login
+            </span>
+          </NavLink>
+        ) : (
+          <UserIcon />
+        )}
+      </div>
 
       {/* <UserIcon /> */}
     </aside>
