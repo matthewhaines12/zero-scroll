@@ -26,3 +26,12 @@ export const updateTask = async (taskID, updates, accessToken) => {
   });
   return data;
 };
+
+export const deleteTask = async (taskID, accessToken) => {
+  const { data } = await api.delete(`/tasks/${taskID}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return data;
+};

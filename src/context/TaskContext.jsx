@@ -46,11 +46,11 @@ export const TaskProvider = ({ children }) => {
         id: res.task._id,
       };
 
-      setTasks((prev) => [...prev, normalizedTask]);
+      setTasks((prev) => [normalizedTask, ...prev]);
       return;
     }
     // Guest -> Local save
-    setTasks((prev) => [...prev, guestTask]);
+    setTasks((prev) => [guestTask, ...prev]);
   };
 
   const getTasks = async () => {
@@ -105,6 +105,31 @@ export const TaskProvider = ({ children }) => {
     );
   };
 
+  const deleteTask = async (taskID) => {
+    const task = tasks.find((t) => t.id === taskID);
+    if (!task) return;
+
+    if (user) {
+      await tasksApi.deleteTask(taskID, accessToken);
+    }
+
+    const updatedTasks = tasks.filter((t) => t.id !== taskID);
+    setTasks(updatedTasks);
+  };
+
+  const updateTask = async (taskID, newTitle) => {
+    const task = tasks.find((t) => t.id === taskID);
+    if (!task) return;
+
+    if (user) {
+      await tasksApi.updateTask(taskID, { title: newTitle }, accessToken);
+    }
+
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskID ? { ...t, title: newTitle } : t))
+    );
+  };
+
   return (
     <TaskContext
       value={{
@@ -115,6 +140,8 @@ export const TaskProvider = ({ children }) => {
         createTask,
         completeTask,
         changePriority,
+        deleteTask,
+        updateTask,
       }}
     >
       {children}

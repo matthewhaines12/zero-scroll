@@ -40,7 +40,7 @@ const AudioSlider = () => {
             <div key={sound.id} className="flex flex-col gap-2">
               <div className="flex gap-3 items-center">
                 <Icon size={20} className="text-text-base/80" />
-                <span className="text-text-base/80">{sound.label}</span>
+                <span className="text-text-base text-sm">{sound.label}</span>
                 <span className="ml-auto text-neon-focus break:text-neon-break">
                   {volumes[sound.id]}%
                 </span>

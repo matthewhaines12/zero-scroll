@@ -46,9 +46,9 @@ const FocusTimer = () => {
       <button
         onClick={() => setShowSettings(true)}
         disabled={isRunning}
-        className="absolute top-8 left-8 hover:opacity-85 cursor-pointer text-text-base bg-surface-1/50 p-3 rounded-full"
+        className="absolute top-5 left-8 hover:opacity-85 cursor-pointer text-text-base bg-surface-2/50 p-3 rounded-full"
       >
-        <Timer size={32} />
+        <Timer size={30} />
       </button>
 
       {/* Settings Modal */}
@@ -57,14 +57,14 @@ const FocusTimer = () => {
       </Modal>
 
       {/* Header */}
-      <header className="flex flex-col items-center mb-8 min-h-20">
-        <h2 className="font-timer text-neon-focus text-3xl uppercase drop-shadow-neon-focus break:text-neon-break break:drop-shadow-neon-break">
+      <header className="flex flex-col items-center mb-12 min-h-20">
+        <h2 className="font-timer text-neon-focus text-3xl uppercase mb-2 drop-shadow-neon-focus break:text-neon-break break:drop-shadow-neon-break">
           Current Target
         </h2>
         {activeTask && (
           <p className="text-lg text-text-base/90 mt-2 flex items-center gap-2">
             <CircleSmall
-              className={`opacity-80 shrink-0 rounded-full ${
+              className={`mr-1 opacity-80 shrink-0 rounded-full ${
                 PRIORITY_COLORS[activeTask.priority]
               }`}
               size={20}

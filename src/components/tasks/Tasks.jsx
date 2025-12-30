@@ -13,6 +13,8 @@ const Tasks = () => {
     createTask,
     completeTask,
     changePriority,
+    deleteTask,
+    updateTask,
   } = useTaskContext();
   const { mode } = useModeContext();
   const [newTask, setNewTask] = useState('');
@@ -44,6 +46,22 @@ const Tasks = () => {
     }
   };
 
+  const handleDeleteTask = async (id) => {
+    try {
+      await deleteTask(id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleUpdateTask = async (id, newTitle) => {
+    try {
+      await updateTask(id, newTitle);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleSelectTask = (task) => {
     if (task.completed) return;
 
@@ -67,6 +85,7 @@ const Tasks = () => {
         <input
           type="text"
           value={newTask}
+          maxLength={60}
           onChange={(e) => setNewTask(e.target.value)}
           className="grow bg-surface-2 rounded-xl py-3 px-4 outline-none
               border border-transparent focus:border-neon-focus/50 focus:shadow-neon-glow-focus-small
@@ -97,6 +116,8 @@ const Tasks = () => {
               onSelect={handleSelectTask}
               onPriorityChange={handlePriorityChange}
               onToggleComplete={handleToggleComplete}
+              onDelete={handleDeleteTask}
+              onEdit={handleUpdateTask}
             />
           ))
         )}
