@@ -6,48 +6,48 @@ import { useModeContext } from '../../context/ModeContext';
 import { MODES } from '../../services/utils/constants';
 
 const Tasks = () => {
-  const { tasks, setTasks, activeTask, setActiveTask } = useTaskContext();
+  const {
+    tasks,
+    activeTaskID,
+    setActiveTaskID,
+    createTask,
+    completeTask,
+    changePriority,
+  } = useTaskContext();
   const { mode } = useModeContext();
-
   const [newTask, setNewTask] = useState('');
 
-  const handleAddTask = (e) => {
-    e.preventDefault();
-
-    if (!newTask.trim()) return; // Empty new task -> return
-
-    const task = {
-      id: Date.now(),
-      title: newTask,
-      completed: false,
-      priority: 'MED',
-    };
-
-    setTasks([...tasks, task]);
-    setNewTask('');
+  const handleAddTask = async (e) => {
+    try {
+      e.preventDefault();
+      await createTask({ title: newTask });
+      setNewTask('');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handlePriorityChange = (id, newPriority) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, priority: newPriority } : task
-      )
-    );
+  const handlePriorityChange = async (id, newPriority) => {
+    try {
+      await changePriority(id, newPriority);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleToggleComplete = (id) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
-    setActiveTask(null);
+  const handleToggleComplete = async (id) => {
+    try {
+      setActiveTaskID(null);
+      await completeTask(id);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleSelectTask = (task) => {
     if (task.completed) return;
 
-    task.id === activeTask?.id ? setActiveTask(null) : setActiveTask(task);
+    setActiveTaskID((prevID) => (task.id === prevID ? null : task.id));
   };
 
   return (
@@ -86,14 +86,14 @@ const Tasks = () => {
 
       {/* Task list */}
       <div className="mt-6 flex flex-col gap-6 overflow-y-auto min-h-0 flex-1 pr-2 custom-scrollbar">
-        {tasks.length === 0 ? (
+        {!tasks ? (
           <p className="text-text-muted">No Tasks</p>
         ) : (
           tasks.map((task) => (
             <TaskItem
               key={task.id}
               task={task}
-              isActive={task.id === activeTask?.id}
+              isActive={task.id === activeTaskID}
               onSelect={handleSelectTask}
               onPriorityChange={handlePriorityChange}
               onToggleComplete={handleToggleComplete}

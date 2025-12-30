@@ -22,7 +22,6 @@ const Signup = () => {
       setIsSubmitting(true);
       await signup({ username, email, password });
       navigate('/signup-success');
-      console.log('Congrats signup');
     } catch (err) {
       console.error(err);
       alert('Signup failed');
@@ -31,7 +30,7 @@ const Signup = () => {
     }
   };
 
-  if (isSubmitting) return;
+  if (isSubmitting) return null;
 
   return (
     <main

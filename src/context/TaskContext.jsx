@@ -1,37 +1,122 @@
-import { createContext, use, useState } from 'react';
+import { createContext, use, useState, useEffect } from 'react';
+import { useAuthContext } from './AuthContext';
+import * as tasksApi from '../services/api/tasks.api';
 
 const TaskContext = createContext(null);
 
 export const TaskProvider = ({ children }) => {
-  // Mock Data
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: 'Refactor Auth Middleware',
-      completed: false,
-      priority: 'HIGH',
-      active: false,
-    },
-    {
-      id: 2,
-      title: 'Design Database Schema',
-      completed: true,
-      priority: 'MED',
-      active: false,
-    },
-    {
-      id: 3,
-      title: 'Update API Documentation',
-      completed: false,
-      priority: 'LOW',
-      active: false,
-    },
-  ]);
+  const { user, accessToken } = useAuthContext();
+  const [tasks, setTasks] = useState([]);
+  const [activeTaskID, setActiveTaskID] = useState(null);
 
-  const [activeTask, setActiveTask] = useState(null);
+  const activeTask = tasks.find((t) => t.id === activeTaskID);
+
+  useEffect(() => {
+    if (user) {
+      getTasks();
+    } else {
+      setTasks([]);
+      setActiveTaskID(null);
+    }
+  }, [user]);
+
+  const createTask = async ({ title }) => {
+    if (!title.trim()) return;
+
+    const guestTask = {
+      id: crypto.randomUUID(),
+      title,
+      priority: 'MED',
+      completed: false,
+      createdAt: Date.now(),
+    };
+
+    // Logged in -> save to DB
+    if (user) {
+      const res = await tasksApi.createTask(
+        {
+          title,
+          priority: 'MED',
+        },
+        accessToken
+      );
+
+      const normalizedTask = {
+        ...res.task,
+        id: res.task._id,
+      };
+
+      setTasks((prev) => [...prev, normalizedTask]);
+      return;
+    }
+    // Guest -> Local save
+    setTasks((prev) => [...prev, guestTask]);
+  };
+
+  const getTasks = async () => {
+    try {
+      if (user) {
+        const res = await tasksApi.getTasks(accessToken);
+        const normalizedTasks = res.tasks.map((task) => ({
+          ...task,
+          id: task._id,
+        }));
+
+        setTasks(normalizedTasks);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const completeTask = async (taskID) => {
+    const task = tasks.find((t) => t.id === taskID);
+    if (!task) return;
+
+    const updatedCompleted = !task.completed;
+
+    // Logged in -> save to DB
+    if (user) {
+      await tasksApi.updateTask(
+        taskID,
+        { completed: updatedCompleted },
+        accessToken
+      );
+    }
+    // Update the local state
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === taskID ? { ...t, completed: updatedCompleted } : t
+      )
+    );
+  };
+
+  const changePriority = async (taskID, newPriority) => {
+    const task = tasks.find((t) => t.id === taskID);
+    if (!task) return;
+
+    // Logged in -> save to DB
+    if (user) {
+      await tasksApi.updateTask(taskID, { priority: newPriority }, accessToken);
+    }
+    // Update the local state
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskID ? { ...t, priority: newPriority } : t))
+    );
+  };
 
   return (
-    <TaskContext value={{ tasks, setTasks, activeTask, setActiveTask }}>
+    <TaskContext
+      value={{
+        tasks,
+        activeTask,
+        activeTaskID,
+        setActiveTaskID,
+        createTask,
+        completeTask,
+        changePriority,
+      }}
+    >
       {children}
     </TaskContext>
   );

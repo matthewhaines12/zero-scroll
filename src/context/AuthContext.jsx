@@ -69,7 +69,7 @@
 
 // export const useAuth = () => useContext(AuthContext);
 
-import { createContext, use, useState } from 'react';
+import { createContext, use, useEffect, useState } from 'react';
 import * as authApi from '../services/api/auth.api';
 
 const AuthContext = createContext(null);
@@ -77,6 +77,26 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const refreshAuth = async () => {
+      try {
+        const res = await authApi.refresh();
+        setUser(res.user);
+        setAccessToken(res.newAccessToken);
+        console.log('we refreshed');
+      } catch (err) {
+        console.error(err);
+        setUser(null);
+        setAccessToken(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    refreshAuth();
+  }, []);
 
   const signup = async (data) => {
     await authApi.signup(data);
@@ -89,7 +109,11 @@ export const AuthProvider = ({ children }) => {
     setAccessToken(res.accessToken);
   };
 
-  return <AuthContext value={{ user, signup, login }}>{children}</AuthContext>;
+  return (
+    <AuthContext value={{ user, loading, accessToken, signup, login }}>
+      {children}
+    </AuthContext>
+  );
 };
 
 export const useAuthContext = () => {

@@ -29,7 +29,7 @@ const Login = () => {
     }
   };
 
-  if (isSubmitting) return;
+  if (isSubmitting) return null;
 
   return (
     <main
