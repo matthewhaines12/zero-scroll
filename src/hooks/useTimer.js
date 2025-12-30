@@ -31,6 +31,15 @@ export const useTimer = (initialDuration, onComplete) => {
     };
   }, [onComplete]);
 
+  useEffect(() => {
+    if (!isRunning && !hasStarted) {
+      if (initialDuration !== totalDuration) {
+        setTotalDuration(initialDuration);
+        setRemaining(initialDuration);
+      }
+    }
+  }, [initialDuration, totalDuration, hasStarted, isRunning]);
+
   // Avoid creating a new function every render
   const start = useCallback((duration) => {
     setIsRunning(true);

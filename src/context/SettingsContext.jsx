@@ -4,7 +4,6 @@ import { DEFAULT_TIMER_SETTINGS } from '../services/utils/constants';
 const SettingsContext = createContext(null);
 
 export const SettingsProvider = ({ children }) => {
-  // Mock Data
   const [timerSettings, setTimerSettings] = useState(DEFAULT_TIMER_SETTINGS);
 
   return (

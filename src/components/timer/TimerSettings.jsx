@@ -1,18 +1,21 @@
+import { useState } from 'react';
 import { X } from 'lucide-react';
 import { useSettingsContext } from '../../context/SettingsContext';
 
 const TimerSettings = ({ onClose }) => {
   const { timerSettings, setTimerSettings } = useSettingsContext();
+  const [localSettings, setLocalSettings] = useState(timerSettings);
 
   const handleApplySettings = (e) => {
     e.preventDefault();
+    setTimerSettings(localSettings);
     onClose();
   };
 
   const handleSettingChange = (key, value) => {
     const newValue = value;
 
-    setTimerSettings((prev) => ({
+    setLocalSettings((prev) => ({
       ...prev,
       [key]: {
         ...prev[key],
@@ -36,7 +39,7 @@ const TimerSettings = ({ onClose }) => {
 
       <form onSubmit={handleApplySettings} className="flex flex-col gap-2">
         <div className="flex flex-col gap-4">
-          {Object.entries(timerSettings).map(([key, setting]) => (
+          {Object.entries(localSettings).map(([key, setting]) => (
             <div key={key} className="flex justify-between items-center ">
               <label className="text-sm text-text-muted font-bold">{key}</label>
               <div className="flex items-center bg-surface-1 rounded-xl px-2 py-1 gap-1">
