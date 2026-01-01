@@ -9,6 +9,7 @@ import Signup from './pages/Signup';
 import SignupSuccess from './pages/SignupSuccess';
 import VerifyEmail from './pages/VerifyEmail';
 import Sidebar from './components/layout/Sidebar';
+import NotFoundPage from './pages/NotFoundPage';
 import { TimerProvider } from './context/TimerContext';
 import { TaskProvider } from './context/TaskContext';
 import { ModeProvider } from './context/ModeContext';
@@ -33,6 +34,7 @@ function App() {
                       <Route path="/login" element={<Login />} />
                       <Route path="/signup" element={<Signup />} />
                       <Route path="/verify-email" element={<VerifyEmail />} />
+                      <Route path="*" element={<NotFoundPage />} />
                       <Route
                         path="signup-success"
                         element={<SignupSuccess />}
