@@ -35,7 +35,7 @@ const Signup = () => {
 
   if (isSubmitting) {
     return (
-      <main className="flex items-center justify-center min-h-screen w-full p-8">
+      <main className="flex items-center justify-center min-h-screen w-full">
         <article className="flex flex-col items-center justify-center gap-8 w-120 bg-surface-1/50 p-8 rounded-2xl border border-surface-2">
           <Loader2 className="w-16 h-16 text-neon-focus animate-spin" />
           <div className="text-center">

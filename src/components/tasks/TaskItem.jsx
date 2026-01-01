@@ -71,12 +71,10 @@ const TaskItem = ({
               if (e.key === 'Escape') handleCancelEdit();
             }}
             autoFocus
-            // ADDED: w-full to force input to respect flex bounds
-            className="flex-1 min-w-0 w-full bg-surface-2 rounded px-2 py-1 outline-none border border-neon-focus/50 focus:shadow-neon-glow-focus-small break:border-neon-break/50 break:focus:shadow-neon-glow-break-small"
+            className="flex-1 min-w-0 w-full bg-surface-2 rounded-xl px-2 py-1 outline-none border border-neon-focus/50 focus:shadow-neon-glow-focus-small break:border-neon-break/50 break:focus:shadow-neon-glow-break-small"
           />
         ) : (
           <span
-            // ADDED: border border-transparent rounded to match Input box model exactly
             className={`flex-1 min-w-0 px-2 py-1 border border-transparent rounded wrap-break-word select-none ${
               task.completed ? 'line-through opacity-60' : ''
             }`}

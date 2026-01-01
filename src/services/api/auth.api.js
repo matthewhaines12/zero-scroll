@@ -28,7 +28,12 @@ export const verifyEmail = async (emailToken) => {
   return data;
 };
 
-// resendVerification
+export const resendVerification = async (email) => {
+  const { data } = await api.post('/auth/resend-verification', {
+    email: email,
+  });
+  return data;
+};
 
 // forgotPassword
 

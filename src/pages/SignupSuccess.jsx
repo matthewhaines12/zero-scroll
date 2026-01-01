@@ -2,8 +2,8 @@ import { NavLink } from 'react-router-dom';
 
 const SignupSuccess = () => {
   return (
-    <main className="flex items-center justify-center min-h-screen w-full p-8`">
-      <article className="flex flex-col items-center justify-center gap-8 w-120 bg-surface-1/50 p-8 rounded-2xl border border-surface-2">
+    <main className="flex items-center justify-center min-h-screen w-full`">
+      <article className="flex flex-col items-center justify-center gap-8 w-120 p-8 bg-surface-1/50 rounded-2xl border border-surface-2">
         <header className="flex flex-col gap-2 text-center mb-2">
           <h1 className="font-timer text-neon-focus text-3xl uppercase drop-shadow-neon-focus mb-2">
             Verify your email
@@ -18,7 +18,7 @@ const SignupSuccess = () => {
         </p>
         <NavLink
           to={'/login'}
-          className="px-6 py-2 bg-surface-1 border border-text-base rounded-xl hover:opacity-85 cursor-pointer"
+          className="px-6 py-2 bg-surface-2 border border-text-base rounded-xl hover:opacity-85 cursor-pointer"
         >
           Go to Login
         </NavLink>

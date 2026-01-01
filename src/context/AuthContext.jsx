@@ -37,17 +37,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    try {
-      await authApi.logout();
-      setUser(null);
-      setAccessToken(null);
-    } catch (err) {
-      console.error(err);
-    }
+    await authApi.logout();
+    setUser(null);
+    setAccessToken(null);
   };
 
   const verifyEmail = async (emailToken) => {
     await authApi.verifyEmail(emailToken);
+  };
+
+  const resendVerification = async (email) => {
+    await authApi.resendVerification(email);
   };
 
   const deleteAccount = async () => {
@@ -72,6 +72,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         verifyEmail,
+        resendVerification,
         deleteAccount,
       }}
     >

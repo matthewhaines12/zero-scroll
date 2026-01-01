@@ -43,13 +43,13 @@ const VerifyEmail = () => {
   }, [emailToken, verifyEmail]);
 
   return (
-    <main className="flex items-center justify-center min-h-screen w-full p-8">
-      <article className="flex flex-col items-center justify-center gap-8 w-120 bg-surface-1/50 p-8 rounded-2xl border border-surface-2">
+    <main className="flex items-center justify-center min-h-screen w-full">
+      <article className="flex flex-col items-center justify-center p-8 gap-8 w-120 bg-surface-1/50 rounded-2xl border border-surface-2">
         {status === 'verifying' && (
           <>
             <Loader2 className="w-16 h-16 text-neon-focus animate-spin" />
             <div className="text-center">
-              <h1 className="font-timer text-neon-focus text-3xl uppercase drop-shadow-neon-focus mb-2">
+              <h1 className="font-timer text-neon-focus text-3xl uppercase drop-shadow-neon-focus mb-4">
                 Verifying Email
               </h1>
               <p className="text-text-muted text-sm">Please wait...</p>
@@ -60,7 +60,7 @@ const VerifyEmail = () => {
         {status === 'success' && (
           <>
             <div className="text-center">
-              <h1 className="font-timer text-neon-break text-3xl uppercase drop-shadow-neon-break mb-2">
+              <h1 className="font-timer text-neon-break text-3xl uppercase drop-shadow-neon-break mb-4">
                 Email Verified!
               </h1>
               <p className="text-text-muted text-sm">Redirecting to login...</p>
@@ -71,14 +71,14 @@ const VerifyEmail = () => {
         {status === 'error' && (
           <>
             <div className="text-center">
-              <h1 className="font-timer text-priority-high text-3xl uppercase drop-shadow-neon-glow-high mb-2">
+              <h1 className="font-timer text-priority-high text-3xl uppercase drop-shadow-neon-glow-high mb-4">
                 Verification Failed
               </h1>
-              <p className="text-text-muted text-sm mb-4">{errorMessage}</p>
+              <p className="text-text-muted text-sm mb-6">{errorMessage}</p>
 
               <button
                 onClick={() => navigate('/login')}
-                className="px-6 py-2 bg-surface-1 border border-text-base rounded-xl hover:opacity-85 cursor-pointer"
+                className="px-6 py-2 bg-surface-2 border border-text-base rounded-xl hover:opacity-85 cursor-pointer"
               >
                 Go to Login
               </button>

@@ -7,35 +7,53 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
 const Login = () => {
   const { mode } = useModeContext();
-  const { login } = useAuthContext();
+  const { login, resendVerification } = useAuthContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showResendVerification, setShowResendVerification] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
+    setShowResendVerification(false);
+
     try {
       setIsSubmitting(true);
       await login({ email, password });
       navigate('/');
-      console.log('Congrats login');
     } catch (err) {
-      console.error(err);
-      setErrorMessage(
-        err.response?.data?.error || 'Login failed. Please try again.'
-      );
+      const error = err.response?.data?.error;
+      if (error === 'Please verify your email before logging in')
+        setShowResendVerification(true);
+
+      setErrorMessage(error || 'Login failed. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const handleResendVerification = async () => {
+    setIsResending(true);
+
+    try {
+      await resendVerification(email);
+      setErrorMessage(`Verification email sent to ${email}! Check your inbox.`);
+      setShowResendVerification(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsResending(false);
+    }
+  };
+
   if (isSubmitting) {
     return (
-      <main className="flex items-center justify-center min-h-screen w-full p-8">
+      <main className="flex items-center justify-center min-h-screen w-full">
         <article className="flex flex-col items-center justify-center gap-8 w-120 bg-surface-1/50 p-8 rounded-2xl border border-surface-2">
           <Loader2 className="w-16 h-16 text-neon-focus animate-spin" />
           <div className="text-center">
@@ -64,6 +82,20 @@ const Login = () => {
         {errorMessage && (
           <div className="bg-red-500/10 border border-red-500 rounded-xl p-3 text-center">
             <p className="text-red-400 text-sm">{errorMessage}</p>
+            {showResendVerification && (
+              <button
+                type="button"
+                disabled={isResending}
+                onClick={handleResendVerification}
+                className={`mt-3 text-sm rounded-xl font-bold ${
+                  !isResending
+                    ? 'hover:opacity-85 underline cursor-pointer'
+                    : ''
+                }`}
+              >
+                {isResending ? 'Resending...' : 'Resend verification email'}
+              </button>
+            )}
           </div>
         )}
         <input
