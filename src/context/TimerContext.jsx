@@ -10,6 +10,7 @@ import { useTimer } from '../hooks/useTimer';
 import { useModeContext } from './ModeContext';
 import { useSettingsContext } from './SettingsContext';
 import { useSessionContext } from './SessionContext';
+import { useAudioContext } from './AudioContext';
 
 // Separate contexts for control (rarely changes) and state (changes every second)
 const TimerControlContext = createContext(null);
@@ -19,6 +20,7 @@ export const TimerProvider = ({ children }) => {
   const userStartedRef = useRef(false);
   const { mode, setMode } = useModeContext();
   const { timerSettings } = useSettingsContext();
+  const { playNotification } = useAudioContext();
   const { currentCycle, completeFocusSession, nextCycle, resetCycle } =
     useSessionContext();
 
@@ -42,6 +44,7 @@ export const TimerProvider = ({ children }) => {
 
   // Transition when timer completes
   const handleTimerComplete = useCallback(() => {
+    playNotification();
     const repeatCount = parseInt(timerSettings.REPEAT.value);
 
     if (mode === 'FOCUS') {
@@ -66,6 +69,7 @@ export const TimerProvider = ({ children }) => {
     nextCycle,
     resetCycle,
     setMode,
+    playNotification,
   ]);
 
   // Auto start next mode when timer is running

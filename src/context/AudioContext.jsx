@@ -4,6 +4,7 @@ import { SOUND_LIBRARY } from '../services/utils/constants';
 const AudioContext = createContext(null);
 
 export const AudioProvider = ({ children }) => {
+  const notificationSound = useRef(null);
   const audioRef = useRef({});
   const [isMuted, setIsMuted] = useState(false);
 
@@ -26,21 +27,28 @@ export const AudioProvider = ({ children }) => {
       audioRef.current[sound.id] = audio;
     });
 
+    const bellAudio = new Audio('/sounds/bell.mp3');
+    bellAudio.volume = 0.5;
+
+    notificationSound.current = bellAudio;
+
     return () => {
       // Cleanup on unmount
       Object.values(audioRef.current).forEach((audio) => {
         audio.pause();
         audio.currentTime = 0;
       });
+
+      if (notificationSound.current) {
+        notificationSound.current.pause();
+        notificationSound.current.currentTime = 0;
+      }
     };
   }, []);
 
   const setVolume = (id, value) => {
     const audio = audioRef.current[id];
-    if (!audio) {
-      console.log('no audio found');
-      return;
-    }
+    if (!audio) return;
 
     const normalized = value / 100;
     audio.volume = normalized;
@@ -48,13 +56,22 @@ export const AudioProvider = ({ children }) => {
     if (value === 0) {
       audio.pause();
     } else if (audio.paused && !isMuted) {
-      audio.play().catch((err) => console.error(err));
+      audio.play().catch((err) => console.error('Audio mixer error:', err));
     }
 
     setVolumes((prev) => ({
       ...prev,
       [id]: value,
     }));
+  };
+
+  const playNotification = () => {
+    if (notificationSound.current && !isMuted) {
+      notificationSound.current.currentTime = 0;
+      notificationSound.current
+        .play()
+        .catch((err) => console.error('Bell error:', err));
+    }
   };
 
   const muteAll = () => {
@@ -76,7 +93,9 @@ export const AudioProvider = ({ children }) => {
   };
 
   return (
-    <AudioContext value={{ volumes, isMuted, setVolume, muteAll, unMute }}>
+    <AudioContext
+      value={{ volumes, isMuted, setVolume, playNotification, muteAll, unMute }}
+    >
       {children}
     </AudioContext>
   );
