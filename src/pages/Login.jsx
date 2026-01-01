@@ -2,8 +2,8 @@ import { MODES } from '../services/utils/constants';
 import { useModeContext } from '../context/ModeContext';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
-import { useState, useEffect } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
 const Login = () => {
   const { mode } = useModeContext();
@@ -12,10 +12,12 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
     try {
       setIsSubmitting(true);
       await login({ email, password });
@@ -23,13 +25,29 @@ const Login = () => {
       console.log('Congrats login');
     } catch (err) {
       console.error(err);
-      alert('Login failed');
+      setErrorMessage(
+        err.response?.data?.error || 'Login failed. Please try again.'
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (isSubmitting) return null;
+  if (isSubmitting) {
+    return (
+      <main className="flex items-center justify-center min-h-screen w-full p-8">
+        <article className="flex flex-col items-center justify-center gap-8 w-120 bg-surface-1/50 p-8 rounded-2xl border border-surface-2">
+          <Loader2 className="w-16 h-16 text-neon-focus animate-spin" />
+          <div className="text-center">
+            <h1 className="font-timer text-neon-focus text-3xl uppercase drop-shadow-neon-focus mb-2">
+              Logging In
+            </h1>
+            <p className="text-text-muted text-sm">Please wait...</p>
+          </div>
+        </article>
+      </main>
+    );
+  }
 
   return (
     <main
@@ -37,11 +55,17 @@ const Login = () => {
     >
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-8 w-120 bg-surface-1/50 p-8 rounded-2xl"
+        className="flex flex-col gap-8 w-120 bg-surface-1/50 p-8 rounded-2xl border border-surface-2"
       >
         <h2 className="mx-auto mb-4 font-timer text-neon-focus text-3xl uppercase drop-shadow-neon-focus break:text-neon-break break:drop-shadow-neon-break">
           LOGIN
         </h2>
+
+        {errorMessage && (
+          <div className="bg-red-500/10 border border-red-500 rounded-xl p-3 text-center">
+            <p className="text-red-400 text-sm">{errorMessage}</p>
+          </div>
+        )}
         <input
           onChange={(e) => setEmail(e.target.value)}
           type="text"

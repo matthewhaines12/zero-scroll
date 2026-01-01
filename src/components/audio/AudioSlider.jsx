@@ -24,7 +24,7 @@ const AudioSlider = () => {
             Focus Audio
           </h2>
           <button
-            onClick={() => handleMuteToggle()}
+            onClick={handleMuteToggle}
             className="bg-surface-2 rounded-full p-2 hover:opacity-85 cursor-pointer"
           >
             {isMuted ? <VolumeX size={22} /> : <Volume2 size={22} />}

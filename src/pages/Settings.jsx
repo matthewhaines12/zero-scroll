@@ -1,4 +1,31 @@
+import { useAuthContext } from '../context/AuthContext';
+import { formatDateOnly } from '../services/utils/formateDate';
+
 const Settings = () => {
+  const { user, logout, deleteAccount } = useAuthContext();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (
+      confirm(
+        'Are you sure you want to delete your account? This cannot be undone.'
+      )
+    ) {
+      try {
+        await deleteAccount();
+      } catch (err) {
+        console.error('Delete failed:', err);
+      }
+    }
+  };
+
   return (
     <main className="flex items-center justify-center min-h-screen w-full p-8">
       <article className="flex flex-col gap-8 max-w-2xl w-full bg-surface-1/50 p-8 rounded-2xl border border-surface-2">
@@ -16,12 +43,18 @@ const Settings = () => {
           </h2>
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center py-2">
+              <span className="text-text-muted text-sm">Username</span>
+              <span className="text-text-base">{user.username}</span>
+            </div>
+            <div className="flex justify-between items-center py-2">
               <span className="text-text-muted text-sm">Email</span>
-              <span className="text-text-base">user@example.com</span>
+              <span className="text-text-base">{user.email}</span>
             </div>
             <div className="flex justify-between items-center py-2">
               <span className="text-text-muted text-sm">Member Since</span>
-              <span className="text-text-base">December 2025</span>
+              <span className="text-text-base">
+                {formatDateOnly(user.createdAt)}
+              </span>
             </div>
           </div>
         </section>
@@ -120,10 +153,16 @@ const Settings = () => {
             Danger Zone
           </h2>
           <div className="flex flex-col gap-4">
-            <button className="w-full font-bold px-4 py-3 bg-surface-1 border border-text-base rounded-xl hover:opacity-85 transition-opacity cursor-pointer">
+            <button
+              onClick={handleLogout}
+              className="w-full font-bold px-4 py-3 bg-surface-1 border border-text-base rounded-xl hover:opacity-85 transition-opacity cursor-pointer"
+            >
               Logout
             </button>
-            <button className="w-full font-bold px-4 py-3 bg-red-500/10 border border-red-500 rounded-xl hover:opacity-85 transition-opacity cursor-pointer">
+            <button
+              onClick={handleDeleteAccount}
+              className="w-full font-bold px-4 py-3 bg-red-500/10 border border-red-500 rounded-xl hover:opacity-85 transition-opacity cursor-pointer"
+            >
               Delete Account
             </button>
           </div>

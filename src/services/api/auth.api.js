@@ -16,6 +16,27 @@ export const refresh = async () => {
 };
 
 export const logout = async () => {
-  const { data } = await api.post('/auth/logout'); // generate new access token
+  const { data } = await api.post('/auth/logout');
+  return data;
+};
+
+// verify email
+export const verifyEmail = async (emailToken) => {
+  const { data } = await api.get('/auth/verify-email', {
+    params: { token: emailToken },
+  });
+  return data;
+};
+
+// resendVerification
+
+// forgotPassword
+
+export const deleteAccount = async (accessToken) => {
+  const { data } = await api.delete('/auth/delete-account', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   return data;
 };

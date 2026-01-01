@@ -7,6 +7,7 @@ import Settings from './pages/Settings';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import SignupSuccess from './pages/SignupSuccess';
+import VerifyEmail from './pages/VerifyEmail';
 import Sidebar from './components/layout/Sidebar';
 import { TimerProvider } from './context/TimerContext';
 import { TaskProvider } from './context/TaskContext';
@@ -30,7 +31,8 @@ function App() {
                     <Routes>
                       <Route path="/" element={<FocusHub />} />
                       <Route path="/login" element={<Login />} />
-                      <Route path="signup" element={<Signup />} />
+                      <Route path="/signup" element={<Signup />} />
+                      <Route path="/verify-email" element={<VerifyEmail />} />
                       <Route
                         path="signup-success"
                         element={<SignupSuccess />}

@@ -12,13 +12,27 @@ export const TaskProvider = ({ children }) => {
   const activeTask = tasks.find((t) => t.id === activeTaskID);
 
   useEffect(() => {
-    if (user) {
-      getTasks();
-    } else {
-      setTasks([]);
-      setActiveTaskID(null);
-    }
-  }, [user]);
+    const loadTasks = async () => {
+      if (user) {
+        try {
+          const res = await tasksApi.getTasks(accessToken);
+          const normalizedTasks = res.tasks.map((task) => ({
+            ...task,
+            id: task._id,
+          }));
+
+          setTasks(normalizedTasks);
+        } catch (err) {
+          console.error(err);
+        }
+      } else {
+        setTasks([]);
+        setActiveTaskID(null);
+      }
+    };
+
+    loadTasks();
+  }, [user, accessToken]);
 
   const createTask = async ({ title }) => {
     if (!title.trim()) return;
@@ -51,22 +65,6 @@ export const TaskProvider = ({ children }) => {
     }
     // Guest -> Local save
     setTasks((prev) => [guestTask, ...prev]);
-  };
-
-  const getTasks = async () => {
-    try {
-      if (user) {
-        const res = await tasksApi.getTasks(accessToken);
-        const normalizedTasks = res.tasks.map((task) => ({
-          ...task,
-          id: task._id,
-        }));
-
-        setTasks(normalizedTasks);
-      }
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   const completeTask = async (taskID) => {

@@ -142,13 +142,13 @@ const FocusTimer = () => {
         {!isRunning && hasStarted && (
           <div className="flex gap-3 w-full">
             <button
-              onClick={() => handleEndMode()}
+              onClick={handleEndMode}
               className="flex-1 bg-surface-1 border border-text-base py-3 rounded-2xl font-bold cursor-pointer hover:opacity-85 transition-opacity"
             >
               END {mode}
             </button>
             <button
-              onClick={() => handleTimerReset()}
+              onClick={handleTimerReset}
               className="flex-1 bg-surface-1 border border-red-500 text-red-500 py-3 rounded-2xl font-bold cursor-pointer hover:opacity-85 transition-opacity"
             >
               QUIT

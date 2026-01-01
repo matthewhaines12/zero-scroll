@@ -1,74 +1,3 @@
-// import { createContext, useContext, useEffect, useState } from 'react';
-// import { login, signup, refresh, logout } from '../services/apiAuth';
-
-// let accessToken = null;
-
-// export const setAccessToken = (token) => {
-//   accessToken = token;
-// };
-
-// export const getAccessToken = () => accessToken;
-
-// const AuthContext = createContext();
-
-// export const AuthProvider = ({ children }) => {
-//   const [user, setUser] = useState(null);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const tryRefresh = async () => {
-//       try {
-//         const res = await refresh();
-//         setAccessToken(res.data.accessToken);
-//         setUser(res.data.user);
-//       } catch (err) {
-//         setAccessToken(null);
-//         setUser(null);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     tryRefresh();
-//   }, []); // Run on mount
-
-//   const handleSignup = async (userData) => {
-//     const res = await signup(userData);
-//     setAccessToken(res.data.accessToken);
-//     setUser(res.data.user);
-//     return res;
-//   };
-
-//   const handleLogin = async (credentials) => {
-//     const res = await login(credentials);
-//     setAccessToken(res.data.accessToken);
-//     setUser(res.data.user);
-//     return res;
-//   };
-
-//   //   const handleLogout = async () => {
-//   //     await logout();
-//   //     setAccessToken(null);
-//   //     setUser(null);
-//   //   };
-
-//   return (
-//     <AuthContext.Provider
-//       value={{
-//         user,
-//         loading,
-//         handleLogin,
-//         handleSignup,
-//         handleLogout,
-//       }}
-//     >
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
-
-// export const useAuth = () => useContext(AuthContext);
-
 import { createContext, use, useEffect, useState } from 'react';
 import * as authApi from '../services/api/auth.api';
 
@@ -85,7 +14,6 @@ export const AuthProvider = ({ children }) => {
         const res = await authApi.refresh();
         setUser(res.user);
         setAccessToken(res.newAccessToken);
-        console.log('we refreshed');
       } catch (err) {
         console.error(err);
         setUser(null);
@@ -104,13 +32,49 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (data) => {
     const res = await authApi.login(data);
-
     setUser(res.userObj);
     setAccessToken(res.accessToken);
   };
 
+  const logout = async () => {
+    try {
+      await authApi.logout();
+      setUser(null);
+      setAccessToken(null);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const verifyEmail = async (emailToken) => {
+    await authApi.verifyEmail(emailToken);
+  };
+
+  const deleteAccount = async () => {
+    try {
+      console.log('we made it here');
+      await authApi.deleteAccount(accessToken);
+      setUser(null);
+      setAccessToken(null);
+    } catch (err) {
+      console.log('hi, i failed ');
+      console.error(err);
+    }
+  };
+
   return (
-    <AuthContext value={{ user, loading, accessToken, signup, login }}>
+    <AuthContext
+      value={{
+        user,
+        loading,
+        accessToken,
+        signup,
+        login,
+        logout,
+        verifyEmail,
+        deleteAccount,
+      }}
+    >
       {children}
     </AuthContext>
   );
