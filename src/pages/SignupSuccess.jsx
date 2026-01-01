@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const SignupSuccess = () => {
   return (
@@ -16,12 +16,12 @@ const SignupSuccess = () => {
           We've sent you a verification email. Please verify your account before
           logging in. Verification link expires in 10m.
         </p>
-        <NavLink
+        <Link
           to={'/login'}
           className="px-6 py-2 bg-surface-2 border border-text-base rounded-xl hover:opacity-85 cursor-pointer"
         >
           Go to Login
-        </NavLink>
+        </Link>
       </article>
     </main>
   );

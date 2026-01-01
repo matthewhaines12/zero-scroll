@@ -24,23 +24,10 @@ export const TimerProvider = ({ children }) => {
   const { currentCycle, completeFocusSession, nextCycle, resetCycle } =
     useSessionContext();
 
-  const getDuration = () => {
-    switch (mode) {
-      case 'FOCUS':
-        return parseInt(timerSettings[mode].value) * 60;
-
-      case 'BREAK':
-        return parseInt(timerSettings[mode].value) * 60;
-
-      case 'RECOVER':
-        return parseInt(timerSettings[mode].value) * 60;
-
-      default:
-        return parseInt(timerSettings.FOCUS.value) * 60;
-    }
-  };
-
-  const duration = getDuration();
+  const duration = useMemo(() => {
+    const modeValue = timerSettings[mode].value || timerSettings.FOCUS.value;
+    return parseInt(modeValue) * 60;
+  }, [mode, timerSettings]);
 
   // Transition when timer completes
   const handleTimerComplete = useCallback(() => {
@@ -67,10 +54,18 @@ export const TimerProvider = ({ children }) => {
     timerSettings,
     completeFocusSession,
     nextCycle,
-    resetCycle,
-    setMode,
     playNotification,
   ]);
+
+  const {
+    remaining,
+    totalDuration,
+    isRunning,
+    hasStarted,
+    start,
+    pause,
+    reset,
+  } = useTimer(duration, handleTimerComplete);
 
   // Auto start next mode when timer is running
   useEffect(() => {
@@ -86,17 +81,7 @@ export const TimerProvider = ({ children }) => {
     return () => {
       clearTimeout(timerId);
     };
-  }, [mode]);
-
-  const {
-    remaining,
-    totalDuration,
-    isRunning,
-    hasStarted,
-    start,
-    pause,
-    reset,
-  } = useTimer(duration, handleTimerComplete);
+  }, [mode, hasStarted, isRunning, start, timerSettings]);
 
   const handleTimerReset = useCallback(() => {
     reset();
@@ -133,7 +118,10 @@ export const TimerProvider = ({ children }) => {
   );
 
   // State context only contains remaining time
-  const stateValue = { remaining, totalDuration };
+  const stateValue = useMemo(
+    () => ({ remaining, totalDuration }),
+    [remaining, totalDuration]
+  );
 
   return (
     <TimerControlContext value={controlValue}>

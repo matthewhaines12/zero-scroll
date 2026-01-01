@@ -1,4 +1,12 @@
-import { createContext, use, useState, useEffect, useRef } from 'react';
+import {
+  createContext,
+  use,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import { SOUND_LIBRARY } from '../services/utils/constants';
 
 const AudioContext = createContext(null);
@@ -46,43 +54,46 @@ export const AudioProvider = ({ children }) => {
     };
   }, []);
 
-  const setVolume = (id, value) => {
-    const audio = audioRef.current[id];
-    if (!audio) return;
+  const setVolume = useCallback(
+    (id, value) => {
+      const audio = audioRef.current[id];
+      if (!audio) return;
 
-    const normalized = value / 100;
-    audio.volume = normalized;
+      const normalized = value / 100;
+      audio.volume = normalized;
 
-    if (value === 0) {
-      audio.pause();
-    } else if (audio.paused && !isMuted) {
-      audio.play().catch((err) => console.error('Audio mixer error:', err));
-    }
+      if (value === 0) {
+        audio.pause();
+      } else if (audio.paused && !isMuted) {
+        audio.play().catch((err) => console.error('Audio mixer error:', err));
+      }
 
-    setVolumes((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  };
+      setVolumes((prev) => ({
+        ...prev,
+        [id]: value,
+      }));
+    },
+    [isMuted]
+  );
 
-  const playNotification = () => {
+  const playNotification = useCallback(() => {
     if (notificationSound.current && !isMuted) {
       notificationSound.current.currentTime = 0;
       notificationSound.current
         .play()
         .catch((err) => console.error('Bell error:', err));
     }
-  };
+  }, [isMuted]);
 
-  const muteAll = () => {
+  const muteAll = useCallback(() => {
     Object.values(audioRef.current).forEach((audio) => {
       audio.pause();
     });
 
     setIsMuted(true);
-  };
+  }, []);
 
-  const unMute = () => {
+  const unMute = useCallback(() => {
     Object.values(audioRef.current).forEach((audio) => {
       if (audio.paused) {
         audio.play().catch((err) => console.error(err));
@@ -90,15 +101,14 @@ export const AudioProvider = ({ children }) => {
     });
 
     setIsMuted(false);
-  };
+  }, []);
 
-  return (
-    <AudioContext
-      value={{ volumes, isMuted, setVolume, playNotification, muteAll, unMute }}
-    >
-      {children}
-    </AudioContext>
+  const value = useMemo(
+    () => ({ volumes, isMuted, setVolume, playNotification, muteAll, unMute }),
+    [volumes, isMuted, setVolume, playNotification, muteAll, unMute]
   );
+
+  return <AudioContext value={value}>{children}</AudioContext>;
 };
 
 export const useAudioContext = () => {

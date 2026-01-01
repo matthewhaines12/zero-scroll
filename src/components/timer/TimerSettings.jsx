@@ -66,13 +66,13 @@ const TimerSettings = ({ onClose }) => {
         <div className="flex justify-between mt-6">
           <button
             onClick={onClose}
-            className="bg-surface-1 uppercase text-sm font-bold self-center px-4 py-2 rounded-2xl hover:opacity-85 cursor-pointer"
+            className="bg-surface-1 uppercase text-sm font-bold self-center px-4 py-2 rounded-xl hover:opacity-85 cursor-pointer"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="bg-text-base text-black uppercase text-sm font-bold self-center px-4 py-2 rounded-2xl hover:opacity-85 cursor-pointer"
+            className="bg-text-base text-black uppercase text-sm font-bold self-center px-4 py-2 rounded-xl hover:opacity-85 cursor-pointer"
           >
             Apply Changes
           </button>

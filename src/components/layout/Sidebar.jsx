@@ -4,7 +4,7 @@ import { Hexagon, LogIn } from 'lucide-react';
 import { useModeContext } from '../../context/ModeContext';
 import { MODES } from '../../services/utils/constants';
 import { NAV_ITEMS } from '../../services/utils/constants';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
 
 const Sidebar = () => {
@@ -35,7 +35,7 @@ const Sidebar = () => {
       {/* Bottom User Icon */}
       <div className="mt-auto mb-2 w-full px-3">
         {!user ? (
-          <NavLink
+          <Link
             to={'/login'}
             className="group relative flex items-center justify-center h-12 rounded-xl text-neon-focus hover:bg-surface-2 transition-colors cursor-pointer break:text-neon-break"
           >
@@ -47,7 +47,7 @@ const Sidebar = () => {
             >
               Login
             </span>
-          </NavLink>
+          </Link>
         ) : (
           <UserIcon />
         )}

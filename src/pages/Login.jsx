@@ -1,6 +1,6 @@
 import { MODES } from '../services/utils/constants';
 import { useModeContext } from '../context/ModeContext';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import { useState } from 'react';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
@@ -138,12 +138,12 @@ const Login = () => {
 
         <p className="text-text-muted">
           Need an account?{' '}
-          <NavLink
+          <Link
             to={'/signup'}
             className="text-text-base font-semibold hover:opacity-85 cursor-pointer"
           >
             Create account
-          </NavLink>
+          </Link>
         </p>
       </form>
     </main>

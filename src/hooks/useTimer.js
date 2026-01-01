@@ -31,6 +31,7 @@ export const useTimer = (initialDuration, onComplete) => {
     };
   }, [onComplete]);
 
+  // Update total duration on settings apply
   useEffect(() => {
     if (!isRunning && !hasStarted) {
       if (initialDuration !== totalDuration) {
@@ -68,7 +69,6 @@ export const useTimer = (initialDuration, onComplete) => {
     setIsRunning(false);
     setHasStarted(false);
     setRemaining(totalDuration);
-    setTotalDuration(totalDuration);
     workerRef.current?.postMessage({ type: 'RESET' });
   }, [totalDuration]);
 
