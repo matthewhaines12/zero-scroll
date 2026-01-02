@@ -16,8 +16,15 @@ const Sidebar = () => {
       className={`${MODES[mode]} fixed h-screen w-20 left-0 flex flex-col items-center py-8 bg-surface-1 border-r border-surface-2 z-50`}
     >
       {/* Logo */}
-      <div className="mb-10 text-neon-focus animate-pulse break:text-neon-break">
-        <Hexagon size={32} strokeWidth={2.5} />
+      <div className="mb-10 relative">
+        <Hexagon
+          size={42}
+          strokeWidth={2}
+          className="text-neon-focus drop-shadow-neon-focus break:text-neon-break break:drop-shadow-neon-break"
+        />
+        <span className="absolute inset-0 flex items-center justify-center text-lg font-timer font-bold text-neon-focus break:text-neon-break">
+          Z
+        </span>
       </div>
 
       {/* Navigation */}
