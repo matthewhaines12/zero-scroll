@@ -1,26 +1,46 @@
 import { useModeContext } from '../../context/ModeContext';
+import { useSessionContext } from '../../context/SessionContext';
+import { useSettingsContext } from '../../context/SettingsContext';
 import { MODES } from '../../services/utils/constants';
 import { Target, Flame, Timer } from 'lucide-react';
 
 const QuickStats = () => {
   const { mode } = useModeContext();
+  const { completedFocusSessions, totalDeepWorkMins } = useSessionContext();
+  const { dailyGoal } = useSettingsContext();
+
+  const convertMinsToHoursAndMins = (totalMins) => {
+    const hours = Math.floor(totalMins / 60);
+    const mins = totalMins % 60;
+
+    if (hours > 0 && mins > 0) {
+      return `${hours}hr ${mins}m`;
+    } else if (hours > 0) {
+      return `${hours}hr`;
+    } else if (mins > 0) {
+      return `${mins}m`;
+    } else {
+      return '0m';
+    }
+  };
 
   const stats = [
     {
       id: 'sessions-done',
       icon: Target,
       label: 'SESSIONS DONE',
-      value: '1 / 4',
+      value: `${completedFocusSessions} / ${dailyGoal}`,
       color: 'text-blue-400',
     },
     {
       id: 'time-spent',
       icon: Flame,
       label: 'DEEP WORK',
-      value: '1h 20m',
+      value: convertMinsToHoursAndMins(totalDeepWorkMins),
       color: 'text-orange-400',
     },
     {
+      // Replace with something better later
       id: 'finsih-time',
       icon: Timer,
       label: 'TARGET HIT',

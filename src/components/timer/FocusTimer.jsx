@@ -15,7 +15,7 @@ const FocusTimer = () => {
     isRunning,
     hasStarted,
     userStartedRef,
-    start,
+    handleStart,
     pause,
     handleTimerReset,
     handleEndMode,
@@ -31,10 +31,10 @@ const FocusTimer = () => {
     if (isRunning) {
       pause();
     } else if (!hasStarted) {
-      start(timerSettings[mode].value);
+      handleStart(timerSettings[mode].value);
       userStartedRef.current = true;
     } else {
-      start();
+      handleStart();
     }
   };
 

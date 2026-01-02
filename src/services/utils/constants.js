@@ -32,6 +32,8 @@ export const DEFAULT_TIMER_SETTINGS = {
   RECOVER: { value: '30', unit: 'mins' },
 };
 
+export const DAILY_SESSION_GOAL = 8;
+
 export const MODES = {
   FOCUS: 'focus',
   BREAK: 'break',

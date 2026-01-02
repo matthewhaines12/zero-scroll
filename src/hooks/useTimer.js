@@ -22,7 +22,11 @@ export const useTimer = (initialDuration, onComplete) => {
       if (event.data.done) {
         setIsRunning(false);
         setHasStarted(false);
-        onComplete?.(); // call the completion callback
+
+        const minutesSpent = Math.floor(
+          (totalDuration - event.data.remainingSec) / 60
+        );
+        onComplete?.({ minutesSpent }); // call the completion callback
       }
     };
 
