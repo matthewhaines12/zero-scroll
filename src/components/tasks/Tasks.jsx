@@ -95,9 +95,9 @@ const Tasks = () => {
         <button
           type="submit"
           className="flex justify-center items-center w-12 h-12 rounded-xl
-              bg-neon-focus/10 text-neon-focus border border-neon-focus/50
+              bg-neon-focus/8 text-neon-focus border border-neon-focus/50
               hover:bg-neon-focus hover:text-primary-dark hover:shadow-neon-glow-focus-small
-              transition-all duration-300 cursor-pointer break:bg-neon-break/10 break:text-neon-break break:border-neon-break/50 break:hover:bg-neon-break break:hover:shadow-neon-glow-break-small"
+              transition-all duration-300 cursor-pointer break:bg-neon-break/8 break:text-neon-break break:border-neon-break/50 break:hover:bg-neon-break break:hover:shadow-neon-glow-break-small"
         >
           <Plus size={28} strokeWidth={2} />
         </button>

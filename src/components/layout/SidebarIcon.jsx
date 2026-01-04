@@ -9,7 +9,7 @@ const SidebarIcon = ({ icon: Icon, label, to }) => {
          transition-all duration-300 cursor-pointer
          ${
            isActive
-             ? 'bg-neon-focus/10 text-neon-focus shadow-neon-glow-focus break:text-neon-break break:bg-neon-break/10 break:shadow-neon-glow-break'
+             ? 'bg-neon-focus/8 text-neon-focus shadow-neon-glow-focus break:text-neon-break break:bg-neon-break/10 break:shadow-neon-glow-break'
              : 'text-text-muted hover:bg-surface-2 hover:text-text-base'
          }`
       }

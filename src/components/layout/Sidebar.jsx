@@ -9,14 +9,14 @@ import { useAuthContext } from '../../context/AuthContext';
 
 const Sidebar = () => {
   const { mode } = useModeContext();
-  const { user } = useAuthContext();
+  const { status } = useAuthContext();
 
   return (
     <aside
       className={`${MODES[mode]} fixed h-screen w-20 left-0 flex flex-col items-center py-8 bg-surface-1 border-r border-surface-2 z-50`}
     >
       {/* Logo */}
-      <div className="mb-10 relative">
+      <div className="mb-10 relative hover:animate-pulse transition-all">
         <Hexagon
           size={42}
           strokeWidth={2}
@@ -41,7 +41,7 @@ const Sidebar = () => {
 
       {/* Bottom User Icon */}
       <div className="mt-auto mb-2 w-full px-3">
-        {!user ? (
+        {status !== 'authenticated' ? (
           <Link
             to={'/login'}
             className="group relative flex items-center justify-center h-12 rounded-xl text-neon-focus hover:bg-surface-2 transition-colors cursor-pointer break:text-neon-break"

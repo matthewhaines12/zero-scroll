@@ -12,7 +12,6 @@ import { useSettingsContext } from './SettingsContext';
 import { useSessionContext } from './SessionContext';
 import { useAudioContext } from './AudioContext';
 import { useAuthContext } from './AuthContext';
-// import * as sessionsApi from '../services/api/session.api';
 import { startSession, stopSession } from '../services/api/session.api';
 
 // Separate contexts for control (rarely changes) and state (changes every second)
@@ -24,9 +23,9 @@ export const TimerProvider = ({ children }) => {
   const currentSessionIDref = useRef(null);
 
   const { mode, setMode } = useModeContext();
-  const { timerSettings } = useSettingsContext();
+  const { timerSettings, preferences } = useSettingsContext();
   const { playNotification } = useAudioContext();
-  const { user, accessToken } = useAuthContext();
+  const { status, accessToken } = useAuthContext();
   const { currentCycle, completeFocusSession, nextCycle, resetCycle } =
     useSessionContext();
 
@@ -38,10 +37,15 @@ export const TimerProvider = ({ children }) => {
   // Transition when timer completes
   const handleTimerComplete = useCallback(
     async ({ minutesSpent }) => {
-      playNotification();
+      if (preferences.playSoundEffects) playNotification();
+
       const repeatCount = parseInt(timerSettings.REPEAT.value);
 
-      if (user && currentSessionIDref.current && mode === 'FOCUS') {
+      if (
+        status === 'authenticated' &&
+        currentSessionIDref.current &&
+        mode === 'FOCUS'
+      ) {
         try {
           await stopSession(
             currentSessionIDref.current,
@@ -77,8 +81,9 @@ export const TimerProvider = ({ children }) => {
       completeFocusSession,
       nextCycle,
       playNotification,
-      user,
+      status,
       accessToken,
+      preferences,
     ]
   );
 
@@ -96,7 +101,7 @@ export const TimerProvider = ({ children }) => {
     async (duration) => {
       start(duration);
 
-      if (user && mode == 'FOCUS') {
+      if (status === 'authenticated' && mode == 'FOCUS') {
         try {
           const plannedDuration =
             duration || parseInt(timerSettings.FOCUS.value);
@@ -105,12 +110,12 @@ export const TimerProvider = ({ children }) => {
         } catch (error) {}
       }
     },
-    [start, user, mode, timerSettings]
+    [start, status, mode, timerSettings, accessToken]
   );
 
   // Auto start next mode when timer is running
   useEffect(() => {
-    if (!userStartedRef.current) return;
+    if (!userStartedRef.current || !preferences.autoStartTimer) return;
 
     let timerId;
     if (!hasStarted && !isRunning && mode) {
@@ -122,7 +127,7 @@ export const TimerProvider = ({ children }) => {
     return () => {
       clearTimeout(timerId);
     };
-  }, [mode, hasStarted, isRunning, start, timerSettings]);
+  }, [mode, hasStarted, isRunning, handleStart, timerSettings, preferences]);
 
   const handleTimerReset = useCallback(() => {
     reset();
@@ -134,7 +139,11 @@ export const TimerProvider = ({ children }) => {
   const handleEndMode = useCallback(async () => {
     const minutesSpent = Math.floor((totalDuration - remaining) / 60);
 
-    if (user && currentSessionIDref.current && mode === 'FOCUS') {
+    if (
+      status === 'authenticated' &&
+      currentSessionIDref.current &&
+      mode === 'FOCUS'
+    ) {
       try {
         await stopSession(
           currentSessionIDref.current,
@@ -150,7 +159,14 @@ export const TimerProvider = ({ children }) => {
 
     reset();
     handleTimerComplete({ minutesSpent });
-  }, [reset, handleTimerComplete, remaining, totalDuration, user]);
+  }, [
+    reset,
+    handleTimerComplete,
+    remaining,
+    totalDuration,
+    status,
+    accessToken,
+  ]);
 
   // Control context only updates when isRunning or functions change
   const controlValue = useMemo(

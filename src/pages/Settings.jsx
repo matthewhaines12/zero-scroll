@@ -1,8 +1,14 @@
 import { useAuthContext } from '../context/AuthContext';
 import { formatDateOnly } from '../services/utils/formateDate';
+import { useSettingsContext } from '../context/SettingsContext';
 
 const Settings = () => {
   const { user, logout, deleteAccount } = useAuthContext();
+  const { preferences, savePreferences } = useSettingsContext();
+
+  const handleSavePreference = (newPreference) => {
+    savePreferences(newPreference);
+  };
 
   const handleLogout = async () => {
     try {
@@ -76,13 +82,16 @@ const Settings = () => {
                 <input
                   type="checkbox"
                   className="sr-only peer"
-                  defaultChecked
+                  checked={preferences.playSoundEffects}
+                  onChange={(e) =>
+                    handleSavePreference({ playSoundEffects: e.target.checked })
+                  }
                 />
                 <div className="w-11 h-6 bg-surface-1 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-text-muted after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-neon-focus peer-checked:after:bg-white"></div>
               </label>
             </div>
 
-            <div className="flex justify-between items-center">
+            {/* <div className="flex justify-between items-center">
               <div>
                 <p className="text-text-base font-semibold">Notifications</p>
                 <p className="text-text-muted text-xs">
@@ -97,20 +106,48 @@ const Settings = () => {
                 />
                 <div className="w-11 h-6 bg-surface-1 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-text-muted after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-neon-focus peer-checked:after:bg-white"></div>
               </label>
+            </div> */}
+
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-text-base font-semibold">Auto Start Timer</p>
+                <p className="text-text-muted text-xs">
+                  Automatically start timer when mode ends
+                </p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
+                  checked={preferences.autoStartTimer}
+                  onChange={(e) =>
+                    handleSavePreference({ autoStartTimer: e.target.checked })
+                  }
+                />
+                <div className="w-11 h-6 bg-surface-1 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-text-muted after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-neon-focus peer-checked:after:bg-white"></div>
+              </label>
             </div>
 
             <div className="flex justify-between items-center">
               <div>
                 <p className="text-text-base font-semibold">
-                  Auto Start Breaks
+                  Daily Sessions Goal
                 </p>
                 <p className="text-text-muted text-xs">
-                  Automatically start break timer
+                  Desired number of focus sessions in a day
                 </p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" />
-                <div className="w-11 h-6 bg-surface-1 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-text-muted after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-neon-focus peer-checked:after:bg-white"></div>
+                <input
+                  type="text"
+                  value={preferences.dailyGoal}
+                  maxLength={2}
+                  onChange={
+                    (e) => handleSavePreference({ dailyGoal: e.target.value }) // add max value limit
+                  }
+                  className="bg-surface-2 p-2 rounded-xl w-15 text-center font-bold outline-none border border-transparent focus:border-neon-focus/50 focus:shadow-neon-glow-focus-small
+               transition-all break:focus:border-neon-break/50 focus:break:shadow-neon-glow-break-small"
+                />
               </label>
             </div>
           </div>

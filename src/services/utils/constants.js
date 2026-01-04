@@ -23,8 +23,6 @@ export const PRIORITY_COLORS = {
   HIGH: 'text-priority-high shadow-neon-glow-high',
 };
 
-export const TIMER_LENGTH = 15;
-
 export const DEFAULT_TIMER_SETTINGS = {
   FOCUS: { value: '25', unit: 'mins' },
   BREAK: { value: '5', unit: 'mins' },
@@ -32,7 +30,11 @@ export const DEFAULT_TIMER_SETTINGS = {
   RECOVER: { value: '30', unit: 'mins' },
 };
 
-export const DAILY_SESSION_GOAL = 8;
+export const DEFAULT_PREFERENCE_SETTINGS = {
+  playSoundEffects: true,
+  autoStartTimer: true,
+  dailyGoal: 8,
+};
 
 export const MODES = {
   FOCUS: 'focus',

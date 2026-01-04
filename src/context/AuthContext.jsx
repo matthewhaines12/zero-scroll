@@ -6,7 +6,8 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState('loading'); // loading | authenticated | unauthenticated
 
   useEffect(() => {
     const refreshAuth = async () => {
@@ -14,12 +15,12 @@ export const AuthProvider = ({ children }) => {
         const res = await authApi.refresh();
         setUser(res.user);
         setAccessToken(res.newAccessToken);
+        setStatus('authenticated');
       } catch (err) {
         console.error(err);
         setUser(null);
         setAccessToken(null);
-      } finally {
-        setLoading(false);
+        setStatus('unauthenticated');
       }
     };
 
@@ -34,12 +35,14 @@ export const AuthProvider = ({ children }) => {
     const res = await authApi.login(data);
     setUser(res.userObj);
     setAccessToken(res.accessToken);
+    setStatus('authenticated');
   };
 
   const logout = async () => {
     await authApi.logout();
     setUser(null);
     setAccessToken(null);
+    setStatus('unauthenticated');
   };
 
   const verifyEmail = async (emailToken) => {
@@ -52,12 +55,11 @@ export const AuthProvider = ({ children }) => {
 
   const deleteAccount = async () => {
     try {
-      console.log('we made it here');
       await authApi.deleteAccount(accessToken);
       setUser(null);
       setAccessToken(null);
+      setStatus('unauthenticated');
     } catch (err) {
-      console.log('hi, i failed ');
       console.error(err);
     }
   };
@@ -66,7 +68,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext
       value={{
         user,
-        loading,
+        status,
         accessToken,
         signup,
         login,

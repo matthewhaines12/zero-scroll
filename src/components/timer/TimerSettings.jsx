@@ -3,12 +3,13 @@ import { X } from 'lucide-react';
 import { useSettingsContext } from '../../context/SettingsContext';
 
 const TimerSettings = ({ onClose }) => {
-  const { timerSettings, setTimerSettings } = useSettingsContext();
+  const { timerSettings, saveTimerSettings } = useSettingsContext();
   const [localSettings, setLocalSettings] = useState(timerSettings);
 
-  const handleApplySettings = (e) => {
+  // Can prob make this and other forms a ref to only updating state on apply
+  const handleApplySettings = async (e) => {
     e.preventDefault();
-    setTimerSettings(localSettings);
+    await saveTimerSettings(localSettings);
     onClose();
   };
 
@@ -52,7 +53,7 @@ const TimerSettings = ({ onClose }) => {
                   minLength={1}
                   maxLength={2}
                   onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    e.target.value = e.target.value.replace(/[^0-9]/g, ''); // add max value limit for repeat
                   }}
                   onChange={(e) => handleSettingChange(key, e.target.value)}
                   className="bg-transparent w-10 text-center font-bold outline-none"

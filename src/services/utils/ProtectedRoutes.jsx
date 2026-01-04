@@ -1,12 +1,18 @@
 import { Outlet, Navigate } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
+import Spinner from '../../components/ui/Spinner';
 
 const ProtectedRoutes = () => {
-  const { user, loading } = useAuthContext();
+  const { status } = useAuthContext();
 
-  if (loading) return null;
+  if (status === 'loading') {
+    return <Spinner />;
+  }
 
-  return user ? <Outlet /> : <Navigate to="/login" />;
+  if (status === 'authenticated') {
+    return <Outlet />;
+  }
+  return <Navigate to="/login" />;
 };
 
 export default ProtectedRoutes;

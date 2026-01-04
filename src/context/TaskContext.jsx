@@ -1,19 +1,21 @@
-import { createContext, use, useState, useEffect } from 'react';
+import { createContext, use, useState, useEffect, useMemo } from 'react';
 import { useAuthContext } from './AuthContext';
 import * as tasksApi from '../services/api/tasks.api';
 
 const TaskContext = createContext(null);
 
 export const TaskProvider = ({ children }) => {
-  const { user, accessToken } = useAuthContext();
+  const { status, accessToken } = useAuthContext();
   const [tasks, setTasks] = useState([]);
   const [activeTaskID, setActiveTaskID] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const activeTask = tasks.find((t) => t.id === activeTaskID);
 
   useEffect(() => {
     const loadTasks = async () => {
-      if (user) {
+      if (status === 'authenticated' && accessToken) {
+        setLoading(true);
         try {
           const res = await tasksApi.getTasks(accessToken);
           const normalizedTasks = res.tasks.map((task) => ({
@@ -23,16 +25,19 @@ export const TaskProvider = ({ children }) => {
 
           setTasks(normalizedTasks);
         } catch (err) {
-          console.error(err);
+          console.error('Failed to load tasks:', err);
+        } finally {
+          setLoading(false);
         }
       } else {
         setTasks([]);
         setActiveTaskID(null);
+        setLoading(false);
       }
     };
 
     loadTasks();
-  }, [user, accessToken]);
+  }, [status, accessToken]);
 
   const createTask = async ({ title }) => {
     if (!title.trim()) return;
@@ -46,7 +51,7 @@ export const TaskProvider = ({ children }) => {
     };
 
     // Logged in -> save to DB
-    if (user) {
+    if (status === 'authenticated' && accessToken) {
       const res = await tasksApi.createTask(
         {
           title,
@@ -74,7 +79,7 @@ export const TaskProvider = ({ children }) => {
     const updatedCompleted = !task.completed;
 
     // Logged in -> save to DB
-    if (user) {
+    if (status === 'authenticated' && accessToken) {
       await tasksApi.updateTask(
         taskID,
         { completed: updatedCompleted },
@@ -94,7 +99,7 @@ export const TaskProvider = ({ children }) => {
     if (!task) return;
 
     // Logged in -> save to DB
-    if (user) {
+    if (status === 'authenticated' && accessToken) {
       await tasksApi.updateTask(taskID, { priority: newPriority }, accessToken);
     }
     // Update the local state
@@ -107,7 +112,7 @@ export const TaskProvider = ({ children }) => {
     const task = tasks.find((t) => t.id === taskID);
     if (!task) return;
 
-    if (user) {
+    if (status === 'authenticated' && accessToken) {
       await tasksApi.deleteTask(taskID, accessToken);
     }
 
@@ -119,7 +124,7 @@ export const TaskProvider = ({ children }) => {
     const task = tasks.find((t) => t.id === taskID);
     if (!task) return;
 
-    if (user) {
+    if (status === 'authenticated' && accessToken) {
       await tasksApi.updateTask(taskID, { title: newTitle }, accessToken);
     }
 
@@ -128,10 +133,15 @@ export const TaskProvider = ({ children }) => {
     );
   };
 
+  // Avoid resorting on every render
+  const sortedTasks = useMemo(() => {
+    return [...tasks].sort((a, b) => Number(a.completed) - Number(b.completed));
+  }, [tasks]);
+
   return (
     <TaskContext
       value={{
-        tasks,
+        tasks: sortedTasks,
         activeTask,
         activeTaskID,
         setActiveTaskID,

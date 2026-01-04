@@ -40,15 +40,15 @@ const FocusTimer = () => {
 
   return (
     <article
-      className={`${MODES[mode]} relative flex flex-col items-center w-full p-8`}
+      className={`${MODES[mode]} relative flex flex-col items-center w-full p-6 lg:h-full lg:p-8`}
     >
       {/* Settings Button */}
       <button
         onClick={() => setShowSettings(true)}
         disabled={isRunning}
-        className="absolute top-5 left-8 hover:opacity-85 cursor-pointer text-text-base bg-surface-2/50 p-3 rounded-full"
+        className="absolute top-4 left-6 hover:opacity-85 cursor-pointer text-text-base bg-surface-2/50 p-2.5 rounded-full lg:top-5 lg:left-8 lg:p-3"
       >
-        <Timer size={30} />
+        <Timer size={26} className="lg:w-[30px] lg:h-[30px]" />
       </button>
 
       {/* Settings Modal */}
@@ -57,17 +57,17 @@ const FocusTimer = () => {
       </Modal>
 
       {/* Header */}
-      <header className="flex flex-col items-center mb-12 min-h-20">
-        <h2 className="font-timer text-neon-focus text-3xl uppercase mb-2 drop-shadow-neon-focus break:text-neon-break break:drop-shadow-neon-break">
-          Current Target
+      <header className="flex flex-col items-center mb-6 min-h-20">
+        <h2 className="font-timer text-neon-focus text-3xl uppercase mb-1 drop-shadow-neon-focus break:text-neon-break break:drop-shadow-neon-break">
+          {activeTask ? 'Current Target' : 'Focus Timer'}
         </h2>
         {activeTask && (
-          <p className="text-lg text-text-base/90 mt-2 flex items-center gap-2">
+          <p className="text-base text-text-base/90 m-2 flex items-center gap-2">
             <CircleSmall
               className={`mr-1 opacity-80 shrink-0 rounded-full ${
                 PRIORITY_COLORS[activeTask.priority]
               }`}
-              size={20}
+              size={18}
             />
             {activeTask.title}
           </p>
@@ -76,7 +76,7 @@ const FocusTimer = () => {
 
       {/* Timer Display */}
       <div className="relative flex items-center justify-center w-[380px] h-[380px]">
-        <div className="absolute inset-0 flex flex-col gap-4 items-center justify-center">
+        <div className="absolute inset-0 flex flex-col gap-3 items-center justify-center">
           <p className="font-timer tracking-wider text-text-muted text-xs select-none">
             {isRunning
               ? mode === 'FOCUS'
@@ -116,7 +116,7 @@ const FocusTimer = () => {
       </div>
 
       {/* Session Display */}
-      <div className="mt-6">
+      <div className="mt-4">
         <SessionDisplay
           isRunning={isRunning}
           mode={mode}
@@ -125,7 +125,7 @@ const FocusTimer = () => {
       </div>
 
       {/* Control Buttons */}
-      <div className="mt-8 flex flex-col gap-6 w-full max-w-xs">
+      <div className="mt-6 flex flex-col gap-3 w-full max-w-xs">
         <button
           type="button"
           onClick={handleToggle}

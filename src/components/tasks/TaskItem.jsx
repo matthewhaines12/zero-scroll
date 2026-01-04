@@ -36,7 +36,8 @@ const TaskItem = ({
 
   return (
     <div
-      className={`flex w-full items-center px-3 py-4 rounded-xl gap-3 border-2 transition-colors duration-200
+      onClick={() => !task.completed && !isEditing && onSelect(task)}
+      className={`flex w-full items-center p-3 rounded-xl gap-3 border-2 transition-colors duration-200
         ${
           isActive
             ? 'border-neon-focus break:border-neon-break'
@@ -45,10 +46,7 @@ const TaskItem = ({
         ${task.completed ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}
       `}
     >
-      <div
-        className="flex items-center gap-3 flex-1 min-w-0"
-        onClick={() => !task.completed && !isEditing && onSelect(task)}
-      >
+      <div className="flex items-center gap-2 flex-1 min-w-0">
         <input
           type="checkbox"
           checked={task.completed}
@@ -135,6 +133,7 @@ const TaskItem = ({
 
       <select
         value={task.priority}
+        onClick={(e) => e.stopPropagation()}
         onChange={(e) => {
           e.stopPropagation();
           onPriorityChange(task.id, e.target.value);
