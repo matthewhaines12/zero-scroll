@@ -7,7 +7,7 @@ import { Target, Flame, Timer } from 'lucide-react';
 const QuickStats = () => {
   const { mode } = useModeContext();
   const { completedFocusSessions, totalDeepWorkMins } = useSessionContext();
-  const { dailyGoal } = useSettingsContext();
+  const { preferences } = useSettingsContext();
 
   const convertMinsToHoursAndMins = (totalMins) => {
     const hours = Math.floor(totalMins / 60);
@@ -29,7 +29,7 @@ const QuickStats = () => {
       id: 'sessions-done',
       icon: Target,
       label: 'SESSIONS DONE',
-      value: `${completedFocusSessions} / ${dailyGoal}`,
+      value: `${completedFocusSessions} / ${preferences.dailyGoal}`,
       color: 'text-blue-400',
     },
     {
@@ -51,7 +51,7 @@ const QuickStats = () => {
 
   return (
     <article
-      className={`${MODES[mode]} flex flex-col h-2/5 w-full bg-surface-1/50 rounded-2xl p-6 border border-surface-2`}
+      className={`${MODES[mode]} flex flex-col h-full w-full bg-surface-1/50 rounded-2xl p-6 border border-surface-2`}
     >
       <header className="mb-6">
         <h2 className="font-timer text-neon-focus text-xl uppercase drop-shadow-neon-focus break:text-neon-break break:drop-shadow-neon-break">

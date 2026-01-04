@@ -9,8 +9,12 @@ const FocusHub = () => {
       <Tasks />
       <FocusTimer />
       <section className="flex flex-col gap-6 min-h-0">
-        <AudioSlider />
-        <QuickStats />
+        <div className="flex-5 min-h-0">
+          <AudioSlider />
+        </div>
+        <div className="flex-4">
+          <QuickStats />
+        </div>
       </section>
     </main>
   );
