@@ -1,15 +1,50 @@
-import { createContext, use, useState, useCallback, useMemo } from 'react';
+import {
+  createContext,
+  use,
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+} from 'react';
+import { useAuthContext } from './AuthContext';
+import { getDailySessionStats } from '../services/api/session.api';
 
 const SessionContext = createContext(null);
 
 export const SessionProvider = ({ children }) => {
+  const { status, accessToken } = useAuthContext();
   const [completedFocusSessions, setCompletedFocusSessions] = useState(0);
   const [currentCycle, setCurrentCycle] = useState(1); // Which focus cycle 1 - 4 (Repeat)
-  const [totalDeepWorkMins, setTotalDeepWorkMins] = useState(0);
+  const [totalDeepWorkMins, setTotalDeepWorkMins] = useState(0); // For Daily stats
+  const [totalFocusSessions, setTotalFocusSessions] = useState(0); // For Daily stats
+  const [loading, setLoading] = useState(status === 'authenticated'); // only load if we expect a fetch
+
+  // Load daily stats when user is authenticated
+  useEffect(() => {
+    const loadDailyStats = async () => {
+      if (status === 'authenticated' && accessToken) {
+        setLoading(true);
+
+        try {
+          const dailyStats = await getDailySessionStats(accessToken);
+          console.log(dailyStats);
+          setTotalDeepWorkMins(dailyStats.totalDeepWorkMins);
+          setTotalFocusSessions(dailyStats.totalFocusSessions);
+        } catch (err) {
+          console.error('Failed to fetch daily stats:', err);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadDailyStats();
+  }, [status, accessToken]);
 
   const completeFocusSession = useCallback((minutesSpent) => {
     setCompletedFocusSessions((prev) => prev + 1);
     setTotalDeepWorkMins((prev) => prev + minutesSpent);
+    setTotalFocusSessions((prev) => prev + 1);
   }, []);
 
   const nextCycle = useCallback(() => {
@@ -26,6 +61,8 @@ export const SessionProvider = ({ children }) => {
       completedFocusSessions,
       currentCycle,
       totalDeepWorkMins,
+      totalFocusSessions,
+      loading,
       completeFocusSession,
       nextCycle,
       resetCycle,
@@ -34,6 +71,8 @@ export const SessionProvider = ({ children }) => {
       completedFocusSessions,
       currentCycle,
       totalDeepWorkMins,
+      totalFocusSessions,
+      loading,
       completeFocusSession,
       nextCycle,
       resetCycle,

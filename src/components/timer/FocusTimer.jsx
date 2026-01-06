@@ -23,6 +23,7 @@ const FocusTimer = () => {
   const { activeTask } = useTaskContext();
   const { mode } = useModeContext();
   const { timerSettings } = useSettingsContext();
+
   const [showSettings, setShowSettings] = useState(false);
 
   const repeatCount = parseInt(timerSettings.REPEAT.value);

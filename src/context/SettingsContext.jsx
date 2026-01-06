@@ -13,16 +13,16 @@ import {
 const SettingsContext = createContext(null);
 
 export const SettingsProvider = ({ children }) => {
+  const { status, accessToken } = useAuthContext();
   const [timerSettings, setTimerSettings] = useState(DEFAULT_TIMER_SETTINGS);
   const [preferences, setPreferences] = useState(DEFAULT_PREFERENCE_SETTINGS);
-  const [loading, setLoading] = useState(true);
-
-  const { status, accessToken } = useAuthContext();
+  const [loading, setLoading] = useState(status === 'authenticated'); // only load if we expect a fetch
 
   useEffect(() => {
     const loadUserSettings = async () => {
       if (status === 'authenticated' && accessToken) {
         setLoading(true);
+
         try {
           const data = await getSettings(accessToken);
 
@@ -33,8 +33,6 @@ export const SettingsProvider = ({ children }) => {
         } finally {
           setLoading(false);
         }
-      } else {
-        setLoading(false);
       }
     };
     loadUserSettings();
@@ -69,6 +67,7 @@ export const SettingsProvider = ({ children }) => {
       value={{
         timerSettings,
         preferences,
+        loading,
         saveTimerSettings,
         savePreferences,
       }}

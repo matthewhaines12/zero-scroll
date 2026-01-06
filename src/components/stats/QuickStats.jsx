@@ -1,12 +1,18 @@
 import { useModeContext } from '../../context/ModeContext';
 import { useSessionContext } from '../../context/SessionContext';
+import { useTaskContext } from '../../context/TaskContext';
 import { useSettingsContext } from '../../context/SettingsContext';
 import { MODES } from '../../services/utils/constants';
-import { Target, Flame, Timer } from 'lucide-react';
+import { Target, BookOpenText, ClipboardList } from 'lucide-react';
 
 const QuickStats = () => {
   const { mode } = useModeContext();
-  const { completedFocusSessions, totalDeepWorkMins } = useSessionContext();
+  const {
+    totalFocusSessions,
+    totalDeepWorkMins,
+    loading: sessionLoading,
+  } = useSessionContext();
+  const { completedTasksToday, loading: taskLoading } = useTaskContext();
   const { preferences } = useSettingsContext();
 
   const convertMinsToHoursAndMins = (totalMins) => {
@@ -29,22 +35,26 @@ const QuickStats = () => {
       id: 'sessions-done',
       icon: Target,
       label: 'SESSIONS DONE',
-      value: `${completedFocusSessions} / ${preferences.dailyGoal}`,
+      value: sessionLoading
+        ? '-'
+        : `${totalFocusSessions} / ${preferences.dailyGoal}`,
       color: 'text-blue-400',
     },
     {
       id: 'time-spent',
-      icon: Flame,
+      icon: BookOpenText,
       label: 'DEEP WORK',
-      value: convertMinsToHoursAndMins(totalDeepWorkMins),
+      value: sessionLoading
+        ? '-'
+        : convertMinsToHoursAndMins(totalDeepWorkMins),
       color: 'text-orange-400',
     },
     {
       // Replace with something better later
-      id: 'finsih-time',
-      icon: Timer,
-      label: 'TARGET HIT',
-      value: '6:55 PM',
+      id: 'tasks-completed',
+      icon: ClipboardList,
+      label: 'TASKS COMPLETED',
+      value: taskLoading ? '-' : completedTasksToday,
       color: 'text-green-400',
     },
   ];
@@ -65,7 +75,7 @@ const QuickStats = () => {
             className="flex items-center gap-3 p-3 rounded-xl bg-surface-2/50 hover:bg-surface-2 transition-colors"
           >
             <div
-              className={`p-2 rounded-lg bg-black/30 ${stat.color} shrink-0`}
+              className={`p-2 rounded-lg bg-primary-dark/40 ${stat.color} shrink-0`}
             >
               <stat.icon size={20} strokeWidth={2.5} />
             </div>

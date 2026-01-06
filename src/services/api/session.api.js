@@ -46,3 +46,12 @@ export const getSessions = async (accessToken) => {
   });
   return data;
 };
+
+export const getDailySessionStats = async (accessToken) => {
+  const { data } = await api.get('/sessions/today', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return data;
+};

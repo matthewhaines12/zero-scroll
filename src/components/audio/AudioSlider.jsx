@@ -30,7 +30,7 @@ const AudioSlider = () => {
             {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
           </button>
         </div>
-        <p className="text-text-muted text-xs mt-1">ADJUST AUDIO SLIDER</p>
+        <p className="text-text-muted text-xs mt-1">ADJUST AUDIO SLIDERS</p>
       </header>
 
       <div className="flex flex-col gap-2 overflow-y-auto pr-3 custom-scrollbar">

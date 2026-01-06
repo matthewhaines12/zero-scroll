@@ -6,7 +6,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { useTimer } from '../hooks/useTimer';
+import { useTimer } from '../components/timer/useTimer';
 import { useModeContext } from './ModeContext';
 import { useSettingsContext } from './SettingsContext';
 import { useSessionContext } from './SessionContext';

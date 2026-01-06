@@ -10,7 +10,7 @@ export const useTimer = (initialDuration, onComplete) => {
   // Run once when the component using the hook mounts and create the worker
   useEffect(() => {
     workerRef.current = new Worker(
-      new URL('../workers/timer.worker.js', import.meta.url)
+      new URL('../../workers/timer.worker.js', import.meta.url)
     );
 
     // Handle messages from worker

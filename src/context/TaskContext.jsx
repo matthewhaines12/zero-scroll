@@ -8,14 +8,16 @@ export const TaskProvider = ({ children }) => {
   const { status, accessToken } = useAuthContext();
   const [tasks, setTasks] = useState([]);
   const [activeTaskID, setActiveTaskID] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(status === 'authenticated'); // only load if we expect a fetch
 
   const activeTask = tasks.find((t) => t.id === activeTaskID);
 
   useEffect(() => {
     const loadTasks = async () => {
+      // Logged in users -> fetch from backend
       if (status === 'authenticated' && accessToken) {
         setLoading(true);
+
         try {
           const res = await tasksApi.getTasks(accessToken);
           const normalizedTasks = res.tasks.map((task) => ({
@@ -29,10 +31,6 @@ export const TaskProvider = ({ children }) => {
         } finally {
           setLoading(false);
         }
-      } else {
-        setTasks([]);
-        setActiveTaskID(null);
-        setLoading(false);
       }
     };
 
@@ -116,8 +114,7 @@ export const TaskProvider = ({ children }) => {
       await tasksApi.deleteTask(taskID, accessToken);
     }
 
-    const updatedTasks = tasks.filter((t) => t.id !== taskID);
-    setTasks(updatedTasks);
+    setTasks((prev) => prev.filter((t) => t.id != taskID));
   };
 
   const updateTask = async (taskID, newTitle) => {
@@ -133,6 +130,7 @@ export const TaskProvider = ({ children }) => {
     );
   };
 
+  const completedTasksToday = tasks.filter((t) => t.completed === true).length;
   // Avoid resorting on every render
   const sortedTasks = useMemo(() => {
     return [...tasks].sort((a, b) => Number(a.completed) - Number(b.completed));
@@ -144,6 +142,8 @@ export const TaskProvider = ({ children }) => {
         tasks: sortedTasks,
         activeTask,
         activeTaskID,
+        completedTasksToday,
+        loading,
         setActiveTaskID,
         createTask,
         completeTask,
