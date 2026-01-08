@@ -36,6 +36,8 @@ export const DEFAULT_PREFERENCE_SETTINGS = {
   dailyGoal: 8,
 };
 
+export const MIN_FOCUS_MINUTES = 5;
+
 export const MODES = {
   FOCUS: 'focus',
   BREAK: 'break',

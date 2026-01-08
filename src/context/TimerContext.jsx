@@ -13,6 +13,7 @@ import { useSessionContext } from './SessionContext';
 import { useAudioContext } from './AudioContext';
 import { useAuthContext } from './AuthContext';
 import { startSession, stopSession } from '../services/api/session.api';
+import { MIN_FOCUS_MINUTES } from '../services/utils/constants';
 
 // Separate contexts for control (rarely changes) and state (changes every second)
 const TimerControlContext = createContext(null);
@@ -36,10 +37,11 @@ export const TimerProvider = ({ children }) => {
 
   // Transition when timer completes
   const handleTimerComplete = useCallback(
-    async ({ minutesSpent }) => {
+    async (minutesSpent) => {
       if (preferences.playSoundEffects) playNotification();
 
       const repeatCount = parseInt(timerSettings.REPEAT.value);
+      const countsTowardStats = minutesSpent >= MIN_FOCUS_MINUTES;
 
       if (
         status === 'authenticated' &&
@@ -51,6 +53,7 @@ export const TimerProvider = ({ children }) => {
             currentSessionIDref.current,
             minutesSpent,
             true,
+            countsTowardStats,
             accessToken
           );
           currentSessionIDref.current = null;
@@ -60,7 +63,7 @@ export const TimerProvider = ({ children }) => {
       }
 
       if (mode === 'FOCUS') {
-        completeFocusSession(minutesSpent);
+        completeFocusSession(minutesSpent, countsTowardStats);
 
         if (currentCycle >= repeatCount) {
           setMode('RECOVER');
@@ -138,6 +141,7 @@ export const TimerProvider = ({ children }) => {
 
   const handleEndMode = useCallback(async () => {
     const minutesSpent = Math.floor((totalDuration - remaining) / 60);
+    const countsTowardStats = minutesSpent >= MIN_FOCUS_MINUTES;
 
     if (
       status === 'authenticated' &&
@@ -149,6 +153,7 @@ export const TimerProvider = ({ children }) => {
           currentSessionIDref.current,
           minutesSpent,
           false,
+          countsTowardStats,
           accessToken
         );
         currentSessionIDref.current = null;
@@ -158,14 +163,15 @@ export const TimerProvider = ({ children }) => {
     }
 
     reset();
-    handleTimerComplete({ minutesSpent });
+    handleTimerComplete(minutesSpent);
   }, [
     reset,
     handleTimerComplete,
+    status,
+    mode,
+    accessToken,
     remaining,
     totalDuration,
-    status,
-    accessToken,
   ]);
 
   // Control context only updates when isRunning or functions change

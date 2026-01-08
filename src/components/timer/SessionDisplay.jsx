@@ -9,10 +9,6 @@ const SessionDisplay = ({ isRunning, mode, repeatCount }) => {
       {Array.from({ length: repeatCount * 2 }, (_, i) => {
         const isFocusSlot = i % 2 === 0;
         const focusIndex = Math.floor(i / 2);
-        const isFocusCompleted =
-          isFocusSlot && focusIndex < completedFocusSessions;
-        const isBreakCompleted =
-          !isFocusSlot && focusIndex < completedFocusSessions;
 
         // Calculate if this slot is currently active
         const isCurrent =
@@ -20,6 +16,40 @@ const SessionDisplay = ({ isRunning, mode, repeatCount }) => {
         const isActiveFocus = isCurrent && isFocusSlot && mode === 'FOCUS';
         const isActiveBreak =
           isCurrent && !isFocusSlot && (mode === 'BREAK' || mode === 'RECOVER');
+
+        // Check completion status (but not if it's the current active slot)
+        const isFocusCompleted =
+          isFocusSlot && focusIndex < completedFocusSessions;
+        const isBreakCompleted =
+          !isFocusSlot && focusIndex < completedFocusSessions && !isCurrent;
+
+        // Active focus session - show pulsing blue outline
+        if (isActiveFocus) {
+          return (
+            <div key={i} className="relative">
+              <Circle
+                size={24}
+                className={`text-neon-focus ${
+                  isRunning ? 'animate-pulse' : ''
+                }`}
+                strokeWidth={2.5}
+              />
+            </div>
+          );
+        }
+
+        // Active break session - show pulsing green ring
+        if (isActiveBreak) {
+          return (
+            <div key={i} className="relative">
+              <div
+                className={`w-2 h-2 rounded-full border-2 border-neon-break ${
+                  isRunning ? 'animate-pulse' : ''
+                }`}
+              />
+            </div>
+          );
+        }
 
         // Completed focus - show checkmark with blue
         if (isFocusCompleted) {
@@ -38,35 +68,7 @@ const SessionDisplay = ({ isRunning, mode, repeatCount }) => {
         if (isBreakCompleted) {
           return (
             <div key={i} className="relative">
-              <div className="w-3 h-3 rounded-full bg-neon-break drop-shadow-neon-break/40" />
-            </div>
-          );
-        }
-
-        // Active focus session - show pulsing blue outline
-        if (isActiveFocus) {
-          return (
-            <div key={i} className="relative">
-              <Circle
-                size={24}
-                className={`text-neon-focus ${
-                  isRunning ? 'animate-pulse' : ''
-                }`}
-                strokeWidth={2.5}
-              />
-            </div>
-          );
-        }
-
-        // Active break session - show pulsing green ring - not working * fix later *
-        if (isActiveBreak) {
-          return (
-            <div key={i} className="relative">
-              <div
-                className={`w-2 h-2 rounded-full border-2 border-neon-break ${
-                  isRunning ? 'animate-pulse' : ''
-                }`}
-              />
+              <div className="w-2 h-2 rounded-full bg-neon-break drop-shadow-neon-break/40" />
             </div>
           );
         }

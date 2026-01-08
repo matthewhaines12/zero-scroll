@@ -21,6 +21,7 @@ export const stopSession = async (
   sessionID,
   actualDuration,
   completed, // If session was ended early, completed = false
+  countsTowardStats,
   accessToken
 ) => {
   const { data } = await api.patch(
@@ -28,6 +29,7 @@ export const stopSession = async (
     {
       actualDuration,
       completed,
+      countsTowardStats,
     },
     {
       headers: {

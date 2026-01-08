@@ -27,7 +27,6 @@ export const SessionProvider = ({ children }) => {
 
         try {
           const dailyStats = await getDailySessionStats(accessToken);
-          console.log(dailyStats);
           setTotalDeepWorkMins(dailyStats.totalDeepWorkMins);
           setTotalFocusSessions(dailyStats.totalFocusSessions);
         } catch (err) {
@@ -41,11 +40,18 @@ export const SessionProvider = ({ children }) => {
     loadDailyStats();
   }, [status, accessToken]);
 
-  const completeFocusSession = useCallback((minutesSpent) => {
-    setCompletedFocusSessions((prev) => prev + 1);
-    setTotalDeepWorkMins((prev) => prev + minutesSpent);
-    setTotalFocusSessions((prev) => prev + 1);
-  }, []);
+  const completeFocusSession = useCallback(
+    (minutesSpent, countsTowardStats) => {
+      setCompletedFocusSessions((prev) => prev + 1);
+
+      // Only update stats if session meets minimum time requirement
+      if (countsTowardStats) {
+        setTotalDeepWorkMins((prev) => prev + minutesSpent);
+        setTotalFocusSessions((prev) => prev + 1);
+      }
+    },
+    []
+  );
 
   const nextCycle = useCallback(() => {
     setCurrentCycle((prev) => prev + 1);

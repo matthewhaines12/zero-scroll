@@ -2,10 +2,17 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 
 export const useTimer = (initialDuration, onComplete) => {
   const workerRef = useRef(null);
+  const onCompleteRef = useRef(onComplete);
+
   const [remaining, setRemaining] = useState(initialDuration);
   const [totalDuration, setTotalDuration] = useState(initialDuration);
   const [isRunning, setIsRunning] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+
+  // Keep callback up to date without restarting worker
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onCompleteRef]);
 
   // Run once when the component using the hook mounts and create the worker
   useEffect(() => {
@@ -26,14 +33,14 @@ export const useTimer = (initialDuration, onComplete) => {
         const minutesSpent = Math.floor(
           (totalDuration - event.data.remainingSec) / 60
         );
-        onComplete?.({ minutesSpent }); // call the completion callback
+        onCompleteRef.current?.(minutesSpent); // call the completion callback
       }
     };
 
     return () => {
       workerRef.current?.terminate(); // If current worker exists, clear on unmount
     };
-  }, [onComplete]);
+  }, []);
 
   // Update total duration on settings apply
   useEffect(() => {

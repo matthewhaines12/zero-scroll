@@ -53,7 +53,12 @@ const TimerSettings = ({ onClose }) => {
                   minLength={1}
                   maxLength={2}
                   onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^0-9]/g, ''); // add max value limit for repeat
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
+                    // Apply max value limit for REPEAT
+                    if (key === 'REPEAT' && parseInt(e.target.value) > 8) {
+                      e.target.value = '8';
+                    }
                   }}
                   onChange={(e) => handleSettingChange(key, e.target.value)}
                   className="bg-transparent w-10 text-center font-bold outline-none"

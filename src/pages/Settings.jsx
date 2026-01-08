@@ -1,8 +1,10 @@
+// import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import { formatDateOnly } from '../services/utils/formateDate';
 import { useSettingsContext } from '../context/SettingsContext';
 
 const Settings = () => {
+  // const navigate = useNavigate();
   const { user, logout, deleteAccount } = useAuthContext();
   const { preferences, savePreferences } = useSettingsContext();
 
@@ -13,6 +15,7 @@ const Settings = () => {
   const handleLogout = async () => {
     try {
       await logout();
+      // navigate('/');
     } catch (err) {
       console.error('Logout failed:', err);
     }
@@ -26,6 +29,7 @@ const Settings = () => {
     ) {
       try {
         await deleteAccount();
+        // navigate('/');
       } catch (err) {
         console.error('Delete failed:', err);
       }
