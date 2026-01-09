@@ -1,13 +1,12 @@
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import { formatChartDate } from '../../services/utils/formateDate';
 
 // Custom tooltip component with theme styling
 const CustomTooltip = ({ active, payload, mode }) => {
@@ -29,7 +28,7 @@ const CustomTooltip = ({ active, payload, mode }) => {
           {payload[0].value} minutes
         </p>
         <p className="text-text-muted text-xs mt-1">
-          {payload[0].payload.date}
+          {payload[0].payload.hourBucket}
         </p>
       </div>
     );
@@ -37,9 +36,9 @@ const CustomTooltip = ({ active, payload, mode }) => {
   return null;
 };
 
-const ConsistencyChart = ({ data, mode = 'FOCUS' }) => {
-  // Define line color based on current mode
-  const lineColor =
+const FocusHoursChart = ({ data, mode = 'FOCUS' }) => {
+  // Define bar color based on current mode
+  const barColor =
     mode === 'BREAK' || mode === 'RECOVER' ? '#1aff99' : '#00d4ff';
 
   // Handle null/undefined data to prevent errors
@@ -54,19 +53,18 @@ const ConsistencyChart = ({ data, mode = 'FOCUS' }) => {
   return (
     <div className="flex items-center justify-center w-full">
       <ResponsiveContainer width="100%" height={250}>
-        <LineChart
+        <BarChart
           data={data}
           margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#ffffff" opacity={0.1} />
           <XAxis
-            dataKey="date"
-            tickFormatter={formatChartDate}
+            dataKey="hourBucket"
             stroke="#8892a6"
             tick={{ fill: '#8892a6', fontSize: 12 }}
             interval="preserveStartEnd"
             label={{
-              value: 'Date',
+              value: 'Hours',
               position: 'insideBottom',
               offset: -5,
               fill: '#8892a6',
@@ -88,28 +86,15 @@ const ConsistencyChart = ({ data, mode = 'FOCUS' }) => {
           <Tooltip
             content={<CustomTooltip mode={mode} />}
             cursor={{
-              stroke: lineColor,
-              strokeWidth: 1,
-              strokeDasharray: '3 3',
+              fill: barColor,
+              opacity: 0.1,
             }}
           />
-          <Line
-            type="monotone"
-            dataKey="minutes"
-            stroke={lineColor}
-            strokeWidth={2.5}
-            dot={{ r: 3, fill: lineColor, strokeWidth: 0 }}
-            activeDot={{
-              r: 5,
-              fill: lineColor,
-              stroke: '#0a0f1a',
-              strokeWidth: 2,
-            }}
-          />
-        </LineChart>
+          <Bar dataKey="minutes" fill={barColor} radius={[4, 4, 0, 0]} />
+        </BarChart>
       </ResponsiveContainer>
     </div>
   );
 };
 
-export default ConsistencyChart;
+export default FocusHoursChart;

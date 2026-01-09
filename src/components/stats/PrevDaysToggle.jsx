@@ -1,4 +1,4 @@
-const ConsistencyToggle = ({ value, onChange }) => {
+const PrevDaysToggle = ({ value, onChange }) => {
   const ranges = [7, 14, 30];
 
   return (
@@ -7,7 +7,7 @@ const ConsistencyToggle = ({ value, onChange }) => {
         <button
           key={days}
           onClick={() => onChange(days)}
-          className={`px-4 py-1.5 rounded-lg text-sm font-semibold cursor-pointer transition-all ${
+          className={`px-4 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all ${
             value === days
               ? 'bg-neon-focus text-primary-dark shadow-neon-glow-focus-small break:bg-neon-break break:shadow-neon-glow-break-small'
               : 'text-text-muted hover:text-text-base hover:bg-surface-1/50'
@@ -20,4 +20,4 @@ const ConsistencyToggle = ({ value, onChange }) => {
   );
 };
 
-export default ConsistencyToggle;
+export default PrevDaysToggle;
