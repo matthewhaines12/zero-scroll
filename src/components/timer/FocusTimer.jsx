@@ -41,15 +41,15 @@ const FocusTimer = () => {
 
   return (
     <article
-      className={`${MODES[mode]} relative flex flex-col items-center w-full p-6 lg:h-full lg:p-8`}
+      className={`${MODES[mode]} relative flex flex-col items-center w-full p-6 lg:h-full`}
     >
       {/* Settings Button */}
       <button
         onClick={() => setShowSettings(true)}
         disabled={isRunning}
-        className="absolute top-4 left-6 hover:opacity-85 cursor-pointer text-text-base bg-surface-2/50 p-2.5 rounded-full lg:top-5 lg:left-8 lg:p-3"
+        className="absolute top-5 left-6 hover:opacity-85 cursor-pointer text-text-base bg-surface-2/50 p-2.5 rounded-full lg:top-5 lg:left-8 lg:p-3"
       >
-        <Timer size={26} className="lg:w-[30px] lg:h-[30px]" />
+        <Timer size={26} className="lg:w-7 lg:h-7" />
       </button>
 
       {/* Settings Modal */}
@@ -76,7 +76,7 @@ const FocusTimer = () => {
       </header>
 
       {/* Timer Display */}
-      <div className="relative flex items-center justify-center w-[380px] h-[380px]">
+      <div className="relative flex items-center justify-center w-[360px] h-[360px]">
         <div className="absolute inset-0 flex flex-col gap-3 items-center justify-center">
           <p className="font-timer tracking-wider text-text-muted text-xs select-none">
             {isRunning

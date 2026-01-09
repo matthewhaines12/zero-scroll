@@ -70,7 +70,7 @@ const Tasks = () => {
 
   return (
     <article
-      className={`${MODES[mode]} lg:h-full min-h-[500px] lg:min-h-0 w-full flex flex-col bg-surface-1/50 rounded-2xl p-6 border border-surface-2`}
+      className={`${MODES[mode]} lg:min-h-full h-[500px] w-full flex flex-col bg-surface-1/50 rounded-2xl p-6 border border-surface-2`}
     >
       <header className="mb-6">
         <h2 className="font-timer text-neon-focus text-xl uppercase drop-shadow-neon-focus break:text-neon-break break:drop-shadow-neon-break">

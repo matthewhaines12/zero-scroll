@@ -1,6 +1,6 @@
 import { useTimerState } from '../../context/TimerContext';
 
-const SIZE = 380;
+const SIZE = 360;
 const STROKE_WIDTH = 10;
 const RADIUS = (SIZE - STROKE_WIDTH) / 2;
 const CENTER = SIZE / 2;
