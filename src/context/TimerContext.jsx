@@ -21,7 +21,7 @@ const TimerStateContext = createContext(null);
 
 export const TimerProvider = ({ children }) => {
   const userStartedRef = useRef(false);
-  const currentSessionIDref = useRef(null);
+  const sessionIDref = useRef(null);
 
   const { mode, setMode } = useModeContext();
   const { timerSettings, preferences } = useSettingsContext();
@@ -45,18 +45,18 @@ export const TimerProvider = ({ children }) => {
 
       if (
         status === 'authenticated' &&
-        currentSessionIDref.current &&
+        sessionIDref.current &&
         mode === 'FOCUS'
       ) {
         try {
           await stopSession(
-            currentSessionIDref.current,
+            sessionIDref.current,
             minutesSpent,
             true,
             countsTowardStats,
             accessToken
           );
-          currentSessionIDref.current = null;
+          sessionIDref.current = null;
         } catch (err) {
           console.error('Failed to completed session in backend:', err);
         }
@@ -110,7 +110,7 @@ export const TimerProvider = ({ children }) => {
           const plannedDuration =
             duration || parseInt(timerSettings.FOCUS.value);
           const res = await startSession(mode, plannedDuration, accessToken);
-          currentSessionIDref.current = res.session._id;
+          sessionIDref.current = res.session._id;
         } catch (error) {}
       }
     },
@@ -144,16 +144,20 @@ export const TimerProvider = ({ children }) => {
     const minutesSpent = getElapsedMinutes();
     const countsTowardStats = minutesSpent >= MIN_FOCUS_MINUTES;
 
-    if (status === 'authenticated' && sessionId.current && mode === 'FOCUS') {
+    if (
+      status === 'authenticated' &&
+      sessionIDref.current &&
+      mode === 'FOCUS'
+    ) {
       try {
         await stopSession(
-          currentSessionIDref.current,
+          sessionIDref.current,
           minutesSpent,
           false,
           countsTowardStats,
           accessToken
         );
-        currentSessionIDref.current = null;
+        sessionIDref.current = null;
       } catch (err) {
         console.error('Failed to stop session in backend:', err);
       }
