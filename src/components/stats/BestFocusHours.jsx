@@ -1,6 +1,7 @@
 import { useModeContext } from '../../context/ModeContext';
 import { MODES } from '../../services/utils/constants';
 import FocusHoursChart from '../charts/FocusHoursChart';
+import PrevDaysToggle from './PrevDaysToggle';
 import { getBestFocusHours } from '../../services/api/analytics.api';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '../../context/AuthContext';
@@ -11,21 +12,21 @@ const BestFocusHours = () => {
   const { status, accessToken } = useAuthContext();
 
   const [focusHoursData, setFocusHoursData] = useState(null);
-  const prevDays = 14;
+  const [prevDays, setPrevDays] = useState(14);
 
   useEffect(() => {
     if (status !== 'authenticated') return;
 
-    const fetchConsistency = async () => {
+    const fetchBestFocusHours = async () => {
       try {
         const res = await getBestFocusHours(prevDays, accessToken);
         setFocusHoursData(res);
       } catch (err) {
-        console.error('Failed to fetch consistency data:', err);
+        console.error('Failed to fetch best focus hours data:', err);
       }
     };
 
-    fetchConsistency();
+    fetchBestFocusHours();
   }, [prevDays]);
 
   return (
@@ -39,6 +40,7 @@ const BestFocusHours = () => {
             Best Focus Hours
           </h2>
         </div>
+        <PrevDaysToggle value={prevDays} onChange={setPrevDays} />
       </header>
 
       {/* chart here */}

@@ -1,32 +1,32 @@
 import { useModeContext } from '../../context/ModeContext';
 import { MODES } from '../../services/utils/constants';
-import ConsistencyChart from '../charts/ConsistencyChart';
+import OutcomesChart from '../charts/OutcomesChart';
 import PrevDaysToggle from './PrevDaysToggle';
-import { getFocusConsistency } from '../../services/api/analytics.api';
+import { getSessionOutcomes } from '../../services/api/analytics.api';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '../../context/AuthContext';
-import { Repeat } from 'lucide-react';
+import { PieChart } from 'lucide-react';
 
-const Consistency = () => {
+const SessionOutcomes = () => {
   const { mode } = useModeContext();
   const { status, accessToken } = useAuthContext();
 
   const [prevDays, setPrevDays] = useState(14);
-  const [consistencyData, setConsistencyData] = useState(null);
+  const [sessionOutcomesData, setSessionOutcomesData] = useState(null);
 
   useEffect(() => {
     if (status !== 'authenticated') return;
 
-    const fetchConsistency = async () => {
+    const fetchSessionOutcomes = async () => {
       try {
-        const res = await getFocusConsistency(prevDays, accessToken);
-        setConsistencyData(res);
+        const res = await getSessionOutcomes(prevDays, accessToken);
+        setSessionOutcomesData(res);
       } catch (err) {
-        console.error('Failed to fetch consistency data:', err);
+        console.error('Failed to fetch session outcomes data:', err);
       }
     };
 
-    fetchConsistency();
+    fetchSessionOutcomes();
   }, [prevDays]);
 
   return (
@@ -35,9 +35,9 @@ const Consistency = () => {
     >
       <header className="flex items-center justify-between mb-6 gap-2">
         <div className="flex items-center gap-3">
-          <Repeat size={20} className="text-text-base/80" />
+          <PieChart size={20} className="text-text-base/80" />
           <h2 className="font-timer text-neon-focus text-xl uppercase drop-shadow-neon-focus break:text-neon-break break:drop-shadow-neon-break">
-            Daily Focus Minutes
+            Session Outcomes
           </h2>
         </div>
         <PrevDaysToggle value={prevDays} onChange={setPrevDays} />
@@ -45,10 +45,10 @@ const Consistency = () => {
 
       {/* chart here */}
       <div className="flex-1 flex items-center justify-center min-h-0">
-        <ConsistencyChart data={consistencyData} mode={mode} />
+        <OutcomesChart data={sessionOutcomesData} mode={mode} />
       </div>
     </article>
   );
 };
 
-export default Consistency;
+export default SessionOutcomes;

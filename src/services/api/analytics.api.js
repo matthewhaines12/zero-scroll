@@ -17,3 +17,12 @@ export const getBestFocusHours = async (days, accessToken) => {
   });
   return data;
 };
+
+export const getSessionOutcomes = async (days, accessToken) => {
+  const { data } = await api.get(`/analytics/session-outcomes/${days}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return data;
+};
