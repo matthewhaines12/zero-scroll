@@ -98,6 +98,7 @@ export const TimerProvider = ({ children }) => {
     start,
     pause,
     reset,
+    getElapsedMinutes,
   } = useTimer(initialDuration, handleTimerComplete);
 
   const handleStart = useCallback(
@@ -140,14 +141,10 @@ export const TimerProvider = ({ children }) => {
   }, [resetCycle, reset]);
 
   const handleEndMode = useCallback(async () => {
-    const minutesSpent = Math.floor((totalDuration - remaining) / 60);
+    const minutesSpent = getElapsedMinutes();
     const countsTowardStats = minutesSpent >= MIN_FOCUS_MINUTES;
 
-    if (
-      status === 'authenticated' &&
-      currentSessionIDref.current &&
-      mode === 'FOCUS'
-    ) {
+    if (status === 'authenticated' && sessionId.current && mode === 'FOCUS') {
       try {
         await stopSession(
           currentSessionIDref.current,
@@ -158,7 +155,7 @@ export const TimerProvider = ({ children }) => {
         );
         currentSessionIDref.current = null;
       } catch (err) {
-        console.error('Failed to completed session in backend:', err);
+        console.error('Failed to stop session in backend:', err);
       }
     }
 
@@ -170,8 +167,7 @@ export const TimerProvider = ({ children }) => {
     status,
     mode,
     accessToken,
-    remaining,
-    totalDuration,
+    getElapsedMinutes,
   ]);
 
   // Control context only updates when isRunning or functions change
