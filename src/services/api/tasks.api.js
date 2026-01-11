@@ -35,3 +35,12 @@ export const deleteTask = async (taskID, accessToken) => {
   });
   return data;
 };
+
+export const getCompletedTasksToday = async (accessToken) => {
+  const { data } = await api.get('/tasks/completed-today', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return data;
+};

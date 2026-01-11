@@ -14,7 +14,7 @@ export const useTimer = (initialDuration, onComplete) => {
   // Keep callback up to date without restarting worker
   useEffect(() => {
     onCompleteRef.current = onComplete;
-  }, [onCompleteRef]);
+  }, [onComplete]);
 
   // Run once when the component using the hook mounts and create the worker
   useEffect(() => {

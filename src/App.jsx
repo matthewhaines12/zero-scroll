@@ -17,6 +17,7 @@ import { SettingsProvider } from './context/SettingsContext';
 import { SessionProvider } from './context/SessionContext';
 import { AudioProvider } from './context/AudioContext';
 import { AuthProvider } from './context/AuthContext';
+import { UserStatsProvider } from './context/UserStatsContext';
 
 function App() {
   return (
@@ -25,30 +26,35 @@ function App() {
         <AudioProvider>
           <TaskProvider>
             <SettingsProvider>
-              <SessionProvider>
-                <TimerProvider>
-                  <Router>
-                    <Sidebar />
-                    <Routes>
-                      <Route path="/" element={<FocusHub />} />
-                      <Route path="/login" element={<Login />} />
-                      <Route path="/signup" element={<Signup />} />
-                      <Route path="/verify-email" element={<VerifyEmail />} />
-                      <Route path="*" element={<NotFoundPage />} />
-                      <Route
-                        path="signup-success"
-                        element={<SignupSuccess />}
-                      />
-                      {/* Protected routes that require authentication */}
-                      <Route element={<ProtectedRoutes />}>
-                        <Route path="/analytics" element={<Analytics />} />
-                        <Route path="/leaderboard" element={<Leaderboard />} />
-                        <Route path="/settings" element={<Settings />} />
-                      </Route>
-                    </Routes>
-                  </Router>
-                </TimerProvider>
-              </SessionProvider>
+              <UserStatsProvider>
+                <SessionProvider>
+                  <TimerProvider>
+                    <Router>
+                      <Sidebar />
+                      <Routes>
+                        <Route path="/" element={<FocusHub />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/verify-email" element={<VerifyEmail />} />
+                        <Route path="*" element={<NotFoundPage />} />
+                        <Route
+                          path="signup-success"
+                          element={<SignupSuccess />}
+                        />
+                        {/* Protected routes that require authentication */}
+                        <Route element={<ProtectedRoutes />}>
+                          <Route path="/analytics" element={<Analytics />} />
+                          <Route
+                            path="/leaderboard"
+                            element={<Leaderboard />}
+                          />
+                          <Route path="/settings" element={<Settings />} />
+                        </Route>
+                      </Routes>
+                    </Router>
+                  </TimerProvider>
+                </SessionProvider>
+              </UserStatsProvider>
             </SettingsProvider>
           </TaskProvider>
         </AudioProvider>

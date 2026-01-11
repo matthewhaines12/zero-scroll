@@ -38,16 +38,21 @@ export const TimerProvider = ({ children }) => {
   // Transition when timer completes
   const handleTimerComplete = useCallback(
     async (minutesSpent) => {
+      console.log('mins spent', minutesSpent);
       if (preferences.playSoundEffects) playNotification();
 
+      // Capture the current mode at the time of completion to avoid race conditions
+      const currentMode = mode;
       const repeatCount = parseInt(timerSettings.REPEAT.value);
       const countsTowardStats = minutesSpent >= MIN_FOCUS_MINUTES;
 
+      // Stop session for authenticated users in FOCUS mode
       if (
         status === 'authenticated' &&
         sessionIDref.current &&
-        mode === 'FOCUS'
+        currentMode === 'FOCUS'
       ) {
+        console.log('do we make it here?');
         try {
           await stopSession(
             sessionIDref.current,
@@ -62,7 +67,8 @@ export const TimerProvider = ({ children }) => {
         }
       }
 
-      if (mode === 'FOCUS') {
+      // Handle mode transitions based on current mode
+      if (currentMode === 'FOCUS') {
         completeFocusSession(minutesSpent, countsTowardStats);
 
         if (currentCycle >= repeatCount) {
@@ -70,10 +76,10 @@ export const TimerProvider = ({ children }) => {
         } else {
           setMode('BREAK');
         }
-      } else if (mode === 'BREAK') {
+      } else if (currentMode === 'BREAK') {
         nextCycle();
         setMode('FOCUS');
-      } else if (mode === 'RECOVER') {
+      } else if (currentMode === 'RECOVER') {
         handleTimerReset();
       }
     },
@@ -125,7 +131,7 @@ export const TimerProvider = ({ children }) => {
     if (!hasStarted && !isRunning && mode) {
       timerId = setTimeout(() => {
         handleStart(parseInt(timerSettings[mode].value));
-      }, 100); // 1 second delay when transitioning
+      }, 200); // 1 second delay when transitioning
     }
     // Return a cleanup function
     return () => {
@@ -142,12 +148,16 @@ export const TimerProvider = ({ children }) => {
 
   const handleEndMode = useCallback(async () => {
     const minutesSpent = getElapsedMinutes();
+    console.log(minutesSpent);
     const countsTowardStats = minutesSpent >= MIN_FOCUS_MINUTES;
+
+    // Capture the current mode to avoid race conditions
+    const currentMode = mode;
 
     if (
       status === 'authenticated' &&
       sessionIDref.current &&
-      mode === 'FOCUS'
+      currentMode === 'FOCUS'
     ) {
       try {
         await stopSession(

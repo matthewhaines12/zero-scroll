@@ -9,6 +9,7 @@ export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
   const [activeTaskID, setActiveTaskID] = useState(null);
   const [loading, setLoading] = useState(status === 'authenticated'); // only load if we expect a fetch
+  const [completedTasksToday, setCompletedTasksToday] = useState(0);
 
   const activeTask = tasks.find((t) => t.id === activeTaskID);
 
@@ -36,6 +37,25 @@ export const TaskProvider = ({ children }) => {
 
     loadTasks();
   }, [status, accessToken]);
+
+  useEffect(() => {
+    const loadCompletedTasksToday = async () => {
+      if (status === 'authenticated' && accessToken) {
+        try {
+          const res = await tasksApi.getCompletedTasksToday(accessToken);
+          setCompletedTasksToday(res.count || 0);
+        } catch (err) {
+          console.error('Failed to load completed tasks today:', err);
+        }
+      } else {
+        // For guest users, calculate locally
+        const count = tasks.filter((t) => t.completed === true).length;
+        setCompletedTasksToday(count);
+      }
+    };
+
+    loadCompletedTasksToday();
+  }, [status, accessToken, tasks]);
 
   const createTask = async ({ title }) => {
     if (!title.trim()) return;
@@ -130,7 +150,6 @@ export const TaskProvider = ({ children }) => {
     );
   };
 
-  const completedTasksToday = tasks.filter((t) => t.completed === true).length;
   // Avoid resorting on every render
   const sortedTasks = useMemo(() => {
     return [...tasks].sort((a, b) => Number(a.completed) - Number(b.completed));

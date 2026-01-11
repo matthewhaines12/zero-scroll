@@ -26,3 +26,12 @@ export const getSessionOutcomes = async (days, accessToken) => {
   });
   return data;
 };
+
+export const getUserStats = async (accessToken) => {
+  const { data } = await api.get('/analytics/user-stats', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return data;
+};

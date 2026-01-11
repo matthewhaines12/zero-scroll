@@ -2,11 +2,13 @@
 import { useAuthContext } from '../context/AuthContext';
 import { formatDateOnly } from '../services/utils/formateDate';
 import { useSettingsContext } from '../context/SettingsContext';
+import { useUserStatsContext } from '../context/UserStatsContext';
 
 const Settings = () => {
   // const navigate = useNavigate();
   const { user, logout, deleteAccount } = useAuthContext();
   const { preferences, savePreferences } = useSettingsContext();
+  const { userStats, loading: statsLoading } = useUserStatsContext();
 
   const handleSavePreference = (newPreference) => {
     savePreferences(newPreference);
@@ -162,30 +164,46 @@ const Settings = () => {
           <h2 className="font-timer text-lg uppercase text-neon-focus drop-shadow-neon-focus">
             Statistics
           </h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex flex-col gap-1 p-4 bg-surface-1 rounded-lg">
-              <span className="text-text-muted text-xs uppercase">
-                Total Sessions
-              </span>
-              <span className="font-timer text-2xl text-neon-focus">127</span>
+          {statsLoading ? (
+            <div className="text-center text-text-muted py-4">
+              Loading stats...
             </div>
-            <div className="flex flex-col gap-1 p-4 bg-surface-1 rounded-lg">
-              <span className="text-text-muted text-xs uppercase">
-                Total Time
-              </span>
-              <span className="font-timer text-2xl text-neon-focus">42h</span>
+          ) : (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1 p-4 bg-surface-1 rounded-lg">
+                <span className="text-text-muted text-xs uppercase">
+                  Total Sessions
+                </span>
+                <span className="font-timer text-2xl text-neon-focus">
+                  {userStats.totalSessions}
+                </span>
+              </div>
+              <div className="flex flex-col gap-1 p-4 bg-surface-1 rounded-lg">
+                <span className="text-text-muted text-xs uppercase">
+                  Total Time
+                </span>
+                <span className="font-timer text-2xl text-neon-focus">
+                  {userStats.totalFocusTime}h
+                </span>
+              </div>
+              <div className="flex flex-col gap-1 p-4 bg-surface-1 rounded-lg">
+                <span className="text-text-muted text-xs uppercase">
+                  Tasks Done
+                </span>
+                <span className="font-timer text-2xl text-neon-focus">
+                  {userStats.tasksCompleted}
+                </span>
+              </div>
+              <div className="flex flex-col gap-1 p-4 bg-surface-1 rounded-lg">
+                <span className="text-text-muted text-xs uppercase">
+                  Streak
+                </span>
+                <span className="font-timer text-2xl text-neon-focus">
+                  {userStats.currentStreak}d
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col gap-1 p-4 bg-surface-1 rounded-lg">
-              <span className="text-text-muted text-xs uppercase">
-                Tasks Done
-              </span>
-              <span className="font-timer text-2xl text-neon-focus">89</span>
-            </div>
-            <div className="flex flex-col gap-1 p-4 bg-surface-1 rounded-lg">
-              <span className="text-text-muted text-xs uppercase">Streak</span>
-              <span className="font-timer text-2xl text-neon-focus">7d</span>
-            </div>
-          </div>
+          )}
         </section>
 
         {/* Danger Zone */}
