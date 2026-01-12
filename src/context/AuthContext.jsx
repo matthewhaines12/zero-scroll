@@ -3,6 +3,7 @@ import * as authApi from '../services/api/auth.api';
 import {
   setAccessToken as setApiAccessToken,
   clearAccessToken,
+  setRefreshListener,
 } from '../services/api/authToken';
 
 const AuthContext = createContext(null);
@@ -29,6 +30,20 @@ export const AuthProvider = ({ children }) => {
     };
 
     refreshAuth();
+  }, []);
+
+  // For axios refreshing tokens
+  useEffect(() => {
+    setRefreshListener((newToken, user) => {
+      setAccessToken(newToken);
+      setApiAccessToken(newToken);
+
+      if (user) {
+        setUser(user);
+      }
+
+      setStatus('authenticated');
+    });
   }, []);
 
   const signup = async (data) => {
