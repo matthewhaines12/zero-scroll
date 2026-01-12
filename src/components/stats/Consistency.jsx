@@ -19,7 +19,7 @@ const Consistency = () => {
 
     const fetchConsistency = async () => {
       try {
-        const res = await getFocusConsistency(prevDays, accessToken);
+        const res = await getFocusConsistency(prevDays);
         setConsistencyData(res);
       } catch (err) {
         console.error('Failed to fetch consistency data:', err);

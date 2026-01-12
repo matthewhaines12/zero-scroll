@@ -17,13 +17,14 @@ export const UserStatsProvider = ({ children }) => {
   const fetchUserStats = async () => {
     if (status === 'authenticated' && accessToken) {
       setLoading(true);
+
       try {
-        const data = await getUserStats(accessToken);
+        const res = await getUserStats();
         setUserStats({
-          totalSessions: data.totalSessions || 0,
-          totalFocusTime: data.totalFocusTime || 0,
-          tasksCompleted: data.tasksCompleted || 0,
-          currentStreak: data.currentStreak || 0,
+          totalSessions: res.totalSessions || 0,
+          totalFocusTime: res.totalFocusTime || 0,
+          tasksCompleted: res.tasksCompleted || 0,
+          currentStreak: res.currentStreak || 0,
         });
       } catch (err) {
         console.error('Failed to load user stats:', err);

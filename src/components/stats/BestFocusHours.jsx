@@ -19,7 +19,7 @@ const BestFocusHours = () => {
 
     const fetchBestFocusHours = async () => {
       try {
-        const res = await getBestFocusHours(prevDays, accessToken);
+        const res = await getBestFocusHours(prevDays);
         setFocusHoursData(res);
       } catch (err) {
         console.error('Failed to fetch best focus hours data:', err);

@@ -26,7 +26,7 @@ export const SessionProvider = ({ children }) => {
         setLoading(true);
 
         try {
-          const dailyStats = await getDailySessionStats(accessToken);
+          const dailyStats = await getDailySessionStats();
           setTotalDeepWorkMins(dailyStats.totalDeepWorkMins);
           setTotalFocusSessions(dailyStats.totalFocusSessions);
         } catch (err) {

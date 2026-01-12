@@ -19,7 +19,7 @@ const SessionOutcomes = () => {
 
     const fetchSessionOutcomes = async () => {
       try {
-        const res = await getSessionOutcomes(prevDays, accessToken);
+        const res = await getSessionOutcomes(prevDays);
         setSessionOutcomesData(res);
       } catch (err) {
         console.error('Failed to fetch session outcomes data:', err);

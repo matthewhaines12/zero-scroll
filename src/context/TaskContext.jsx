@@ -20,7 +20,7 @@ export const TaskProvider = ({ children }) => {
         setLoading(true);
 
         try {
-          const res = await tasksApi.getTasks(accessToken);
+          const res = await tasksApi.getTasks();
           const normalizedTasks = res.tasks.map((task) => ({
             ...task,
             id: task._id,
@@ -42,10 +42,10 @@ export const TaskProvider = ({ children }) => {
     const loadCompletedTasksToday = async () => {
       if (status === 'authenticated' && accessToken) {
         try {
-          const res = await tasksApi.getCompletedTasksToday(accessToken);
+          const res = await tasksApi.getCompletedTasksToday();
           setCompletedTasksToday(res.count || 0);
         } catch (err) {
-          console.error('Failed to load completed tasks today:', err);
+          console.error('Failed to load completed tasks today count:', err);
         }
       } else {
         // For guest users, calculate locally
@@ -70,13 +70,10 @@ export const TaskProvider = ({ children }) => {
 
     // Logged in -> save to DB
     if (status === 'authenticated' && accessToken) {
-      const res = await tasksApi.createTask(
-        {
-          title,
-          priority: 'MED',
-        },
-        accessToken
-      );
+      const res = await tasksApi.createTask({
+        title,
+        priority: 'MED',
+      });
 
       const normalizedTask = {
         ...res.task,
@@ -98,11 +95,7 @@ export const TaskProvider = ({ children }) => {
 
     // Logged in -> save to DB
     if (status === 'authenticated' && accessToken) {
-      await tasksApi.updateTask(
-        taskID,
-        { completed: updatedCompleted },
-        accessToken
-      );
+      await tasksApi.updateTask(taskID, { completed: updatedCompleted });
     }
     // Update the local state
     setTasks((prev) =>
@@ -118,7 +111,7 @@ export const TaskProvider = ({ children }) => {
 
     // Logged in -> save to DB
     if (status === 'authenticated' && accessToken) {
-      await tasksApi.updateTask(taskID, { priority: newPriority }, accessToken);
+      await tasksApi.updateTask(taskID, { priority: newPriority });
     }
     // Update the local state
     setTasks((prev) =>
@@ -131,7 +124,7 @@ export const TaskProvider = ({ children }) => {
     if (!task) return;
 
     if (status === 'authenticated' && accessToken) {
-      await tasksApi.deleteTask(taskID, accessToken);
+      await tasksApi.deleteTask(taskID);
     }
 
     setTasks((prev) => prev.filter((t) => t.id != taskID));
@@ -142,7 +135,7 @@ export const TaskProvider = ({ children }) => {
     if (!task) return;
 
     if (status === 'authenticated' && accessToken) {
-      await tasksApi.updateTask(taskID, { title: newTitle }, accessToken);
+      await tasksApi.updateTask(taskID, { title: newTitle });
     }
 
     setTasks((prev) =>

@@ -14,6 +14,7 @@ const SettingsContext = createContext(null);
 
 export const SettingsProvider = ({ children }) => {
   const { status, accessToken } = useAuthContext();
+
   const [timerSettings, setTimerSettings] = useState(DEFAULT_TIMER_SETTINGS);
   const [preferences, setPreferences] = useState(DEFAULT_PREFERENCE_SETTINGS);
   const [loading, setLoading] = useState(status === 'authenticated'); // only load if we expect a fetch
@@ -24,7 +25,7 @@ export const SettingsProvider = ({ children }) => {
         setLoading(true);
 
         try {
-          const data = await getSettings(accessToken);
+          const data = await getSettings();
 
           if (data.timerSettings) setTimerSettings(data.timerSettings);
           if (data.preferences) setPreferences(data.preferences);
@@ -35,6 +36,7 @@ export const SettingsProvider = ({ children }) => {
         }
       }
     };
+
     loadUserSettings();
   }, [status, accessToken]);
 
@@ -43,7 +45,7 @@ export const SettingsProvider = ({ children }) => {
 
     if (status === 'authenticated' && accessToken) {
       try {
-        await updateTimerSettings(newTimerSettings, accessToken);
+        await updateTimerSettings(newTimerSettings);
       } catch (err) {
         console.error('Failed to save timer settings to backend:', err);
       }
@@ -55,7 +57,7 @@ export const SettingsProvider = ({ children }) => {
 
     if (status === 'authenticated' && accessToken) {
       try {
-        await updatePreferences(newPreference, accessToken);
+        await updatePreferences(newPreference);
       } catch (err) {
         console.error('Failed to save preference to backend:', err);
       }

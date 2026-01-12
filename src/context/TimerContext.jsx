@@ -38,7 +38,6 @@ export const TimerProvider = ({ children }) => {
   // Transition when timer completes
   const handleTimerComplete = useCallback(
     async (minutesSpent) => {
-      console.log('mins spent', minutesSpent);
       if (preferences.playSoundEffects) playNotification();
 
       // Capture the current mode at the time of completion to avoid race conditions
@@ -52,7 +51,6 @@ export const TimerProvider = ({ children }) => {
         sessionIDref.current &&
         currentMode === 'FOCUS'
       ) {
-        console.log('do we make it here?');
         try {
           await stopSession(
             sessionIDref.current,
@@ -115,7 +113,7 @@ export const TimerProvider = ({ children }) => {
         try {
           const plannedDuration =
             duration || parseInt(timerSettings.FOCUS.value);
-          const res = await startSession(mode, plannedDuration, accessToken);
+          const res = await startSession(mode, plannedDuration);
           sessionIDref.current = res.session._id;
         } catch (error) {}
       }
@@ -148,7 +146,6 @@ export const TimerProvider = ({ children }) => {
 
   const handleEndMode = useCallback(async () => {
     const minutesSpent = getElapsedMinutes();
-    console.log(minutesSpent);
     const countsTowardStats = minutesSpent >= MIN_FOCUS_MINUTES;
 
     // Capture the current mode to avoid race conditions
@@ -164,8 +161,7 @@ export const TimerProvider = ({ children }) => {
           sessionIDref.current,
           minutesSpent,
           false,
-          countsTowardStats,
-          accessToken
+          countsTowardStats
         );
         sessionIDref.current = null;
       } catch (err) {

@@ -1,5 +1,9 @@
 import { createContext, use, useEffect, useState } from 'react';
 import * as authApi from '../services/api/auth.api';
+import {
+  setAccessToken as setApiAccessToken,
+  clearAccessToken,
+} from '../services/api/authToken';
 
 const AuthContext = createContext(null);
 
@@ -14,6 +18,7 @@ export const AuthProvider = ({ children }) => {
         const res = await authApi.refresh();
         setUser(res.user);
         setAccessToken(res.newAccessToken);
+        setApiAccessToken(res.newAccessToken);
         setStatus('authenticated');
       } catch (err) {
         console.error(err);
@@ -34,6 +39,7 @@ export const AuthProvider = ({ children }) => {
     const res = await authApi.login(data);
     setUser(res.userObj);
     setAccessToken(res.accessToken);
+    setApiAccessToken(res.accessToken);
     setStatus('authenticated');
   };
 
@@ -41,6 +47,7 @@ export const AuthProvider = ({ children }) => {
     await authApi.logout();
     setUser(null);
     setAccessToken(null);
+    clearAccessToken();
     setStatus('unauthenticated');
   };
 
@@ -54,9 +61,10 @@ export const AuthProvider = ({ children }) => {
 
   const deleteAccount = async () => {
     try {
-      await authApi.deleteAccount(accessToken);
+      await authApi.deleteAccount();
       setUser(null);
       setAccessToken(null);
+      clearAccessToken();
       setStatus('unauthenticated');
     } catch (err) {
       console.error(err);

@@ -37,39 +37,23 @@ export const resendVerification = async (email) => {
 
 // forgotPassword
 
-export const deleteAccount = async (accessToken) => {
-  const { data } = await api.delete('/auth/delete-account', {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+export const deleteAccount = async () => {
+  const { data } = await api.delete('/auth/delete-account');
   return data;
 };
 
 // User settings and preferences
-export const getSettings = async (accessToken) => {
-  const { data } = await api.get('/auth/settings', {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+export const getSettings = async () => {
+  const { data } = await api.get('/auth/settings');
   return data;
 };
 
-export const updateTimerSettings = async (updates, accessToken) => {
-  const { data } = await api.patch('/auth/settings/timer', updates, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+export const updateTimerSettings = async (updates) => {
+  const { data } = await api.patch('/auth/settings/timer', updates);
   return data;
 };
 
-export const updatePreferences = async (updates, accessToken) => {
-  const { data } = await api.patch('/auth/settings/preferences', updates, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+export const updatePreferences = async (updates) => {
+  const { data } = await api.patch('/auth/settings/preferences', updates);
   return data;
 };
