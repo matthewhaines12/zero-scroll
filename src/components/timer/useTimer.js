@@ -62,17 +62,23 @@ export const useTimer = (initialDuration, onComplete) => {
     setIsRunning(true);
     setHasStarted(true);
 
-    const durationInSeconds =
-      duration !== undefined ? parseInt(duration) * 60 : totalDuration;
-    setTotalDuration(durationInSeconds);
-
     // Track start time for calculating elapsed time | pause -> resume updates current time
     startTimeRef.current = Date.now() - elapsedMsRef.current;
 
-    workerRef.current?.postMessage({
-      type: 'START',
-      duration: durationInSeconds,
-    });
+    // Only send duration to worker on fresh start, not on resume
+    if (duration !== undefined) {
+      const durationInSeconds = parseInt(duration) * 60;
+      setTotalDuration(durationInSeconds);
+
+      workerRef.current?.postMessage({
+        type: 'START',
+        duration: durationInSeconds,
+      });
+    } else {
+      workerRef.current?.postMessage({
+        type: 'START',
+      });
+    }
   }, []);
 
   const pause = useCallback(() => {

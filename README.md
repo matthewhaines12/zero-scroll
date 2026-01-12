@@ -166,6 +166,12 @@ The app will be running at `http://localhost:5173`
 | -------------- | -------------------- |
 | `VITE_API_URL` | Backend API base URL |
 
+### Other Screenshots
+
+![Responsive Signup](./public/images/responsive-signup.jpg)
+
+![Signup Success View](./public/images/signup-success-view.jpg)
+
 ### Mobile Responsive
 
 In progress
@@ -176,7 +182,7 @@ In progress
 
 ## Why "Zero Scroll"?
 
-The name comes from the goal: zero scrolling through social media or distractions while you're trying to focus. Just you, your task, and the timer. I highly reccomend anyone who hasn't tried a pomdoro style timer to give it a try.
+The name comes from the goal: zero scrolling through social media or distractions while you're trying to focus. Just you, your task, and the timer. I highly reccomend anyone who hasn't tried a pomodoro style timer to give it a try.
 
 ## Contributing
 
