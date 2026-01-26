@@ -168,6 +168,15 @@ The app will be running at `http://localhost:5173`
 
 ### Other Screenshots
 
+**Responsive Auth Forms**  
+Get instant error message / feedback for login and signup forms:
+
+- Rate limiter feedback, limiting the amount of login/signup requests to the backend.
+- Email and Password validation feedback
+- Clear signup success view, prompting user to check email for verification
+
+![Rate Limiter](./public/images/rate-limiter.jpg)
+
 ![Responsive Signup](./public/images/responsive-signup.jpg)
 
 ![Signup Success View](./public/images/signup-success-view.jpg)
