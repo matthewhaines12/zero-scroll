@@ -30,7 +30,7 @@ export const SettingsProvider = ({ children }) => {
           if (data.timerSettings) setTimerSettings(data.timerSettings);
           if (data.preferences) setPreferences(data.preferences);
         } catch (err) {
-          console.error('Failed to load user settings:', err);
+          // Silently handle error
         } finally {
           setLoading(false);
         }
@@ -47,7 +47,7 @@ export const SettingsProvider = ({ children }) => {
       try {
         await updateTimerSettings(newTimerSettings);
       } catch (err) {
-        console.error('Failed to save timer settings to backend:', err);
+        // Silently handle error
       }
     }
   };
@@ -59,7 +59,7 @@ export const SettingsProvider = ({ children }) => {
       try {
         await updatePreferences(newPreference);
       } catch (err) {
-        console.error('Failed to save preference to backend:', err);
+        // Silently handle error
       }
     }
   };

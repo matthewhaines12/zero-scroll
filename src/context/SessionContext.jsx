@@ -30,7 +30,7 @@ export const SessionProvider = ({ children }) => {
           setTotalDeepWorkMins(dailyStats.totalDeepWorkMins);
           setTotalFocusSessions(dailyStats.totalFocusSessions);
         } catch (err) {
-          console.error('Failed to fetch daily stats:', err);
+          // Silently handle error
         } finally {
           setLoading(false);
         }
@@ -50,7 +50,7 @@ export const SessionProvider = ({ children }) => {
         setTotalFocusSessions((prev) => prev + 1);
       }
     },
-    []
+    [],
   );
 
   const nextCycle = useCallback(() => {
@@ -82,7 +82,7 @@ export const SessionProvider = ({ children }) => {
       completeFocusSession,
       nextCycle,
       resetCycle,
-    ]
+    ],
   );
 
   return <SessionContext value={value}>{children}</SessionContext>;

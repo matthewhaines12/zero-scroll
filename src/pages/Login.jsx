@@ -45,7 +45,7 @@ const Login = () => {
       setErrorMessage(`Verification email sent to ${email}! Check your inbox.`);
       setShowResendVerification(false);
     } catch (err) {
-      console.error(err);
+      // Silently handle error
     } finally {
       setIsResending(false);
     }

@@ -28,7 +28,7 @@ export const TaskProvider = ({ children }) => {
 
           setTasks(normalizedTasks);
         } catch (err) {
-          console.error('Failed to load tasks:', err);
+          // Silently handle error
         } finally {
           setLoading(false);
         }
@@ -45,7 +45,7 @@ export const TaskProvider = ({ children }) => {
           const res = await tasksApi.getCompletedTasksToday();
           setCompletedTasksToday(res.count || 0);
         } catch (err) {
-          console.error('Failed to load completed tasks today count:', err);
+          // Silently handle error
         }
       } else {
         // For guest users, calculate locally
@@ -100,8 +100,8 @@ export const TaskProvider = ({ children }) => {
     // Update the local state
     setTasks((prev) =>
       prev.map((t) =>
-        t.id === taskID ? { ...t, completed: updatedCompleted } : t
-      )
+        t.id === taskID ? { ...t, completed: updatedCompleted } : t,
+      ),
     );
   };
 
@@ -115,7 +115,7 @@ export const TaskProvider = ({ children }) => {
     }
     // Update the local state
     setTasks((prev) =>
-      prev.map((t) => (t.id === taskID ? { ...t, priority: newPriority } : t))
+      prev.map((t) => (t.id === taskID ? { ...t, priority: newPriority } : t)),
     );
   };
 
@@ -139,7 +139,7 @@ export const TaskProvider = ({ children }) => {
     }
 
     setTasks((prev) =>
-      prev.map((t) => (t.id === taskID ? { ...t, title: newTitle } : t))
+      prev.map((t) => (t.id === taskID ? { ...t, title: newTitle } : t)),
     );
   };
 

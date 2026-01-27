@@ -22,7 +22,7 @@ const Consistency = () => {
         const res = await getFocusConsistency(prevDays);
         setConsistencyData(res);
       } catch (err) {
-        console.error('Failed to fetch consistency data:', err);
+        // Silently handle error
       }
     };
 

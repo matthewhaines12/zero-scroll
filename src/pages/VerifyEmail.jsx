@@ -13,8 +13,6 @@ const VerifyEmail = () => {
   const params = new URLSearchParams(location.search);
   const emailToken = params.get('token');
 
-  // console.log(emailToken);
-
   useEffect(() => {
     const verify = async () => {
       if (!emailToken) {
@@ -34,7 +32,7 @@ const VerifyEmail = () => {
         setStatus('error');
         setErrorMessage(
           err.response?.data?.error ||
-            'Verification failed. The link may be expired or invalid.'
+            'Verification failed. The link may be expired or invalid.',
         );
       }
     };

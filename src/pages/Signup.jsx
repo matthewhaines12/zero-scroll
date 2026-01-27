@@ -24,9 +24,8 @@ const Signup = () => {
       await signup({ username, email, password });
       navigate('/signup-success');
     } catch (err) {
-      console.error(err);
       setErrorMessage(
-        err.response?.data?.error || 'Signup failed. Please try again.'
+        err.response?.data?.error || 'Signup failed. Please try again.',
       );
     } finally {
       setIsSubmitting(false);

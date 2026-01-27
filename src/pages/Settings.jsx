@@ -19,21 +19,21 @@ const Settings = () => {
       await logout();
       // navigate('/');
     } catch (err) {
-      console.error('Logout failed:', err);
+      // Silently handle logout errors
     }
   };
 
   const handleDeleteAccount = async () => {
     if (
       confirm(
-        'Are you sure you want to delete your account? This cannot be undone.'
+        'Are you sure you want to delete your account? This cannot be undone.',
       )
     ) {
       try {
         await deleteAccount();
         // navigate('/');
       } catch (err) {
-        console.error('Delete failed:', err);
+        // Silently handle delete errors
       }
     }
   };

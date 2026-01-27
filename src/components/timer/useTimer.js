@@ -19,7 +19,7 @@ export const useTimer = (initialDuration, onComplete) => {
   // Run once when the component using the hook mounts and create the worker
   useEffect(() => {
     workerRef.current = new Worker(
-      new URL('../../workers/timer.worker.js', import.meta.url)
+      new URL('../../workers/timer.worker.js', import.meta.url),
     );
 
     // Handle messages from worker
@@ -31,8 +31,6 @@ export const useTimer = (initialDuration, onComplete) => {
       if (event.data.done) {
         const elapsedMs = Date.now() - startTimeRef.current;
         const minutesSpent = Math.floor(elapsedMs / 60000);
-
-        console.log('mins spent', minutesSpent);
 
         elapsedMsRef.current = 0;
         setIsRunning(false);

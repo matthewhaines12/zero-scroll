@@ -25,7 +25,7 @@ const Tasks = () => {
       await createTask({ title: newTask });
       setNewTask('');
     } catch (err) {
-      console.error(err);
+      // Silently handle error
     }
   };
 
@@ -33,7 +33,7 @@ const Tasks = () => {
     try {
       await changePriority(id, newPriority);
     } catch (err) {
-      console.error(err);
+      // Silently handle error
     }
   };
 
@@ -42,7 +42,7 @@ const Tasks = () => {
       setActiveTaskID(null);
       await completeTask(id);
     } catch (err) {
-      console.error(err);
+      // Silently handle error
     }
   };
 
@@ -50,7 +50,7 @@ const Tasks = () => {
     try {
       await deleteTask(id);
     } catch (err) {
-      console.error(err);
+      // Silently handle error
     }
   };
 
@@ -58,7 +58,7 @@ const Tasks = () => {
     try {
       await updateTask(id, newTitle);
     } catch (err) {
-      console.error(err);
+      // Silently handle error
     }
   };
 

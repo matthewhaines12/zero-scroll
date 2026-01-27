@@ -27,7 +27,7 @@ export const UserStatsProvider = ({ children }) => {
           currentStreak: res.currentStreak || 0,
         });
       } catch (err) {
-        console.error('Failed to load user stats:', err);
+        // Silently handle error
       } finally {
         setLoading(false);
       }
@@ -56,7 +56,7 @@ export const useUserStatsContext = () => {
 
   if (!context) {
     throw new Error(
-      'useUserStatsContext must be used within UserStatsProvider'
+      'useUserStatsContext must be used within UserStatsProvider',
     );
   }
 
