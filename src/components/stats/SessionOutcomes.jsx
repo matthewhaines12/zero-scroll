@@ -5,7 +5,7 @@ import PrevDaysToggle from './PrevDaysToggle';
 import { getSessionOutcomes } from '../../services/api/analytics.api';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '../../context/AuthContext';
-import { PieChart } from 'lucide-react';
+import { PieChart, Loader2 } from 'lucide-react';
 
 const SessionOutcomes = () => {
   const { mode } = useModeContext();
@@ -13,16 +13,20 @@ const SessionOutcomes = () => {
 
   const [prevDays, setPrevDays] = useState(14);
   const [sessionOutcomesData, setSessionOutcomesData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (status !== 'authenticated') return;
 
     const fetchSessionOutcomes = async () => {
+      setLoading(true);
       try {
         const res = await getSessionOutcomes(prevDays);
         setSessionOutcomesData(res);
       } catch (err) {
         // Silently handle error
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -45,7 +49,11 @@ const SessionOutcomes = () => {
 
       {/* chart here */}
       <div className="flex-1 flex items-center justify-center min-h-0">
-        <OutcomesChart data={sessionOutcomesData} mode={mode} />
+        {loading ? (
+          <Loader2 className="w-8 h-8 animate-spin text-neon-focus" />
+        ) : (
+          <OutcomesChart data={sessionOutcomesData} mode={mode} />
+        )}
       </div>
     </article>
   );

@@ -5,7 +5,7 @@ import PrevDaysToggle from './PrevDaysToggle';
 import { getBestFocusHours } from '../../services/api/analytics.api';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '../../context/AuthContext';
-import { Hourglass } from 'lucide-react';
+import { Hourglass, Loader2 } from 'lucide-react';
 
 const BestFocusHours = () => {
   const { mode } = useModeContext();
@@ -13,16 +13,20 @@ const BestFocusHours = () => {
 
   const [focusHoursData, setFocusHoursData] = useState(null);
   const [prevDays, setPrevDays] = useState(14);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (status !== 'authenticated') return;
 
     const fetchBestFocusHours = async () => {
+      setLoading(true);
       try {
         const res = await getBestFocusHours(prevDays);
         setFocusHoursData(res);
       } catch (err) {
         // Silently handle error
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -44,7 +48,13 @@ const BestFocusHours = () => {
       </header>
 
       {/* chart here */}
-      <FocusHoursChart data={focusHoursData} mode={mode} />
+      {loading ? (
+        <div className="flex items-center justify-center w-full h-[250px]">
+          <Loader2 className="w-8 h-8 animate-spin text-neon-focus" />
+        </div>
+      ) : (
+        <FocusHoursChart data={focusHoursData} mode={mode} />
+      )}
     </article>
   );
 };

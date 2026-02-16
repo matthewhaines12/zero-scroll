@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import TaskItem from './TaskItem';
-import { Plus } from 'lucide-react';
+import { Plus, Loader2 } from 'lucide-react';
 import { useTaskContext } from '../../context/TaskContext';
 import { useModeContext } from '../../context/ModeContext';
 import { MODES } from '../../services/utils/constants';
@@ -9,6 +9,7 @@ const Tasks = () => {
   const {
     tasks,
     activeTaskID,
+    loading,
     setActiveTaskID,
     createTask,
     completeTask,
@@ -105,7 +106,11 @@ const Tasks = () => {
 
       {/* Task list */}
       <div className="mt-6 flex flex-col gap-6 overflow-y-auto min-h-0 flex-1 pr-2 custom-scrollbar">
-        {tasks.length === 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center flex-1">
+            <Loader2 className="w-8 h-8 animate-spin text-neon-focus" />
+          </div>
+        ) : tasks.length === 0 ? (
           <p className="text-text-muted uppercase text-sm">No Tasks</p>
         ) : (
           tasks.map((task) => (

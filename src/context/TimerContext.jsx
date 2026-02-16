@@ -45,27 +45,7 @@ export const TimerProvider = ({ children }) => {
       const repeatCount = parseInt(timerSettings.REPEAT.value);
       const countsTowardStats = minutesSpent >= MIN_FOCUS_MINUTES;
 
-      // Stop session for authenticated users in FOCUS mode
-      if (
-        status === 'authenticated' &&
-        sessionIDref.current &&
-        currentMode === 'FOCUS'
-      ) {
-        try {
-          await stopSession(
-            sessionIDref.current,
-            minutesSpent,
-            true,
-            countsTowardStats,
-            accessToken
-          );
-          sessionIDref.current = null;
-        } catch (err) {
-          console.error('Failed to completed session in backend:', err);
-        }
-      }
-
-      // Handle mode transitions based on current mode
+      // Handle mode transitions first (before any async work)
       if (currentMode === 'FOCUS') {
         completeFocusSession(minutesSpent, countsTowardStats);
 
@@ -80,6 +60,26 @@ export const TimerProvider = ({ children }) => {
       } else if (currentMode === 'RECOVER') {
         handleTimerReset();
       }
+
+      // Stop session for authenticated users in FOCUS mode (after mode transition)
+      if (
+        status === 'authenticated' &&
+        sessionIDref.current &&
+        currentMode === 'FOCUS'
+      ) {
+        try {
+          await stopSession(
+            sessionIDref.current,
+            minutesSpent,
+            true,
+            countsTowardStats,
+            accessToken,
+          );
+          sessionIDref.current = null;
+        } catch (err) {
+          console.error('Failed to completed session in backend:', err);
+        }
+      }
     },
     [
       mode,
@@ -91,7 +91,7 @@ export const TimerProvider = ({ children }) => {
       status,
       accessToken,
       preferences,
-    ]
+    ],
   );
 
   const {
@@ -118,7 +118,7 @@ export const TimerProvider = ({ children }) => {
         } catch (error) {}
       }
     },
-    [start, status, mode, timerSettings, accessToken]
+    [start, status, mode, timerSettings, accessToken],
   );
 
   // Auto start next mode when timer is running
@@ -161,7 +161,7 @@ export const TimerProvider = ({ children }) => {
           sessionIDref.current,
           minutesSpent,
           false,
-          countsTowardStats
+          countsTowardStats,
         );
         sessionIDref.current = null;
       } catch (err) {
@@ -199,13 +199,13 @@ export const TimerProvider = ({ children }) => {
       pause,
       handleTimerReset,
       handleEndMode,
-    ]
+    ],
   );
 
   // State context only contains remaining time
   const stateValue = useMemo(
     () => ({ remaining, totalDuration }),
-    [remaining, totalDuration]
+    [remaining, totalDuration],
   );
 
   return (

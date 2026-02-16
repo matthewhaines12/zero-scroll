@@ -16,48 +16,62 @@ import { ModeProvider } from './context/ModeContext';
 import { SettingsProvider } from './context/SettingsContext';
 import { SessionProvider } from './context/SessionContext';
 import { AudioProvider } from './context/AudioContext';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuthContext } from './context/AuthContext';
 import { UserStatsProvider } from './context/UserStatsContext';
+import Spinner from './components/ui/Spinner';
+
+// Gate that waits for auth to resolve before rendering children.
+// Prevents all contexts underneath from rendering with unresolved auth state.
+const AuthGate = ({ children }) => {
+  const { status } = useAuthContext();
+  if (status === 'loading') return <Spinner />;
+  return children;
+};
 
 function App() {
   return (
     <ModeProvider>
       <AuthProvider>
-        <AudioProvider>
-          <TaskProvider>
-            <SettingsProvider>
-              <UserStatsProvider>
-                <SessionProvider>
-                  <TimerProvider>
-                    <Router>
-                      <Sidebar />
-                      <Routes>
-                        <Route path="/" element={<FocusHub />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<Signup />} />
-                        <Route path="/verify-email" element={<VerifyEmail />} />
-                        <Route path="*" element={<NotFoundPage />} />
-                        <Route
-                          path="signup-success"
-                          element={<SignupSuccess />}
-                        />
-                        {/* Protected routes that require authentication */}
-                        <Route element={<ProtectedRoutes />}>
-                          <Route path="/analytics" element={<Analytics />} />
+        <AuthGate>
+          <AudioProvider>
+            <TaskProvider>
+              <SettingsProvider>
+                <UserStatsProvider>
+                  <SessionProvider>
+                    <TimerProvider>
+                      <Router>
+                        <Sidebar />
+                        <Routes>
+                          <Route path="/" element={<FocusHub />} />
+                          <Route path="/login" element={<Login />} />
+                          <Route path="/signup" element={<Signup />} />
                           <Route
-                            path="/leaderboard"
-                            element={<Leaderboard />}
+                            path="/verify-email"
+                            element={<VerifyEmail />}
                           />
-                          <Route path="/settings" element={<Settings />} />
-                        </Route>
-                      </Routes>
-                    </Router>
-                  </TimerProvider>
-                </SessionProvider>
-              </UserStatsProvider>
-            </SettingsProvider>
-          </TaskProvider>
-        </AudioProvider>
+                          <Route path="*" element={<NotFoundPage />} />
+                          <Route
+                            path="signup-success"
+                            element={<SignupSuccess />}
+                          />
+                          {/* Protected routes that require authentication */}
+                          <Route element={<ProtectedRoutes />}>
+                            <Route path="/analytics" element={<Analytics />} />
+                            <Route
+                              path="/leaderboard"
+                              element={<Leaderboard />}
+                            />
+                            <Route path="/settings" element={<Settings />} />
+                          </Route>
+                        </Routes>
+                      </Router>
+                    </TimerProvider>
+                  </SessionProvider>
+                </UserStatsProvider>
+              </SettingsProvider>
+            </TaskProvider>
+          </AudioProvider>
+        </AuthGate>
       </AuthProvider>
     </ModeProvider>
   );

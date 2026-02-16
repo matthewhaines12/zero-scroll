@@ -5,7 +5,7 @@ import PrevDaysToggle from './PrevDaysToggle';
 import { getFocusConsistency } from '../../services/api/analytics.api';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '../../context/AuthContext';
-import { Repeat } from 'lucide-react';
+import { Repeat, Loader2 } from 'lucide-react';
 
 const Consistency = () => {
   const { mode } = useModeContext();
@@ -13,16 +13,20 @@ const Consistency = () => {
 
   const [prevDays, setPrevDays] = useState(14);
   const [consistencyData, setConsistencyData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (status !== 'authenticated') return;
 
     const fetchConsistency = async () => {
+      setLoading(true);
       try {
         const res = await getFocusConsistency(prevDays);
         setConsistencyData(res);
       } catch (err) {
         // Silently handle error
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -45,7 +49,11 @@ const Consistency = () => {
 
       {/* chart here */}
       <div className="flex-1 flex items-center justify-center min-h-0">
-        <ConsistencyChart data={consistencyData} mode={mode} />
+        {loading ? (
+          <Loader2 className="w-8 h-8 animate-spin text-neon-focus" />
+        ) : (
+          <ConsistencyChart data={consistencyData} mode={mode} />
+        )}
       </div>
     </article>
   );
